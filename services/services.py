@@ -1,8 +1,16 @@
-# crud.py
+# services.py
 
 from sqlalchemy.orm import Session
 from models import models
 from datetime import datetime
+
+# TODO: Create, Update, Delete
+
+
+# Retrieve
+def retrieve_book_by_isbn(db: Session, isbn: str):
+    return db.query(models.Book).filter(models.Book.isbn == isbn).first()
+
 
 # TODO: Implement migrations with Alembic
 # https://github.com/nanotaboada/python-samples-fastapi-restful/issues/2
@@ -28,7 +36,3 @@ def reset_catalog(db: Session):
     book_to_delete = db.query(models.Book).filter(models.Book.isbn == "9781430224150").first()
     db.delete(book_to_delete)
     db.commit()
-
-
-def retrieve_book_by_isbn(db: Session, isbn: str):
-    return db.query(models.Book).filter(models.Book.isbn == isbn).first()
