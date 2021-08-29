@@ -1,18 +1,14 @@
 # models.py
 
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer
 from data.database import Base
 
 
-class Book(Base):
-    __tablename__ = "books"
+class Song(Base):
+    __tablename__ = "songs"
 
-    isbn = Column(String, primary_key=True, index=True)
+    rank = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    subtitle = Column(String, index=True)
-    author = Column(String, index=True)
-    published = Column(DateTime, index=True)
-    publisher = Column(String, index=True)
-    pages = Column(Integer, index=True)
-    description = Column(String, index=True)
-    website = Column(String, index=True)
+    artist = Column(String, index=True)
+    album = Column(String, index=True)
+    year = Column(String, index=True)

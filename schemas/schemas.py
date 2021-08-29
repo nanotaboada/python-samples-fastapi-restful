@@ -2,19 +2,14 @@
 
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
 
 
-class Book(BaseModel):
-    isbn: str
+class Song(BaseModel):
+    rank: int
     title: str
-    subtitle: Optional[str] = None
-    author: str
-    published: datetime
-    publisher: str
-    pages: int
-    description: str
-    website: str
+    artist: str
+    album: Optional[str] = None
+    year: str
 
     class Config:
         orm_mode = True
