@@ -1,6 +1,7 @@
 # routes.py
 
 from fastapi import APIRouter, Depends, HTTPException
+from typing import List
 from data.database import OrmSession
 from sqlalchemy.orm import Session
 from schemas import schemas
@@ -27,21 +28,25 @@ def get_db_session():
 
 
 # HTTP GET
-@api_router.get("/books/{isbn}", response_model=schemas.Book)
-def get_book(isbn: str, db_session: Session = Depends(get_db_session)):
-    book = services.retrieve_book_by_isbn(db_session, isbn=isbn)
-    if book is None:
+@api_router.get("/songs/", response_model=List[schemas.Song])
+def get_songs(db_session: Session = Depends(get_db_session)):
+    songs = services.retrieve_all_songs(db_session)
+    if songs is None:
         raise HTTPException(status_code=404)
-    return book
+    return songs
 
 
-@api_router.get("/catalog/init", status_code=200)
-def init(db_session: Session = Depends(get_db_session)):
-    services.reset_catalog(db_session)
-    return {"detail": "Catalog initialized."}
+@api_router.get("/songs/year/{year}", response_model=List[schemas.Song])
+def get_songs_by_year(year: str, db_session: Session = Depends(get_db_session)):
+    songs = services.retrieve_songs_by_year(db_session, year=year)
+    if songs is None:
+        raise HTTPException(status_code=404)
+    return songs
 
 
-@api_router.get("/catalog/reset", status_code=200)
-def reset(db_session: Session = Depends(get_db_session)):
-    services.init_catalog(db_session)
-    return {"detail": "Catalog reset."}
+@api_router.get("/songs/rank/{rank}", response_model=schemas.Song)
+def get_song_by_rank(rank: int, db_session: Session = Depends(get_db_session)):
+    song = services.retrieve_song_by_rank(db_session, rank=rank)
+    if song is None:
+        raise HTTPException(status_code=404)
+    return song
