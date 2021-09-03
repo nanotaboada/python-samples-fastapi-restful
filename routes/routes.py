@@ -28,10 +28,10 @@ def get_db_session():
 
 
 # HTTP GET
-@api_router.get("/songs/", response_model=List[schemas.Song])
+@api_router.get("/songs", response_model=List[schemas.Song])
 def get_songs(db_session: Session = Depends(get_db_session)):
     songs = services.retrieve_all_songs(db_session)
-    if songs is None:
+    if not songs:
         raise HTTPException(status_code=404)
     return songs
 
@@ -39,7 +39,7 @@ def get_songs(db_session: Session = Depends(get_db_session)):
 @api_router.get("/songs/year/{year}", response_model=List[schemas.Song])
 def get_songs_by_year(year: str, db_session: Session = Depends(get_db_session)):
     songs = services.retrieve_songs_by_year(db_session, year=year)
-    if songs is None:
+    if not songs:
         raise HTTPException(status_code=404)
     return songs
 
@@ -47,6 +47,6 @@ def get_songs_by_year(year: str, db_session: Session = Depends(get_db_session)):
 @api_router.get("/songs/rank/{rank}", response_model=schemas.Song)
 def get_song_by_rank(rank: int, db_session: Session = Depends(get_db_session)):
     song = services.retrieve_song_by_rank(db_session, rank=rank)
-    if song is None:
+    if not song:
         raise HTTPException(status_code=404)
     return song
