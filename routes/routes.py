@@ -31,8 +31,6 @@ def get_db_session():
 @api_router.get("/songs", response_model=List[schemas.Song])
 def get_songs(db_session: Session = Depends(get_db_session)):
     songs = services.retrieve_all_songs(db_session)
-    if not songs:
-        raise HTTPException(status_code=404)
     return songs
 
 
