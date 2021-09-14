@@ -65,6 +65,4 @@ def get_song_by_rank(
     db_session: Session = Depends(get_db_session)
 ):
     song = services.retrieve_song_by_rank(db_session, rank=rank)
-    if not song:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return song
