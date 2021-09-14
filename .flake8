@@ -1,2 +1,3 @@
 [flake8]
-ignore = E501 # Line too long (82 &gt; 79 characters) (E501)
+# The GitHub editor is 127 chars wide
+max-line-length = 127
