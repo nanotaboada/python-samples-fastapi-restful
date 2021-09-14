@@ -9,7 +9,7 @@ class Song(BaseModel):
     title: str
     artist: str
     album: Optional[str] = None
-    year: str
+    year: int
 
     class Config:
         orm_mode = True

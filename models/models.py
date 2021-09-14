@@ -11,4 +11,4 @@ class Song(Base):
     title = Column(String, index=True)
     artist = Column(String, index=True)
     album = Column(String, index=True)
-    year = Column(String, index=True)
+    year = Column(Integer, index=True)

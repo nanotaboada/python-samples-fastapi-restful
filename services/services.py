@@ -11,7 +11,7 @@ def retrieve_all_songs(db: Session):
     return db.query(models.Song).all()
 
 
-def retrieve_songs_by_year(db: Session, year: str):
+def retrieve_songs_by_year(db: Session, year: int):
     return db.query(models.Song).filter(models.Song.year == year).all()
 
 
