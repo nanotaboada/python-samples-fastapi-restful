@@ -24,7 +24,7 @@ pytest==6.2.5
 pytest-cov==2.12.1
 python-dotenv==0.19.0
 PyYAML==5.4.1
-requests==2.26.0
+requests==2.31.0
 SQLAlchemy==1.4.22
 starlette==0.14.2
 toml==0.10.2
