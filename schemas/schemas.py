@@ -11,5 +11,5 @@ class Song(BaseModel):
     album: Optional[str] = None
     year: int
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
