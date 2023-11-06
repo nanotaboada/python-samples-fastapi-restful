@@ -6,6 +6,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/cb2c26cf0ee4428c7689/maintainability)](https://codeclimate.com/github/nanotaboada/python-samples-fastapi-restful/maintainability)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8f9bab37f6f444c895a8b25d5df772fc)](https://www.codacy.com/gh/nanotaboada/python-samples-fastapi-restful/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nanotaboada/python-samples-fastapi-restful&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful/branch/master/graph/badge.svg?token=A1WNZPRQEJ)](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful)
+[![Known Vulnerabilities](https://snyk.io/test/github/nanotaboada/python-samples-fastapi-restful/badge.svg)](https://snyk.io/test/github/nanotaboada/python-samples-fastapi-restful)
 
 ## Manifesto
 
