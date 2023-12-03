@@ -1,6 +1,7 @@
 # Sample REST API with FastAPI
 
 ## Status
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d62f80b4ccd047d7ae452a10cef42101)](https://app.codacy.com/gh/nanotaboada/python-samples-fastapi-restful?utm_source=github.com&utm_medium=referral&utm_content=nanotaboada/python-samples-fastapi-restful&utm_campaign=Badge_Grade)
 [![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful/badge)](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful)
 [![Maintainability](https://api.codeclimate.com/v1/badges/cb2c26cf0ee4428c7689/maintainability)](https://codeclimate.com/github/nanotaboada/python-samples-fastapi-restful/maintainability)
