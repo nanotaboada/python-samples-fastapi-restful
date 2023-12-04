@@ -1,4 +1,4 @@
-# Sample REST API with FastAPI
+# Sample RESTful API with Python 3 and FastAPI
 
 ## Status
 [![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml)
@@ -6,7 +6,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/cb2c26cf0ee4428c7689/maintainability)](https://codeclimate.com/github/nanotaboada/python-samples-fastapi-restful/maintainability)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8f9bab37f6f444c895a8b25d5df772fc)](https://app.codacy.com/gh/nanotaboada/python-samples-fastapi-restful/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![codecov](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful/branch/master/graph/badge.svg?token=A1WNZPRQEJ)](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful)
-[![Known Vulnerabilities](https://snyk.io/test/github/nanotaboada/python-samples-fastapi-restful/badge.svg)](https://snyk.io/test/github/nanotaboada/python-samples-fastapi-restful)
 
 ## Manifesto
 
@@ -14,7 +13,7 @@
 
 ## About
 
-Proof of Concept for a REST API made with [FastAPI](https://fastapi.tiangolo.com/).
+Proof of Concept for a RESTful API made with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/).
 
 ## Install
 
