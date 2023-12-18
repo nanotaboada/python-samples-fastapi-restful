@@ -1,4 +1,6 @@
-# routes.py
+# -------------------------------------------------------------------------------------------------
+# Routes
+# -------------------------------------------------------------------------------------------------
 
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 from typing import List
@@ -9,7 +11,6 @@ from services import services
 
 api_router = APIRouter()
 
-
 # We need to have an independent database session/connection per request, use
 # the same session through all the request and then close it after the request
 # is finished.
@@ -17,6 +18,8 @@ api_router = APIRouter()
 # Our dependency will create a new SQLAlchemy Session that will be used in a
 # single request, and then close it once the request is finished.
 # https://fastapi.tiangolo.com/tutorial/sql-databases/#create-a-dependency
+
+
 def get_db_session():
     db_session = OrmSession()
     try:
@@ -24,10 +27,15 @@ def get_db_session():
     finally:
         db_session.close()
 
-# TODO: HTTP POST, HTTP PUT and HTTP DELETE
 
-
+# -------------------------------------------------------------------------------------------------
 # HTTP GET
+# -------------------------------------------------------------------------------------------------
+
+
+# GET /songs
+
+
 @api_router.get(
     "/songs/",
     response_model=List[schemas.Song],
@@ -38,6 +46,9 @@ def get_songs(
 ):
     songs = services.retrieve_all_songs(db_session)
     return songs
+
+
+# GET /songs/year/{year}
 
 
 @api_router.get(
@@ -53,6 +64,9 @@ def get_songs_by_year(
     if not songs:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return songs
+
+
+# GET /songs/rank/{rank}
 
 
 @api_router.get(
