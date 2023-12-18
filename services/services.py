@@ -1,12 +1,14 @@
-# services.py
+# -------------------------------------------------------------------------------------------------
+# Services
+# -------------------------------------------------------------------------------------------------
 
 from sqlalchemy.orm import Session
 from models import models
 
-# TODO: Create, Update, Delete
-
 
 # Retrieve
+
+
 def retrieve_all_songs(db: Session):
     return db.query(models.Song).all()
 
