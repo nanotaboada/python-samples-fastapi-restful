@@ -3,7 +3,7 @@
 # -------------------------------------------------------------------------------------------------
 
 from sqlalchemy import Column, String, Integer
-from data.database import Base
+from data.song_database import Base
 
 
 class Song(Base):

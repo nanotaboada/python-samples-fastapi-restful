@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-class Song(BaseModel):
+class SongModel(BaseModel):
     rank: int
     title: str
     artist: str
