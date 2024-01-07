@@ -4,10 +4,10 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 from typing import List
-from data.database import OrmSession
+from data.song_database import OrmSession
 from sqlalchemy.orm import Session
-from schemas import schemas
-from services import services
+from schemas.song_schema import SongModel
+from services import song_service
 
 api_router = APIRouter()
 
@@ -38,13 +38,13 @@ def get_db_session():
 
 @api_router.get(
     "/songs/",
-    response_model=List[schemas.Song],
+    response_model=List[SongModel],
     summary="Gets all songs in the collection"
 )
 def get_songs(
     db_session: Session = Depends(get_db_session)
 ):
-    songs = services.retrieve_all_songs(db_session)
+    songs = song_service.retrieve_all_songs(db_session)
     return songs
 
 
@@ -53,14 +53,14 @@ def get_songs(
 
 @api_router.get(
     "/songs/year/{year}",
-    response_model=List[schemas.Song],
+    response_model=List[SongModel],
     summary="Gets all songs from the specified year"
 )
 def get_songs_by_year(
     year: int = Path(..., title="The year of the songs to get", ge=1948, le=2009),
     db_session: Session = Depends(get_db_session)
 ):
-    songs = services.retrieve_songs_by_year(db_session, year=year)
+    songs = song_service.retrieve_songs_by_year(db_session, year=year)
     if not songs:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return songs
@@ -71,12 +71,12 @@ def get_songs_by_year(
 
 @api_router.get(
     "/songs/rank/{rank}",
-    response_model=schemas.Song,
+    response_model=SongModel,
     summary="Get the song with the specified rank"
 )
 def get_song_by_rank(
     rank: int = Path(..., title="The rank of the song to get", ge=1, le=500),
     db_session: Session = Depends(get_db_session)
 ):
-    song = services.retrieve_song_by_rank(db_session, rank=rank)
+    song = song_service.retrieve_song_by_rank(db_session, rank=rank)
     return song
