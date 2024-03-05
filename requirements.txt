@@ -2,7 +2,7 @@ annotated-types==0.6.0
 anyio==3.7.1
 certifi==2023.7.22
 click==8.1.7
-coverage==7.3.2
+coverage==7.4.3
 fastapi==0.104.1
 flake8==6.1.0
 greenlet==3.0.1
