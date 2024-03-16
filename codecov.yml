@@ -1,0 +1,22 @@
+# https://api.codecov.io/validate
+
+# Usage:
+# curl -X POST --data-binary @codecov.yml https://codecov.io/validate
+
+ignore:
+- main.py
+- data
+- models
+- schemas
+- services
+- tests
+
+coverage:
+  status:
+    project:
+      routes:
+        paths:
+          - routes/song_route.py
+    patch:
+      default:
+        informational: true
