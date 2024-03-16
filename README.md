@@ -1,6 +1,7 @@
 # Sample RESTful API with Python 3 and FastAPI
 
 ## Status
+
 [![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful/badge)](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful)
 [![Maintainability](https://api.codeclimate.com/v1/badges/cb2c26cf0ee4428c7689/maintainability)](https://codeclimate.com/github/nanotaboada/python-samples-fastapi-restful/maintainability)
@@ -15,10 +16,16 @@
 
 Proof of Concept for a RESTful API made with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/).
 
+## Structure
+
+The following is a simplified dependency diagram of modules and main libraries:
+
+![Dependency Diagram](python-samples-fastapi-restful.svg)
+
 ## Install
 
 ```shell
-pip install fastapi uvicorn[standard]
+pip install --requirement requirements.txt
 ```
 
 ## Start
