@@ -6,6 +6,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      fastapi:
+        patterns:
+        - "fastapi"
+        - "starlette"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
