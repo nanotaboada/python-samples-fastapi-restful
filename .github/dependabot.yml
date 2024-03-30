@@ -11,6 +11,9 @@ updates:
         patterns:
         - "fastapi"
         - "starlette"
+      pydantic:
+        patterns:
+        - "pydantic*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
