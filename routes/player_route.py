@@ -2,8 +2,8 @@
 # Route
 # -------------------------------------------------------------------------------------------------
 
-from fastapi import APIRouter, Depends, HTTPException, status, Path
 from typing import List
+from fastapi import APIRouter, Depends, HTTPException, status, Path
 from data.player_database import OrmSession
 from sqlalchemy.orm import Session
 from models.player_model import PlayerModel
