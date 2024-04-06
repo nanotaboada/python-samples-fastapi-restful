@@ -16,12 +16,6 @@
 
 Proof of Concept for a RESTful API made with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/).
 
-## Structure
-
-The following is a simplified dependency diagram of modules and main libraries:
-
-![Dependency Diagram](python-samples-fastapi-restful.svg)
-
 ## Install
 
 ```console
