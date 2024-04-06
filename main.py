@@ -3,7 +3,7 @@
 # -------------------------------------------------------------------------------------------------
 
 from fastapi import FastAPI
-from routes import song_route
+from routes import player_route
 
-fast_api = FastAPI()
-fast_api.include_router(song_route.api_router)
+app = FastAPI()
+app.include_router(player_route.api_router)
