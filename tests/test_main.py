@@ -8,6 +8,7 @@ import warnings
 # Suppress the DeprecationWarning from httpx
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+
 client = TestClient(app)
 
 # -------------------------------------------------------------------------------------------------

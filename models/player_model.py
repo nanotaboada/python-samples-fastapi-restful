@@ -1,23 +1,23 @@
 # -------------------------------------------------------------------------------------------------
-# Models
+# Model
 # -------------------------------------------------------------------------------------------------
 
+from typing import Optional
+from pydantic import BaseModel, Field
 
-from sqlalchemy import Column, String, Integer, Boolean
-from data.player_database import Base
 
+class PlayerModel(BaseModel):
+    id: int
+    first_name: str = Field(..., serialization_alias='firstName')
+    middle_name: Optional[str] = Field(None, serialization_alias='middleName')
+    last_name: str = Field(..., serialization_alias='lastName')
+    date_of_birth: Optional[str] = Field(..., serialization_alias='dateOfBirth')
+    squad_number: int = Field(..., serialization_alias='squadNumber')
+    position: str = Field(..., serialization_alias='position')
+    abbr_position: Optional[str] = Field(..., serialization_alias='abbrPosition')
+    team: Optional[str] = Field(..., serialization_alias='team')
+    league: Optional[str] = Field(..., serialization_alias='league')
+    starting11: Optional[bool] = Field(..., serialization_alias='starting11')
 
-class Player(Base):
-    __tablename__ = "players"
-
-    id = Column(Integer, primary_key=True, index=True)
-    firstName = Column(String, index=True)
-    middleName = Column(String, index=True)
-    lastName = Column(String, index=True)
-    dateOfBirth = Column(String, index=True)
-    squadNumber = Column(Integer, index=True)
-    position = Column(String, index=True)
-    abbrPosition = Column(String, index=True)
-    team = Column(String, index=True)
-    league = Column(String, index=True)
-    starting11 = Column(Boolean, index=True)
+    class ConfigDict:
+        from_attributes = True

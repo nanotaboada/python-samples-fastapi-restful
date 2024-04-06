@@ -2,22 +2,21 @@
 # Schema
 # -------------------------------------------------------------------------------------------------
 
-from pydantic import BaseModel
-from typing import Optional
+from sqlalchemy import Column, String, Integer, Boolean
+from data.player_database import Base
 
 
-class PlayerModel(BaseModel):
-    id: int
-    firstName: str
-    middleName: Optional[str] = None
-    lastName: str
-    dateOfBirth: str
-    squadNumber: int
-    position: str
-    abbrPosition: str
-    team: str
-    league: str
-    starting11: bool
+class Player(Base):
+    __tablename__ = "players"
 
-    class ConfigDict:
-        from_attributes = True
+    id = Column(Integer, primary_key=True, index=True)
+    first_name = Column('firstName', String, nullable=False)
+    middle_name = Column('middleName', String)
+    last_name = Column('lastName', String, nullable=False)
+    date_of_birth = Column('dateOfBirth')
+    squad_number = Column('squadNumber', Integer, index=True, nullable=False)
+    position = Column('position', String, nullable=False)
+    abbr_position = Column('abbrPosition', String)
+    team = Column('team', String)
+    league = Column('league', String)
+    starting11 = Column('starting11', Boolean)

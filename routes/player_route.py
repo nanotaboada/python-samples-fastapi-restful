@@ -2,11 +2,11 @@
 # Route
 # -------------------------------------------------------------------------------------------------
 
-from fastapi import APIRouter, Depends, HTTPException, status, Path
 from typing import List
+from fastapi import APIRouter, Depends, HTTPException, status, Path
 from data.player_database import OrmSession
 from sqlalchemy.orm import Session
-from schemas.player_schema import PlayerModel
+from models.player_model import PlayerModel
 from services import player_service
 
 api_router = APIRouter()
@@ -45,15 +45,15 @@ def get_players(
 
 
 @api_router.get(
-    "/players/{id}",
+    "/players/{player_id}",
     response_model=PlayerModel,
     summary="Retrieves a Player by Id"
 )
 def get_player_by_id(
-    id: int = Path(..., title="The Id of the Player"),
+    player_id: int = Path(..., title="The Id of the Player"),
     db_session: Session = Depends(get_db_session)
 ):
-    player = player_service.retrieve_player_by_id(db_session, id)
+    player = player_service.retrieve_player_by_id(db_session, player_id)
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return player
