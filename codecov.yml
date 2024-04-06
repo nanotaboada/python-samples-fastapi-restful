@@ -16,7 +16,7 @@ coverage:
     project:
       routes:
         paths:
-          - routes/song_route.py
+          - routes/player_route.py
     patch:
       default:
         informational: true

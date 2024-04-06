@@ -24,14 +24,14 @@ The following is a simplified dependency diagram of modules and main libraries:
 
 ## Install
 
-```shell
+```console
 pip install --requirement requirements.txt
 ```
 
 ## Start
 
-```shell
-uvicorn main:fast_api --reload
+```console
+uvicorn main:fast_api --reload --port 9000
 ```
 
 ## Credits

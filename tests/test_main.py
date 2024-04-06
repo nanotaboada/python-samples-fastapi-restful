@@ -1,71 +1,76 @@
-# test_main.py
+# -------------------------------------------------------------------------------------------------
+# Test
+# -------------------------------------------------------------------------------------------------
 
+from main import app
 from fastapi.testclient import TestClient
-from main import fast_api
+import warnings
+# Suppress the DeprecationWarning from httpx
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-client = TestClient(fast_api)
+client = TestClient(app)
 
 # -------------------------------------------------------------------------------------------------
 # HTTP GET
 # -------------------------------------------------------------------------------------------------
 
 
-# GET /songs
+# GET /players
 
 
-def test_when_request_has_no_param_then_response_status_code_should_be_200_ok():
-    response = client.get("/songs")
+def test_when_request_has_no_parameters_then_response_status_code_should_be_200_ok():
+    response = client.get("/players")
     assert response.status_code == 200
 
 
-def test_when_request_has_no_param_then_response_body_should_contain_all_songs():
-    response = client.get("/songs")
-    songs = response.json()
-    rank = 0
-    for song in songs:
-        rank += 1
-        assert song["rank"] == rank
+def test_when_request_has_no_parameters_then_response_body_should_be_collection_of_players():
+    response = client.get("/players")
+    players = response.json()
+    player_id = 0
+    for player in players:
+        player_id += 1
+        assert player["id"] == player_id
 
 
-# GET /songs/year/{year}
+# GET /players/{id}
 
 
-def test_when_request_param_out_of_range_of_years_then_response_status_code_should_be_422_unprocessable_entity():
-    response = client.get("/songs/year/1234")
-    assert response.status_code == 422
-
-
-def test_when_request_param_within_range_of_years_but_does_not_match_songs_then_response_status_code_should_be_404_not_found():
-    response = client.get("/songs/year/1999")  # Verified against collection that there are no songs from 1999
+def test_when_request_parameter_does_not_identify_a_player_then_response_status_code_should_be_404_not_found():
+    player_id = 999
+    response = client.get("/players/" + str(player_id))
     assert response.status_code == 404
 
 
-def test_when_request_param_within_range_of_years_and_matches_songs_then_response_status_code_should_be_200_ok():
-    response = client.get("/songs/year/1977")
+def test_when_request_parameter_identifies_existing_player_then_response_status_code_should_be_200_ok():
+    player_id = 1
+    response = client.get("/players/" + str(player_id))
     assert response.status_code == 200
 
 
-def test_when_request_param_within_range_of_years_and_matches_songs_then_response_body_should_contain_songs_from_that_year():
-    response = client.get("/songs/year/1977")
-    songs = response.json()
-    for song in songs:
-        assert song["year"] == 1977
+def test_when_request_parameter_identifies_existing_player_then_response_body_should_be_matching_player():
+    player_id = 1
+    response = client.get("/players/" + str(player_id))
+    player = response.json()
+    assert player["id"] == player_id
 
 
-# GET /songs/rank/{rank}
+# GET /players/squadnumber/{squad_number}
 
 
-def test_when_request_param_out_of_range_of_ranks_then_response_status_code_should_be_422_unprocessable_entity():
-    response = client.get("/songs/rank/555")
-    assert response.status_code == 422
+def test_when_request_parameter_is_non_existing_squad_number_then_response_status_code_should_be_404_not_found():
+    squad_number = 999
+    response = client.get("/players/squadnumber/" + str(squad_number))
+    assert response.status_code == 404
 
 
-def test_when_request_param_within_range_of_ranks_then_response_status_code_should_be_200_ok():
-    response = client.get("/songs/rank/42")
+def test_when_request_parameter_is_existing_squad_number_then_response_status_code_should_be_200_ok():
+    squad_number = 10
+    response = client.get("/players/squadnumber/" + str(squad_number))
     assert response.status_code == 200
 
 
-def test_when_request_param_within_range_of_ranks_then_response_body_should_contain_the_song_with_such_rank():
-    response = client.get("/songs/rank/42")
-    song = response.json()
-    assert song["rank"] == 42
+def test_when_request_parameter_is_existing_squad_number_then_response_body_should_be_matching_player():
+    squad_number = 10
+    response = client.get("/players/squadnumber/" + str(squad_number))
+    player = response.json()
+    assert player["squadNumber"] == squad_number

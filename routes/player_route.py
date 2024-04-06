@@ -1,13 +1,13 @@
 # -------------------------------------------------------------------------------------------------
-# Routes
+# Route
 # -------------------------------------------------------------------------------------------------
 
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 from typing import List
-from data.song_database import OrmSession
+from data.player_database import OrmSession
 from sqlalchemy.orm import Session
-from schemas.song_schema import SongModel
-from services import song_service
+from schemas.player_schema import PlayerModel
+from services import player_service
 
 api_router = APIRouter()
 
@@ -27,56 +27,48 @@ def get_db_session():
     finally:
         db_session.close()
 
-
 # -------------------------------------------------------------------------------------------------
 # HTTP GET
 # -------------------------------------------------------------------------------------------------
 
 
-# GET /songs
+@api_router.get(
+    "/players/",
+    response_model=List[PlayerModel],
+    summary="Retrieves a collection of Players"
+)
+def get_players(
+    db_session: Session = Depends(get_db_session)
+):
+    players = player_service.retrieve_all_players(db_session)
+    return players
 
 
 @api_router.get(
-    "/songs/",
-    response_model=List[SongModel],
-    summary="Gets all songs in the collection"
+    "/players/{id}",
+    response_model=PlayerModel,
+    summary="Retrieves a Player by Id"
 )
-def get_songs(
+def get_player_by_id(
+    id: int = Path(..., title="The Id of the Player"),
     db_session: Session = Depends(get_db_session)
 ):
-    songs = song_service.retrieve_all_songs(db_session)
-    return songs
-
-
-# GET /songs/year/{year}
-
-
-@api_router.get(
-    "/songs/year/{year}",
-    response_model=List[SongModel],
-    summary="Gets all songs from the specified year"
-)
-def get_songs_by_year(
-    year: int = Path(..., title="The year of the songs to get", ge=1948, le=2009),
-    db_session: Session = Depends(get_db_session)
-):
-    songs = song_service.retrieve_songs_by_year(db_session, year=year)
-    if not songs:
+    player = player_service.retrieve_player_by_id(db_session, id)
+    if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return songs
-
-
-# GET /songs/rank/{rank}
+    return player
 
 
 @api_router.get(
-    "/songs/rank/{rank}",
-    response_model=SongModel,
-    summary="Get the song with the specified rank"
+    "/players/squadnumber/{squad_number}",
+    response_model=PlayerModel,
+    summary="Retrieves a Player by Squad Number"
 )
-def get_song_by_rank(
-    rank: int = Path(..., title="The rank of the song to get", ge=1, le=500),
+def get_player_by_squad_number(
+    squad_number: int = Path(..., title="The Squad Number of the Player"),
     db_session: Session = Depends(get_db_session)
 ):
-    song = song_service.retrieve_song_by_rank(db_session, rank=rank)
-    return song
+    player = player_service.retrieve_player_by_squad_number(db_session, squad_number)
+    if not player:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    return player
