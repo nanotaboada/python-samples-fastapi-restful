@@ -6,3 +6,4 @@ disable=
     C0116, # missing-function-docstring
     C0301, # line-too-long
     R0903, # too-few-public-methods
+    W0718, # broad-exception-caught

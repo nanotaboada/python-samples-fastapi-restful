@@ -3,22 +3,23 @@
 # -------------------------------------------------------------------------------------------------
 
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
 
 
-class PlayerModel(BaseModel):
+class MainModel(BaseModel):
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+
+
+class PlayerModel(MainModel):
     id: int
-    first_name: str = Field(..., serialization_alias='firstName')
-    middle_name: Optional[str] = Field(None, serialization_alias='middleName')
-    last_name: str = Field(..., serialization_alias='lastName')
-    date_of_birth: Optional[str] = Field(..., serialization_alias='dateOfBirth')
-    squad_number: int = Field(..., serialization_alias='squadNumber')
-    position: str = Field(..., serialization_alias='position')
-    abbr_position: Optional[str] = Field(..., serialization_alias='abbrPosition')
-    team: Optional[str] = Field(..., serialization_alias='team')
-    league: Optional[str] = Field(..., serialization_alias='league')
-    starting11: Optional[bool] = Field(..., serialization_alias='starting11')
-
-
-class Config:
-    orm_mode = True
+    first_name: str
+    middle_name: Optional[str]
+    last_name: str
+    date_of_birth: Optional[str]
+    squad_number: int
+    position: str
+    abbr_position: Optional[str]
+    team: Optional[str]
+    league: Optional[str]
+    starting11: Optional[bool]

@@ -15,6 +15,7 @@ coverage:
   status:
     project:
       routes:
+        informational: true
         paths:
           - routes/player_route.py
     patch:
