@@ -2,20 +2,28 @@
 # Service
 # -------------------------------------------------------------------------------------------------
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from schemas.player_schema import Player
 
 
-# https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.all
+# https://docs.sqlalchemy.org/en/20/changelog/migration_20.html#migration-20-query-usage
+
+
 def retrieve_all_players(orm_session: Session):
-    return orm_session.query(Player).all()
+    players = orm_session.execute(
+        select(Player)
+    ).scalars().all()
+    return players
 
 
-# https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.get
 def retrieve_player_by_id(orm_session: Session, player_id: int):
-    return orm_session.query(Player).filter(Player.id == player_id).first()
+    player = orm_session.get(Player, player_id)
+    return player
 
 
-# https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.filter
 def retrieve_player_by_squad_number(orm_session: Session, squad_number: int):
-    return orm_session.query(Player).filter(Player.squad_number == squad_number).first()
+    player = orm_session.execute(
+        select(Player).where(Player.squad_number == squad_number)
+    ).scalars().first()
+    return player
