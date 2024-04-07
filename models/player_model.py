@@ -19,5 +19,6 @@ class PlayerModel(BaseModel):
     league: Optional[str] = Field(..., serialization_alias='league')
     starting11: Optional[bool] = Field(..., serialization_alias='starting11')
 
-    class ConfigDict:
-        from_attributes = True
+
+class Config:
+    orm_mode = True
