@@ -19,7 +19,7 @@ def test_given_get_when_request_has_no_parameters_then_response_status_code_shou
     assert response.status_code == 200
 
 
-def test_given_get_when_request_has_no_parameters_then_response_body_should_be_collection_of_players():
+def test_given_get_when_request_has_no_parameters_then_response_should_be_collection_of_players():
     response = client.get(PATH)
     players = response.json()
     player_id = 0
@@ -34,13 +34,13 @@ def test_given_get_when_request_parameter_does_not_identify_a_player_then_respon
     assert response.status_code == 404
 
 
-def test_given_get_when_request_parameter_identifies_existing_player_then_response_status_code_should_be_200_ok():
+def test_given_get_when_request_parameter_identifies_a_player_then_response_status_code_should_be_200_ok():
     player_id = 1
     response = client.get(PATH + str(player_id))
     assert response.status_code == 200
 
 
-def test_given_get_when_request_parameter_identifies_existing_player_then_response_body_should_be_matching_player():
+def test_given_get_when_request_parameter_identifies_a_player_then_response_should_be_matching_player():
     player_id = 1
     response = client.get(PATH + str(player_id))
     player = response.json()
@@ -59,7 +59,7 @@ def test_given_get_when_request_parameter_is_existing_squad_number_then_response
     assert response.status_code == 200
 
 
-def test_given_get_when_request_parameter_is_existing_squad_number_then_response_body_should_be_matching_player():
+def test_given_get_when_request_parameter_is_existing_squad_number_then_response_should_be_matching_player():
     squad_number = 10
     response = client.get(PATH + "squadnumber" + "/" + str(squad_number))
     player = response.json()

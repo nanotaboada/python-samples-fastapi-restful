@@ -4,8 +4,8 @@
 
 from typing import List
 from fastapi import APIRouter, Body, Depends, HTTPException, status, Path
-from data.player_database import OrmSession
 from sqlalchemy.orm import Session
+from data.player_database import OrmSession
 from models.player_model import PlayerModel
 from services import player_service
 
