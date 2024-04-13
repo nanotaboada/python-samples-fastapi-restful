@@ -29,15 +29,9 @@ def get_orm_session():
     summary="Creates a new Player",
 )
 def create_player(
-    player_model: PlayerModel = None,
+    player_model: PlayerModel = Body(...),
     orm_session: Session = Depends(get_orm_session),
 ):
-    if player_model is None:
-        player_model = Body(...)
-
-    if not player_model:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-
     player = player_service.retrieve_by_id(orm_session, player_model.id)
 
     if player:
@@ -107,16 +101,10 @@ def get_player_by_squad_number(
 )
 def update_player(
     player_id: int = Path(..., title="The Id of the Player"),
-    player_model: PlayerModel = None,
+    player_model: PlayerModel = Body(...),
     orm_session: Session = Depends(get_orm_session),
 
 ):
-    if player_model is None:
-        player_model = Body(...)
-
-    if not player_model:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-
     player = player_service.retrieve_by_id(orm_session, player_id)
 
     if not player:
@@ -136,7 +124,6 @@ def delete_player(
     player_id: int = Path(..., title="The Id of the Player"),
     orm_session: Session = Depends(get_orm_session)
 ):
-
     player = player_service.retrieve_by_id(orm_session, player_id)
 
     if not player:
