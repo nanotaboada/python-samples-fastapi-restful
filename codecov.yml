@@ -1,23 +1,31 @@
-# https://api.codecov.io/validate
-
-# Usage:
+# Validate your repository YAML
+# https://docs.codecov.com/docs/codecov-yaml#validate-your-repository-yaml
 # curl -X POST --data-binary @codecov.yml https://codecov.io/validate
 
+# Ignoring Paths
+# https://docs.codecov.com/docs/ignoring-paths
+# The pattern folder/* will not match recursively in the folder.
+# Please use this folder/**/*, which will exclude all files within the given folder.
 ignore:
-- main.py
-- data
-- models
-- schemas
-- services
-- tests
+  - "data"
+  - "models"
+  - "schemas"
+  - "tests"
+  - "postman_collections"
+  - "main.py"
+
 
 coverage:
   status:
+    # Splitting up projects
+    # https://docs.codecov.com/docs/commit-status#splitting-up-projects-example
     project:
       routes:
-        informational: true
         paths:
-          - routes/player_route.py
+          - "routes"
+      services:
+        paths:
+          - "services"
     patch:
       default:
         informational: true
