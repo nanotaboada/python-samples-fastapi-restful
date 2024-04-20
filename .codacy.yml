@@ -1,2 +1,11 @@
 exclude_paths:
-  - 'tests/**'
+  - ".github"
+  - ".vscode"
+  - "LICENSE"
+  - "README.md"
+  - "data/**/*"
+  - "models/**/*"
+  - "schemas/**/*"
+  - "tests/**/*"
+  - "postman_collections/**/*"
+  - "main.py"
