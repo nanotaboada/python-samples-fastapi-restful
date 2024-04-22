@@ -14,7 +14,7 @@ idna==3.7
 iniconfig==2.0.0
 mccabe==0.7.0
 packaging==24.0
-pluggy==1.4.0
+pluggy==1.5.0
 pycodestyle==2.11.1
 pydantic==2.7.0
 pydantic_core
