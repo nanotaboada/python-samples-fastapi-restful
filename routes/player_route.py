@@ -28,7 +28,7 @@ def get_orm_session():
     status_code=status.HTTP_201_CREATED,
     summary="Creates a new Player",
 )
-def create_player(
+def post(
     player_model: PlayerModel = Body(...),
     orm_session: Session = Depends(get_orm_session),
 ):
@@ -48,7 +48,7 @@ def create_player(
     status_code=status.HTTP_200_OK,
     summary="Retrieves a collection of Players"
 )
-def get_players(
+def get_all(
     orm_session: Session = Depends(get_orm_session)
 ):
     players = player_service.retrieve_all(orm_session)
@@ -62,7 +62,7 @@ def get_players(
     status_code=status.HTTP_200_OK,
     summary="Retrieves a Player by its Id"
 )
-def get_player_by_id(
+def get_by_id(
     player_id: int = Path(..., title="The Id of the Player"),
     orm_session: Session = Depends(get_orm_session)
 ):
@@ -80,7 +80,7 @@ def get_player_by_id(
     status_code=status.HTTP_200_OK,
     summary="Retrieves a Player by its Squad Number"
 )
-def get_player_by_squad_number(
+def get_by_squad_number(
     squad_number: int = Path(..., title="The Squad Number of the Player"),
     orm_session: Session = Depends(get_orm_session)
 ):
@@ -99,7 +99,7 @@ def get_player_by_squad_number(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Updates an existing Player"
 )
-def update_player(
+def put(
     player_id: int = Path(..., title="The Id of the Player"),
     player_model: PlayerModel = Body(...),
     orm_session: Session = Depends(get_orm_session),
@@ -120,7 +120,7 @@ def update_player(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Deletes an existing Player"
 )
-def delete_player(
+def delete(
     player_id: int = Path(..., title="The Id of the Player"),
     orm_session: Session = Depends(get_orm_session)
 ):
