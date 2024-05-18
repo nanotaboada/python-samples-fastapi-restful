@@ -1,4 +1,4 @@
-# Sample RESTful API with Python 3 and FastAPI
+# 🧪 RESTful API with Python 3 and FastAPI
 
 ## Status
 
@@ -32,13 +32,13 @@ pip install --requirement requirements.txt
 ## Start
 
 ```console
-uvicorn main:fast_api --reload --port 9000
+uvicorn main:app --reload --port 9000
 ```
 
 ## Credits
 
-The solution has been coded using [Visual Studio Code](https://code.visualstudio.com/).
+The solution has been coded using [Visual Studio Code](https://code.visualstudio.com/) with the official [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) extension.
 
 ## Terms
 
-All trademarks, registered trademarks, service marks, product names, company names or logos are property of their respective owners and are used for educational purposes only.
+All trademarks, registered trademarks, service marks, product names, company names, or logos mentioned on this repository are the property of their respective owners. All usage of such terms herein is for identification purposes only and constitutes neither an endorsement nor a recommendation of those items. Furthermore, the use of such terms is intended to be for educational and informational purposes only.
