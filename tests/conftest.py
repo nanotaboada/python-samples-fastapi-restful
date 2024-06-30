@@ -1,5 +1,5 @@
-import pytest
 import warnings
+import pytest
 from fastapi.testclient import TestClient
 from main import app
 
@@ -9,5 +9,5 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 @pytest.fixture(scope="module")
 def client():
-    with TestClient(app) as client:
-        yield client
+    with TestClient(app) as test_client:
+        yield test_client

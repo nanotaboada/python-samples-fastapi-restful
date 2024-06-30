@@ -5,11 +5,11 @@
 from typing import List
 from fastapi import APIRouter, Body, Depends, HTTPException, status, Path
 from sqlalchemy.orm import Session
+from fastapi_cache import FastAPICache
+from fastapi_cache.decorator import cache
 from data.player_database import OrmSession
 from models.player_model import PlayerModel
 from services import player_service
-from fastapi_cache import FastAPICache
-from fastapi_cache.decorator import cache
 
 api_router = APIRouter()
 
