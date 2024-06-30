@@ -8,11 +8,16 @@ from sqlalchemy.orm import Session
 from data.player_database import OrmSession
 from models.player_model import PlayerModel
 from services import player_service
+from fastapi_cache import FastAPICache
+from fastapi_cache.decorator import cache
 
 api_router = APIRouter()
 
+CACHING_TIME_IN_SECONDS = 600
 
 # https://fastapi.tiangolo.com/tutorial/sql-databases/#create-a-dependency
+
+
 def get_orm_session():
     orm_session = OrmSession()
     try:
@@ -39,6 +44,8 @@ def post(
 
     player_service.create(orm_session, player_model)
 
+    FastAPICache.clear()
+
 # GET --------------------------------------------------------------------------
 
 
@@ -48,6 +55,7 @@ def post(
     status_code=status.HTTP_200_OK,
     summary="Retrieves a collection of Players"
 )
+@cache(expire=CACHING_TIME_IN_SECONDS)
 def get_all(
     orm_session: Session = Depends(get_orm_session)
 ):
@@ -62,6 +70,7 @@ def get_all(
     status_code=status.HTTP_200_OK,
     summary="Retrieves a Player by its Id"
 )
+@cache(expire=CACHING_TIME_IN_SECONDS)
 def get_by_id(
     player_id: int = Path(..., title="The Id of the Player"),
     orm_session: Session = Depends(get_orm_session)
@@ -80,6 +89,7 @@ def get_by_id(
     status_code=status.HTTP_200_OK,
     summary="Retrieves a Player by its Squad Number"
 )
+@cache(expire=CACHING_TIME_IN_SECONDS)
 def get_by_squad_number(
     squad_number: int = Path(..., title="The Squad Number of the Player"),
     orm_session: Session = Depends(get_orm_session)
@@ -112,6 +122,8 @@ def put(
 
     player_service.update(orm_session, player_model)
 
+    FastAPICache.clear()
+
 # DELETE -----------------------------------------------------------------------
 
 
@@ -130,3 +142,5 @@ def delete(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Player not found")
 
     player_service.delete(orm_session, player_id)
+
+    FastAPICache.clear()
