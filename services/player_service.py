@@ -4,6 +4,7 @@
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from models.player_model import PlayerModel
 from schemas.player_schema import Player
 
@@ -26,7 +27,7 @@ def create(orm_session: Session, player_model: PlayerModel):
     try:
         orm_session.commit()
         return True
-    except Exception as error:
+    except SQLAlchemyError as error:
         print(f"Error trying to create the Player: {error}")
         orm_session.rollback()
         return False
@@ -35,13 +36,13 @@ def create(orm_session: Session, player_model: PlayerModel):
 
 
 def retrieve_all(orm_session: Session):
-    """Retrieves all the Players from the database.
+    """Retrieves all the players from the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
 
     Returns:
-        A collection with all the Players.
+        A collection with all the players.
     """
     # https://docs.sqlalchemy.org/en/20/changelog/migration_20.html#migration-20-query-usage
     statement = select(Player)
@@ -105,7 +106,7 @@ def update(orm_session: Session, player_model: PlayerModel):
     try:
         orm_session.commit()
         return True
-    except Exception as error:
+    except SQLAlchemyError as error:
         print(f"Error trying to update the Player: {error}")
         orm_session.rollback()
         return False
@@ -128,7 +129,7 @@ def delete(orm_session: Session, player_id: int):
     try:
         orm_session.commit()
         return True
-    except Exception as error:
+    except SQLAlchemyError as error:
         print(f"Error trying to delete the Player: {error}")
         orm_session.rollback()
         return False
