@@ -48,7 +48,7 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-multipart==0.0.9
 PyYAML==6.0.1
-requests==2.32.2
+requests==2.32.3
 responses==0.21.0
 rfc3986==1.5.0
 rich==13.7.1
