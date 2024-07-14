@@ -82,7 +82,7 @@ def retrieve_by_squad_number(orm_session: Session, squad_number: int):
 
 
 def update(orm_session: Session, player_model: PlayerModel):
-    """Updates an existing Player in the database.
+    """Updates (entirely) an existing Player in the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
@@ -115,7 +115,7 @@ def update(orm_session: Session, player_model: PlayerModel):
 
 
 def delete(orm_session: Session, player_id: int):
-    """Deletes a Player from the database.
+    """Deletes an existing Player from the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
