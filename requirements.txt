@@ -61,7 +61,7 @@ starlette
 stdlib-list==0.10.0
 termcolor==2.4.0
 terminaltables==3.1.10
-time-machine==2.14.1
+time-machine==2.14.2
 tree-sitter==0.22.3
 typer==0.12.3
 typing_extensions==4.12.2
