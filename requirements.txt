@@ -50,7 +50,7 @@ python-multipart==0.0.9
 PyYAML==6.0.1
 requests==2.32.3
 responses==0.25.3
-rfc3986==1.5.0
+rfc3986==2.0.0
 rich==13.7.1
 setuptools==70.2.0
 shellingham==1.5.4
