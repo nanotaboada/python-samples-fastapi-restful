@@ -12,7 +12,8 @@ from schemas.player_schema import Player
 
 
 def create(orm_session: Session, player_model: PlayerModel):
-    """Creates a new Player in the database.
+    """
+    Creates a new Player in the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
@@ -36,7 +37,8 @@ def create(orm_session: Session, player_model: PlayerModel):
 
 
 def retrieve_all(orm_session: Session):
-    """Retrieves all the players from the database.
+    """
+    Retrieves all the players from the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
@@ -51,7 +53,8 @@ def retrieve_all(orm_session: Session):
 
 
 def retrieve_by_id(orm_session: Session, player_id: int):
-    """Retrieves a Player by its ID from the database.
+    """
+    Retrieves a Player by its ID from the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
@@ -65,7 +68,8 @@ def retrieve_by_id(orm_session: Session, player_id: int):
 
 
 def retrieve_by_squad_number(orm_session: Session, squad_number: int):
-    """Retrieves a Player by its Squad Number from the database.
+    """
+    Retrieves a Player by its Squad Number from the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
@@ -82,7 +86,8 @@ def retrieve_by_squad_number(orm_session: Session, squad_number: int):
 
 
 def update(orm_session: Session, player_model: PlayerModel):
-    """Updates (entirely) an existing Player in the database.
+    """
+    Updates (entirely) an existing Player in the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
@@ -115,7 +120,8 @@ def update(orm_session: Session, player_model: PlayerModel):
 
 
 def delete(orm_session: Session, player_id: int):
-    """Deletes an existing Player from the database.
+    """
+    Deletes an existing Player from the database.
 
     Args:
         orm_session: The SQLAlchemy ORM session instance.
