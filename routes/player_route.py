@@ -37,7 +37,8 @@ def get_orm_session():
 @api_router.post(
     "/players/",
     status_code=status.HTTP_201_CREATED,
-    summary="Creates a new Player"
+    summary="Creates a new Player",
+    tags=["Players"]
 )
 def post(
     player_model: PlayerModel = Body(...),
@@ -69,7 +70,8 @@ def post(
     "/players/",
     response_model=List[PlayerModel],
     status_code=status.HTTP_200_OK,
-    summary="Retrieves a collection of Players"
+    summary="Retrieves a collection of Players",
+    tags=["Players"]
 )
 @cache(expire=CACHING_TIME_IN_SECONDS)
 def get_all(
@@ -93,7 +95,8 @@ def get_all(
     "/players/{player_id}",
     response_model=PlayerModel,
     status_code=status.HTTP_200_OK,
-    summary="Retrieves a Player by its Id"
+    summary="Retrieves a Player by its Id",
+    tags=["Players"]
 )
 @cache(expire=CACHING_TIME_IN_SECONDS)
 def get_by_id(
@@ -125,7 +128,8 @@ def get_by_id(
     "/players/squadnumber/{squad_number}",
     response_model=PlayerModel,
     status_code=status.HTTP_200_OK,
-    summary="Retrieves a Player by its Squad Number"
+    summary="Retrieves a Player by its Squad Number",
+    tags=["Players"]
 )
 @cache(expire=CACHING_TIME_IN_SECONDS)
 def get_by_squad_number(
@@ -158,7 +162,8 @@ def get_by_squad_number(
 @api_router.put(
     "/players/{player_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    summary="Updates an existing Player"
+    summary="Updates an existing Player",
+    tags=["Players"]
 )
 def put(
     player_id: int = Path(..., title="The ID of the Player"),
@@ -191,7 +196,8 @@ def put(
 @api_router.delete(
     "/players/{player_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    summary="Deletes an existing Player"
+    summary="Deletes an existing Player",
+    tags=["Players"]
 )
 def delete(
     player_id: int = Path(..., title="The ID of the Player"),
