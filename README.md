@@ -35,6 +35,14 @@ pip install --requirement requirements.txt
 uvicorn main:app --reload --port 9000
 ```
 
+## Documentation
+
+```console
+http://localhost:9000/docs
+```
+
+![API Documentation](python-samples-fastapi-restful-docs.png)
+
 ## Credits
 
 The solution has been coded using [Visual Studio Code](https://code.visualstudio.com/) with the official [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) extension.
