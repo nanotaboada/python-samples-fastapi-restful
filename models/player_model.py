@@ -28,17 +28,17 @@ class PlayerModel(MainModel):
     Pydantic model representing a football Player.
 
     Attributes:
-        id (int): The unique identifier for the player.
-        first_name (str): The first name of the player.
-        middle_name (Optional[str]): The middle name of the player, if any.
-        last_name (str): The last name of the player.
-        date_of_birth (Optional[str]): The date of birth of the player, if provided.
-        squad_number (int): The unique squad number assigned to the player.
-        position (str): The playing position of the player.
-        abbr_position (Optional[str]): The abbreviated form of the player's position, if any.
-        team (Optional[str]): The team to which the player belongs, if any.
+        id (int): The unique identifier for the Player.
+        first_name (str): The first name of the Player.
+        middle_name (Optional[str]): The middle name of the Player, if any.
+        last_name (str): The last name of the Player.
+        date_of_birth (Optional[str]): The date of birth of the Player, if provided.
+        squad_number (int): The unique squad number assigned to the Player.
+        position (str): The playing position of the Player.
+        abbr_position (Optional[str]): The abbreviated form of the Player's position, if any.
+        team (Optional[str]): The team to which the Player belongs, if any.
         league (Optional[str]): The league where the team plays, if any.
-        starting11 (Optional[bool]): Indicates if the player is in the starting 11, if provided.
+        starting11 (Optional[bool]): Indicates if the Player is in the starting 11, if provided.
     """
     id: int
     first_name: str

@@ -1,4 +1,8 @@
 class Player:
+    """
+    Test stub representing a Player.
+    """
+
     def __init__(
         self,
         id=None,

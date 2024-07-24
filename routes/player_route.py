@@ -174,7 +174,7 @@ def put(
         orm_session (Session): The SQLAlchemy ORM session.
 
     Raises:
-        HTTPException: HTTP 404 Not Found error if the player with the specified ID does not exist.
+        HTTPException: HTTP 404 Not Found error if the Player with the specified ID does not exist.
     """
     player = player_service.retrieve_by_id(orm_session, player_id)
 
