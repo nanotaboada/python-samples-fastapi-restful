@@ -10,7 +10,7 @@ coverage==7.6.0
 dnspython==2.6.1
 email_validator==2.2.0
 fastapi==0.111.1
-fastapi-cache2==0.2.1
+fastapi-cache2==0.2.2
 fastapi-cli==0.0.4
 flake8==7.1.0
 frozenlist==1.4.1
