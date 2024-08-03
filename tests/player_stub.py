@@ -32,7 +32,7 @@ class Player:
 
 def existing_player():
     """
-    Creates a test stub for a valid and existing Player.
+    Creates a test stub for an existing Player.
     """
     return Player(
         id=1,
@@ -49,9 +49,9 @@ def existing_player():
     )
 
 
-def non_existing_player():
+def nonexistent_player():
     """
-    Creates a test stub for a valid but non-existing Player.
+    Creates a test stub for a nonexistent (new) Player.
     """
     return Player(
         id=12,
@@ -70,7 +70,7 @@ def non_existing_player():
 
 def unknown_player():
     """
-    Creates a test stub for a valid but non-existing Player.
+    Creates a test stub for an unknown Player.
     """
     return Player(
         id=999,

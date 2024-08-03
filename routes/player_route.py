@@ -25,7 +25,7 @@ CACHING_TIME_IN_SECONDS = 600
     summary="Creates a new Player",
     tags=["Players"]
 )
-async def post(
+async def post_async(
     player_model: PlayerModel = Body(...),
     async_session: AsyncSession = Depends(generate_async_session)
 ):
@@ -39,10 +39,10 @@ async def post(
     Raises:
         HTTPException: HTTP 409 Conflict error if the Player already exists.
     """
-    player = await player_service.retrieve_by_id(async_session, player_model.id)
+    player = await player_service.retrieve_by_id_async(async_session, player_model.id)
     if player:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
-    await player_service.create(async_session, player_model)
+    await player_service.create_async(async_session, player_model)
     await FastAPICache.clear()
 
 # GET --------------------------------------------------------------------------
@@ -56,7 +56,7 @@ async def post(
     tags=["Players"]
 )
 @cache(expire=CACHING_TIME_IN_SECONDS)
-async def get_all(
+async def get_all_async(
     async_session: AsyncSession = Depends(generate_async_session)
 ):
     """
@@ -68,7 +68,7 @@ async def get_all(
     Returns:
         List[PlayerModel]: A list of Pydantic models representing all players.
     """
-    players = await player_service.retrieve_all(async_session)
+    players = await player_service.retrieve_all_async(async_session)
     return players
 
 
@@ -80,7 +80,7 @@ async def get_all(
     tags=["Players"]
 )
 @cache(expire=CACHING_TIME_IN_SECONDS)
-async def get_by_id(
+async def get_by_id_async(
     player_id: int = Path(..., title="The ID of the Player"),
     async_session: AsyncSession = Depends(generate_async_session)
 ):
@@ -97,7 +97,7 @@ async def get_by_id(
     Raises:
         HTTPException: Not found error if the Player with the specified ID does not exist.
     """
-    player = await player_service.retrieve_by_id(async_session, player_id)
+    player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return player
@@ -111,7 +111,7 @@ async def get_by_id(
     tags=["Players"]
 )
 @cache(expire=CACHING_TIME_IN_SECONDS)
-async def get_by_squad_number(
+async def get_by_squad_number_async(
     squad_number: int = Path(..., title="The Squad Number of the Player"),
     async_session: AsyncSession = Depends(generate_async_session)
 ):
@@ -128,7 +128,7 @@ async def get_by_squad_number(
     Raises:
         HTTPException: HTTP 404 Not Found error if the Player with the specified Squad Number does not exist.
     """
-    player = await player_service.retrieve_by_squad_number(async_session, squad_number)
+    player = await player_service.retrieve_by_squad_number_async(async_session, squad_number)
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return player
@@ -142,7 +142,7 @@ async def get_by_squad_number(
     summary="Updates an existing Player",
     tags=["Players"]
 )
-async def put(
+async def put_async(
     player_id: int = Path(..., title="The ID of the Player"),
     player_model: PlayerModel = Body(...),
     async_session: AsyncSession = Depends(generate_async_session)
@@ -158,10 +158,10 @@ async def put(
     Raises:
         HTTPException: HTTP 404 Not Found error if the Player with the specified ID does not exist.
     """
-    player = await player_service.retrieve_by_id(async_session, player_id)
+    player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    await player_service.update(async_session, player_model)
+    await player_service.update_async(async_session, player_model)
     await FastAPICache.clear()
 
 # DELETE -----------------------------------------------------------------------
@@ -173,7 +173,7 @@ async def put(
     summary="Deletes an existing Player",
     tags=["Players"]
 )
-async def delete(
+async def delete_async(
     player_id: int = Path(..., title="The ID of the Player"),
     async_session: AsyncSession = Depends(generate_async_session)
 ):
@@ -187,8 +187,8 @@ async def delete(
     Raises:
         HTTPException: HTTP 404 Not Found error if the Player with the specified ID does not exist.
     """
-    player = await player_service.retrieve_by_id(async_session, player_id)
+    player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    await player_service.delete(async_session, player_id)
+    await player_service.delete_async(async_session, player_id)
     await FastAPICache.clear()
