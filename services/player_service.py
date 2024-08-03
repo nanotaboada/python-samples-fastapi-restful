@@ -11,7 +11,7 @@ from schemas.player_schema import Player
 # Create -----------------------------------------------------------------------
 
 
-async def create(async_session: AsyncSession, player_model: PlayerModel):
+async def create_async(async_session: AsyncSession, player_model: PlayerModel):
     """
     Creates a new Player in the database.
 
@@ -36,7 +36,7 @@ async def create(async_session: AsyncSession, player_model: PlayerModel):
 # Retrieve ---------------------------------------------------------------------
 
 
-async def retrieve_all(async_session: AsyncSession):
+async def retrieve_all_async(async_session: AsyncSession):
     """
     Retrieves all the players from the database.
 
@@ -53,7 +53,7 @@ async def retrieve_all(async_session: AsyncSession):
     return players
 
 
-async def retrieve_by_id(async_session: AsyncSession, player_id: int):
+async def retrieve_by_id_async(async_session: AsyncSession, player_id: int):
     """
     Retrieves a Player by its ID from the database.
 
@@ -68,7 +68,7 @@ async def retrieve_by_id(async_session: AsyncSession, player_id: int):
     return player
 
 
-async def retrieve_by_squad_number(async_session: AsyncSession, squad_number: int):
+async def retrieve_by_squad_number_async(async_session: AsyncSession, squad_number: int):
     """
     Retrieves a Player by its Squad Number from the database.
 
@@ -87,7 +87,7 @@ async def retrieve_by_squad_number(async_session: AsyncSession, squad_number: in
 # Update -----------------------------------------------------------------------
 
 
-async def update(async_session: AsyncSession, player_model: PlayerModel):
+async def update_async(async_session: AsyncSession, player_model: PlayerModel):
     """
     Updates (entirely) an existing Player in the database.
 
@@ -121,7 +121,7 @@ async def update(async_session: AsyncSession, player_model: PlayerModel):
 # Delete -----------------------------------------------------------------------
 
 
-async def delete(async_session: AsyncSession, player_id: int):
+async def delete_async(async_session: AsyncSession, player_id: int):
     """
     Deletes an existing Player from the database.
 
