@@ -62,3 +62,4 @@ websockets==13.0.1
 yarl==1.9.4
 zope.event==5.0
 zope.interface==7.0.1
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
