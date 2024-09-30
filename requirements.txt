@@ -15,7 +15,7 @@ fastapi-cli==0.0.5
 flake8==7.1.1
 frozenlist==1.4.1
 gevent==24.2.1
-greenlet==3.0.3
+greenlet==3.1.1
 h11==0.14.0
 httpcore==1.0.5
 httptools==0.6.1
