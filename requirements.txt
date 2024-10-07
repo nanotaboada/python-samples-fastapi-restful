@@ -61,4 +61,4 @@ watchfiles==0.24.0
 websockets==13.0.1
 yarl==1.13.1
 zope.event==5.0
-zope.interface==7.0.1
+zope.interface==7.0.3
