@@ -59,6 +59,6 @@ uvicorn==0.32.0
 uvloop==0.21.0
 watchfiles==0.24.0
 websockets==13.1
-yarl==1.16.0
+yarl==1.17.1
 zope.event==5.0
 zope.interface==7.1.0
