@@ -37,7 +37,7 @@ pydantic_core
 pyflakes==3.2.0
 Pygments==2.18.0
 pytest==8.3.3
-pytest-cov==5.0.0
+pytest-cov==6.0.0
 pytest-sugar==1.0.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
