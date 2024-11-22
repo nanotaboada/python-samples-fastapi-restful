@@ -43,7 +43,7 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-multipart==0.0.17
 PyYAML==6.0.2
-rich==13.8.0
+rich==13.9.4
 setuptools==75.3.0
 shellingham==1.5.4
 six==1.16.0
