@@ -11,7 +11,7 @@ dnspython==2.7.0
 email_validator==2.2.0
 fastapi==0.115.6
 fastapi-cache2==0.2.2
-fastapi-cli==0.0.5
+fastapi-cli==0.0.7
 flake8==7.1.1
 frozenlist==1.5.0
 gevent==24.11.1
