@@ -52,7 +52,7 @@ SQLAlchemy==2.0.36
 starlette
 termcolor==2.5.0
 time-machine==2.16.0
-typer==0.13.1
+typer==0.15.1
 typing_extensions==4.12.2
 tzdata==2024.2
 uvicorn==0.32.0
