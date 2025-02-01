@@ -5,7 +5,7 @@ annotated-types==0.7.0
 anyio==4.8.0
 attrs==24.3.0
 certifi==2024.8.30
-click==8.1.7
+click==8.1.8
 coverage==7.6.1
 dnspython==2.7.0
 email_validator==2.2.0
