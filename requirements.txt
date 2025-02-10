@@ -54,7 +54,7 @@ termcolor==2.5.0
 time-machine==2.16.0
 typer==0.15.1
 typing_extensions==4.12.2
-tzdata==2024.2
+tzdata==2025.1
 uvicorn==0.34.0
 uvloop==0.21.0
 watchfiles==1.0.4
