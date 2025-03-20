@@ -6,7 +6,7 @@ anyio==4.8.0
 attrs==25.3.0
 certifi==2025.1.31
 click==8.1.8
-coverage==7.6.12
+coverage==7.7.0
 dnspython==2.7.0
 email_validator==2.2.0
 fastapi==0.115.11
