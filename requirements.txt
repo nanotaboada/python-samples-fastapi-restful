@@ -58,7 +58,7 @@ tzdata==2025.1
 uvicorn==0.34.0
 uvloop==0.21.0
 watchfiles==1.0.4
-websockets==15.0
+websockets==15.0.1
 yarl==1.18.3
 zope.event==5.0
 zope.interface==7.2
