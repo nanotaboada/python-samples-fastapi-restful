@@ -9,82 +9,88 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  PYTHON_VERSION: 3.9
+
 jobs:
-
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.9
-        cache: 'pip'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-lint.txt
 
-    - name: Install packages with pip
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest pytest-cov
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with Flake8
+        run: |
+          flake8 .
 
-    - name: Lint with Flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    - name: Run tests with pytest
-      run: |
-        pytest -v
-
-    - name: Generate coverage report with pytest-cov
-      run: |
-        pytest --cov=./ --cov-report=xml --cov-report=term
-
-    - name: Upload coverage report artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage.xml
-        path: ./coverage.xml
-
-  coverage-codecov:
-    needs: build
+  test:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
-    - name: Download coverage report artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: coverage.xml
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
 
-    - name: Upload coverage report to Codecov
-      uses: codecov/codecov-action@v5
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: coverage.xml
+      - name: Run tests with pytest
+        run: |
+          pytest -v
 
-  coverage-codacy:
-    needs: build
+      - name: Generate coverage report
+        run: |
+          pytest --cov=./ --cov-report=xml --cov-report=term
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage.xml
+          path: ./coverage.xml
+
+  coverage:
+    needs: test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [codecov, codacy]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Download coverage report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage.xml
 
-    - name: Download coverage report artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: coverage.xml
+      - name: Upload coverage report to ${{ matrix.service }}
+        if: ${{ matrix.service == 'codecov' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
 
-    - name: Upload coverage report to Codacy
-      uses: codacy/codacy-coverage-reporter-action@v1
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: coverage.xml
+      - name: Upload coverage report to ${{ matrix.service }}
+        if: ${{ matrix.service == 'codacy' }}
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage.xml
