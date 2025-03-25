@@ -3,8 +3,10 @@
 ## Status
 
 [![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=nanotaboada_python-samples-fastapi-restful&metric=bugs)](https://sonarcloud.io/summary/new_code?id=nanotaboada_python-samples-fastapi-restful)
 [![CodeFactor](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful/badge)](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful)
-[![Maintainability](https://api.codeclimate.com/v1/badges/cb2c26cf0ee4428c7689/maintainability)](https://codeclimate.com/github/nanotaboada/python-samples-fastapi-restful/maintainability)
+[![codebeat badge](https://codebeat.co/badges/4c4f7c08-3b35-4b57-a875-bf2043efe515)](https://codebeat.co/projects/github-com-nanotaboada-python-samples-fastapi-restful-master)
+[![Maintainability](https://qlty.sh/badges/af009694-c5cc-4568-897d-d20fa7ee017d/maintainability.svg)](https://qlty.sh/gh/nanotaboada/projects/python-samples-fastapi-restful)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8f9bab37f6f444c895a8b25d5df772fc)](https://app.codacy.com/gh/nanotaboada/python-samples-fastapi-restful/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![codecov](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful/branch/master/graph/badge.svg?token=A1WNZPRQEJ)](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful)
 [![Known Vulnerabilities](https://snyk.io/test/github/nanotaboada/python-samples-fastapi-restful/badge.svg)](https://snyk.io/test/github/nanotaboada/python-samples-fastapi-restful)
