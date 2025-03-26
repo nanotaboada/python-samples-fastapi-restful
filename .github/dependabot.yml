@@ -5,16 +5,19 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       fastapi:
         patterns:
-        - "fastapi"
-        - "starlette"
-      pydantic:
+        - "fastapi*"
+      flake8:
         patterns:
-        - "pydantic*"
+        - "flake8*"
+      pytest:
+        patterns:
+        - "pytest*"
+        - "gevent"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
