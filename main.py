@@ -3,23 +3,24 @@
 # ------------------------------------------------------------------------------
 
 from contextlib import asynccontextmanager
+import logging
+from typing import AsyncIterator
 from fastapi import FastAPI
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.inmemory import InMemoryBackend
 from routes import player_route
 
+# https://github.com/encode/uvicorn/issues/562
+UVICORN_LOGGER = "uvicorn.error"
+logger = logging.getLogger(UVICORN_LOGGER)
 
 @asynccontextmanager
-async def lifespan_context_manager(_):
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    """"
+    Lifespan event handler for FastAPI.
     """
-    Context manager for the FastAPI app lifespan.
-
-    Initializes  FastAPICache with an InMemoryBackend for the duration of the app's lifespan.
-    """
-    FastAPICache.init(InMemoryBackend())
+    logger.info("Lifespan event handler execution complete.")
     yield
 
-app = FastAPI(lifespan=lifespan_context_manager,
+app = FastAPI(lifespan=lifespan,
               title="python-samples-fastapi-restful",
               description="🧪 Proof of Concept for a RESTful API made with Python 3 and FastAPI",
               version="1.0.0",)
