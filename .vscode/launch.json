@@ -7,7 +7,12 @@
       "request": "launch",
       "module": "uvicorn",
       "args": ["main:app", "--reload", "--port", "9000"],
-      "jinja": true
+      "jinja": true,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "Uvicorn running on .*:(\\d+)",
+        "uriFormat": "http://localhost:%s/docs"
+      }
     }
   ]
 }
