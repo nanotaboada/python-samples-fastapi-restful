@@ -7,7 +7,7 @@ from main import app
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def client():
     with TestClient(app) as test_client:
         yield test_client
