@@ -28,7 +28,9 @@ The following is a simplified dependency diagram of modules and main libraries:
 ## Install
 
 ```console
-pip install --requirement requirements.txt
+pip install -r requirements.txt
+pip install -r requirements-lint.txt
+pip install -r requirements-test.txt
 ```
 
 ## Start

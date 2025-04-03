@@ -22,7 +22,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:9000/players",
+          "raw": "http://localhost:9000/players/",
           "protocol": "http",
           "host": ["localhost"],
           "port": "9000",
@@ -50,7 +50,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:9000/players",
+          "raw": "http://localhost:9000/players/",
           "protocol": "http",
           "host": ["localhost"],
           "port": "9000",
