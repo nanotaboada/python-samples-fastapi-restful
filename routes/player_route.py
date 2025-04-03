@@ -3,18 +3,19 @@
 # ------------------------------------------------------------------------------
 
 from typing import List
-from fastapi import APIRouter, Body, Depends, HTTPException, status, Path
+from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Response
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi_cache import FastAPICache
-from fastapi_cache.decorator import cache
+from aiocache import SimpleMemoryCache
 
 from data.player_database import generate_async_session
 from models.player_model import PlayerModel
 from services import player_service
 
 api_router = APIRouter()
+simple_memory_cache = SimpleMemoryCache()
 
-CACHING_TIME_IN_SECONDS = 600
+CACHE_KEY = "players"
+CACHE_TTL = 600 # 10 minutes
 
 # POST -------------------------------------------------------------------------
 
@@ -43,7 +44,7 @@ async def post_async(
     if player:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
     await player_service.create_async(async_session, player_model)
-    await FastAPICache.clear()
+    await simple_memory_cache.clear(CACHE_KEY)
 
 # GET --------------------------------------------------------------------------
 
@@ -55,8 +56,8 @@ async def post_async(
     summary="Retrieves a collection of Players",
     tags=["Players"]
 )
-@cache(expire=CACHING_TIME_IN_SECONDS)
 async def get_all_async(
+    response: Response,
     async_session: AsyncSession = Depends(generate_async_session)
 ):
     """
@@ -68,7 +69,12 @@ async def get_all_async(
     Returns:
         List[PlayerModel]: A list of Pydantic models representing all players.
     """
-    players = await player_service.retrieve_all_async(async_session)
+    players = await simple_memory_cache.get(CACHE_KEY)
+    response.headers["X-Cache"] = "HIT"
+    if not players:
+        players = await player_service.retrieve_all_async(async_session)
+        await simple_memory_cache.set(CACHE_KEY, players, ttl=CACHE_TTL)
+        response.headers["X-Cache"] = "MISS"
     return players
 
 
@@ -79,7 +85,6 @@ async def get_all_async(
     summary="Retrieves a Player by its Id",
     tags=["Players"]
 )
-@cache(expire=CACHING_TIME_IN_SECONDS)
 async def get_by_id_async(
     player_id: int = Path(..., title="The ID of the Player"),
     async_session: AsyncSession = Depends(generate_async_session)
@@ -110,7 +115,6 @@ async def get_by_id_async(
     summary="Retrieves a Player by its Squad Number",
     tags=["Players"]
 )
-@cache(expire=CACHING_TIME_IN_SECONDS)
 async def get_by_squad_number_async(
     squad_number: int = Path(..., title="The Squad Number of the Player"),
     async_session: AsyncSession = Depends(generate_async_session)
@@ -162,7 +166,7 @@ async def put_async(
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     await player_service.update_async(async_session, player_model)
-    await FastAPICache.clear()
+    await simple_memory_cache.clear(CACHE_KEY)
 
 # DELETE -----------------------------------------------------------------------
 
@@ -191,4 +195,4 @@ async def delete_async(
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     await player_service.delete_async(async_session, player_id)
-    await FastAPICache.clear()
+    await simple_memory_cache.clear(CACHE_KEY)

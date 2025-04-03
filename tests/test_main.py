@@ -10,6 +10,33 @@ PATH = "/players/"
 # GET /players/ ----------------------------------------------------------------
 
 
+def test_given_get_when_request_is_initial_then_response_header_x_cache_should_be_miss(client):
+    """
+        Given   GET /players/
+        when    request is initial
+        then    response Header X-Cache value should be MISS
+    """
+    # Act
+    response = client.get(PATH)
+
+    # Assert
+    assert "X-Cache" in response.headers
+    assert response.headers.get("X-Cache") == "MISS"
+
+def test_given_get_when_request_is_subsequent_then_response_header_x_cache_should_be_hit(client):
+    """
+        Given   GET /players/
+        when    request is subsequent
+        then    response Header X-Cache should be HIT
+    """
+    # Act
+    client.get(PATH) # initial
+    response = client.get(PATH) # subsequent (cached)
+
+    # Assert
+    assert "X-Cache" in response.headers
+    assert response.headers.get("X-Cache") == "HIT"
+
 def test_given_get_when_request_path_has_no_id_then_response_status_code_should_be_200_ok(client):
     """
         Given   GET /players/
@@ -26,7 +53,7 @@ def test_given_get_when_request_path_has_no_id_then_response_body_should_be_coll
     """
         Given   GET /players/
         when    request path has no ID
-        then    response Status Code should be collection of players
+        then    response Body should be collection of players
     """
     # Act
     response = client.get(PATH)
