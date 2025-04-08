@@ -1,13 +1,17 @@
 # https://docs.codacy.com/repositories-configure/codacy-configuration-file/
 
 exclude_paths:
-  - ".github"
-  - ".vscode"
-  - "LICENSE"
-  - "README.md"
+  - "assets/**/*"
   - "data/**/*"
   - "models/**/*"
+  - "postman_collections/**/*"
   - "schemas/**/*"
   - "tests/**/*"
-  - "postman_collections/**/*"
+  - "**/*.yml"
+  - "**/*.json"
+  - "**/*.txt"
+  - "**/__pycache__/"
+  - "**/*.pyc"
+  - "LICENSE"
   - "main.py"
+  - "README.md"
