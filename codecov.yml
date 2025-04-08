@@ -1,22 +1,59 @@
 # https://docs.codecov.com/docs/codecov-yaml
 
-ignore:
-  - "data"
-  - "models"
-  - "schemas"
-  - "tests"
-  - "postman_collections"
-  - "main.py"
-
 coverage:
   status:
     project:
-      routes:
-        paths:
-          - "routes"
-      services:
-        paths:
-          - "services"
+      default:
+        target: 80%
+        threshold: 10%
+        if_not_found: success
+        if_ci_failed: error
+
     patch:
       default:
-        informational: true
+        target: 80%
+        threshold: 10%
+
+flags:
+  unit:
+    paths:
+      - "services/"
+      - "routes/"
+    carryforward: true
+
+component_management:
+  default_rules:
+    statuses:
+      - type: project
+        target: auto
+        branches:
+          - "!main"
+
+  individual_components:
+    - component_id: services
+      name: Services
+      paths:
+        - "services/"
+    - component_id: routes
+      name: Routes
+      paths:
+        - "routes/"
+
+comment:
+  layout: "header, diff, flags, components"
+
+ignore:
+  - "assets/**/*"
+  - "data/**/*"
+  - "models/**/*"
+  - "postman_collections/**/*"
+  - "schemas/**/*"
+  - "tests/**/*"
+  - "**/*.yml"
+  - "**/*.json"
+  - "**/*.txt"
+  - "**/__pycache__/"
+  - "**/*.pyc"
+  - "LICENSE"
+  - "main.py"
+  - "README.md"
