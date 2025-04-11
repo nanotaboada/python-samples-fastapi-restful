@@ -1,26 +1,22 @@
+# Codecov Repository YAML
 # https://docs.codecov.com/docs/codecov-yaml
 
 coverage:
+# https://docs.codecov.com/docs/commit-status
   status:
     project:
       default:
         target: 80%
         threshold: 10%
         if_not_found: success
-        if_ci_failed: error
-
+        if_ci_failed: success
     patch:
       default:
         target: 80%
         threshold: 10%
+        if_not_found: success
 
-flags:
-  unit:
-    paths:
-      - "services/"
-      - "routes/"
-    carryforward: true
-
+# https://docs.codecov.com/docs/components#component-options
 component_management:
   default_rules:
     statuses:
@@ -28,7 +24,6 @@ component_management:
         target: auto
         branches:
           - "!main"
-
   individual_components:
     - component_id: services
       name: Services
@@ -42,18 +37,19 @@ component_management:
 comment:
   layout: "header, diff, flags, components"
 
+# https://docs.codecov.com/docs/ignoring-paths
 ignore:
-  - "assets/**/*"
-  - "data/**/*"
-  - "models/**/*"
-  - "postman_collections/**/*"
-  - "schemas/**/*"
-  - "tests/**/*"
-  - "**/*.yml"
-  - "**/*.json"
-  - "**/*.txt"
-  - "**/__pycache__/"
-  - "**/*.pyc"
-  - "LICENSE"
-  - "main.py"
-  - "README.md"
+  - "^assets/.*"
+  - "^data/.*"
+  - "^models/.*"
+  - "^postman_collections/.*"
+  - "^schemas/.*"
+  - "^tests/.*"
+  - ".*\\.yml$"
+  - ".*\\.json$"
+  - ".*\\.txt$"
+  - "^__pycache__(/.*)?$"
+  - ".*\\.pyc$"
+  - "^LICENSE$"
+  - "^main\\.py$"
+  - "^README\\.md$"

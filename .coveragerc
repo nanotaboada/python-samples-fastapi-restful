@@ -1,2 +1,15 @@
 [run]
 concurrency = thread,gevent
+omit =
+    */__init__.py
+    main.py
+    */data/*
+    */models/*
+    */schemas/*
+    */tests/*
+
+[report]
+exclude_lines =
+    pragma: no cover                   # Standard pragma to intentionally skip lines
+    if __name__ == .__main__.:         # Skips CLI bootstrapping code
+    raise NotImplementedError          # Often placeholder stubs not meant to be covered
