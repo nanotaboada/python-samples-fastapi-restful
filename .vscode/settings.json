@@ -1,14 +1,18 @@
 {
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "python.testing.pytestArgs": ["tests"],
-    "files.exclude": {
-        "**/__pycache__": true,
-        "**/.git": true,
-        "**/.DS_Store": true
-    },
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8",
-        "editor.formatOnSave": true
-    }
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["tests"],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.git": true,
+    "**/.DS_Store": true
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.formatOnSave": true
+  },
+  "sonarlint.connectedMode.project": {
+    "connectionId": "nanotaboada",
+    "projectKey": "nanotaboada_python-samples-fastapi-restful"
+  }
 }
