@@ -11,7 +11,7 @@
 
 ## Manifesto
 
-> "Nobody should start to undertake a large project. You start with a small _trivial_ project, and you should never expect it to get large. If you do, you'll just overdesign and generally think it is more important than it likely is at that stage. Or worse, you might be scared away by the sheer size of the work you envision. So start small, and think about the details. Don't think about some big picture and fancy design. If it doesn't solve some fairly immediate need, it's almost certainly over-designed. And don't expect people to jump in and help you. That's not how these things work. You need to get something half-way _useful_ first, and then others will say "hey, that _almost_ works for me", and they'll get involved in the project." — Linus Torvalds
+> "Nobody should start to undertake a large project. You start with a small _trivial_ project, and you should never expect it to get large. If you do, you'll just overdesign and generally think it is more important than it likely is at that stage. Or worse, you might be scared away by the sheer size of the work you envision. So start small, and think about the details. Don't think about some big picture and fancy design. If it doesn't solve some fairly immediate need, it's almost certainly over-designed. And don't expect people to jump in and help you. That's not how these things work. You need to get something half-way _useful_ first, and then others will say "hey, that _almost_ works for me", and they'll get involved in the project." — [Linus Torvalds](https://web.archive.org/web/20050404020308/http://www.linuxtimes.net/modules.php?name=News&file=article&sid=145)
 
 ## About
 
@@ -19,9 +19,9 @@ Proof of Concept for a RESTful API made with [Python 3](https://www.python.org/)
 
 ## Structure
 
-The following is a simplified dependency diagram of modules and main libraries:
+![Simplified, conceptual project structure and main application flow](assets/images/structure.svg)
 
-![Dependency Diagram](assets/images/python-samples-fastapi-restful.svg)
+_Figure: Simplified, conceptual project structure and main application flow. Not all dependencies are shown._
 
 ## Install
 
@@ -43,7 +43,7 @@ uvicorn main:app --reload --port 9000
 http://localhost:9000/docs
 ```
 
-![API Documentation](assets/images/python-samples-fastapi-restful-docs.png)
+![API Documentation](assets/images/swagger.png)
 
 ## Credits
 
