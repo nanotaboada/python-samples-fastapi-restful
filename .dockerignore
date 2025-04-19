@@ -1,0 +1,28 @@
+# Ignore directories
+**/.github
+**/.vscode
+
+# Ignore development and CI files
+**/.codacy.yml
+**/.coveragerc
+**/.flake8
+**/.git
+**/.gitignore
+**/.pylintrc
+**/codecov.yml
+**/LICENSE
+**/README.md
+**/requirements-lint.txt
+**/requirements-test.txt
+**/runtime.txt
+
+# Ignore local secrets/configuration
+**/.env
+**/env
+**/venv
+**/*.py[cod]
+**/__pycache__
+
+# Ignore OS/editor files
+**/.DS_Store
+**/Thumbs.db
