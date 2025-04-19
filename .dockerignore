@@ -1,6 +1,11 @@
+
+
 # Ignore directories
 **/.github
 **/.vscode
+**/assets
+**/postman_collections
+**/tests
 
 # Ignore development and CI files
 **/.codacy.yml

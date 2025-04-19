@@ -14,8 +14,10 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the current directory contents into the container at /app
-# Make sure to add a .dockerignore file to exclude sensitive files
 COPY . /app/
+
+# Copy the SQLite database file into the container (even if /data is ignored)
+COPY ./data/players-sqlite3.db /app/data/players-sqlite3.db
 
 # Change to the non-root user
 USER myuser
