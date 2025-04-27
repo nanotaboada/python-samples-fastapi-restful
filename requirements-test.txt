@@ -3,4 +3,4 @@
 pytest==8.3.5
 pytest-cov==6.1.1
 pytest-sugar==1.0.0
-gevent==25.4.1
+gevent==25.4.2
