@@ -33,13 +33,29 @@ pip install -r requirements-test.txt
 uvicorn main:app --reload --port 9000
 ```
 
-## Documentation
+## Docs
 
 ```console
 http://localhost:9000/docs
 ```
 
 ![API Documentation](assets/images/swagger.png)
+
+## Docker
+
+This project includes a multi-stage `Dockerfile` for local development and production builds.
+
+### Build the image
+
+```bash
+docker build -t fastapi-app .
+```
+
+### Run the container
+
+```bash
+docker run -p 9000:9000 fastapi-app
+```
 
 ## Credits
 
