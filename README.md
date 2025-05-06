@@ -48,13 +48,13 @@ This project includes a multi-stage `Dockerfile` for local development and produ
 ### Build the image
 
 ```bash
-docker build -t fastapi-app .
+docker build -t python-samples-fastapi-restful .
 ```
 
 ### Run the container
 
 ```bash
-docker run -p 9000:9000 fastapi-app
+docker run -p 9000:9000 python-samples-fastapi-restful:latest
 ```
 
 ## Credits
