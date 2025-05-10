@@ -1,31 +1,33 @@
 # - Stage 1: Build dependencies into wheels ------------------------------------
 
-    FROM python:3.12-slim-bookworm AS build
+    FROM python:3.13.3-slim-bookworm AS build
 
     WORKDIR /app
 
     # Install system build tools needed to compile Python packages with native
-    # extensions
-    RUN apt-get update && apt-get install -y --no-install-recommends \
-        build-essential gcc && \
-        rm -rf /var/lib/apt/lists/*
+    # extensions, and clean up afterward to reduce image size.
+    RUN apt-get update && \
+        apt-get install -y --no-install-recommends build-essential gcc libffi-dev libssl-dev && \
+        rm -rf /var/lib/apt/lists/* && \
+        rm -rf /var/cache/apt/archives/*.deb
 
     # Pre-build all third-party dependencies into wheel files. This enables faster,
-    # more reliable installation later without relying on network access
+    # more reliable installation later without relying on network access.
     COPY requirements.txt .
     RUN pip wheel --no-cache-dir --wheel-dir=/app/wheelhouse -r requirements.txt
 
-    # - Stage 2: Runtime image ----------------------------------------------------
+# - Stage 2: Runtime image ----------------------------------------------------
 
-    FROM python:3.12-slim-bookworm AS runtime
+    FROM python:3.13.3-slim-bookworm AS runtime
 
     WORKDIR /app
 
-    # Install dependencies from prebuilt wheels (no network access)
-    # This improves build speed and avoids dependency drift
+    # Install runtime dependencies from prebuilt wheels (no network access).
+    # This improves build speed and avoids dependency drift.
     COPY requirements.txt .
     COPY --from=build /app/wheelhouse /app/wheelhouse
-    RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse -r requirements.txt
+    RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse -r requirements.txt && \
+        rm -rf /app/wheelhouse
 
     # Copy only runtime-relevant application code (excluding tests and tooling)
     COPY models ./models
