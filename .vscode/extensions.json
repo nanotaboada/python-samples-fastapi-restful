@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
+    "ms-azuretools.vscode-containers",
+    "redhat.vscode-yaml",
+    "sonarsource.sonarlint-vscode",
+    "esbenp.prettier-vscode",
+    "conventionalcommits.extension",
+    "codezombiech.gitignore"
+  ]
+}
