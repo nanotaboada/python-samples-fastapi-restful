@@ -65,6 +65,6 @@
     ENTRYPOINT ["./entrypoint.sh"] 
     CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9000"]
     
-    # 👇 Importante: solo al final
+    # 👇Run with not root user
     USER fastapi
     
