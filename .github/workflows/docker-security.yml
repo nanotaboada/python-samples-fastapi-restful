@@ -2,9 +2,9 @@ name: Validate Docker Image with Trivy (docker-compose)
 
 on:
   pull_request:
-    branches: [main]
+    branches: [master]
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   build-and-scan:
