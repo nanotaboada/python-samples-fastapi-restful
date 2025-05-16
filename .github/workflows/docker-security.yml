@@ -1,34 +1,37 @@
-name: 🔍 Validate Docker Image with Trivy (docker-compose)
+name: Trivy Image Scan
 
 on:
-  pull_request:
-    branches: [master]
   push:
-    branches: [master]
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  build-and-scan:
+  scan:
+    name: Scan Docker Image with Trivy
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🧾 Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: 🐳 Set up Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: 🛠️ Build image without cache
-        run: docker compose build --no-cache
+      - name: Build image
+        run: docker build -t python-samples-fastapi-restful .
 
-      - name: 🐳 List Docker images (debug)
-        run: docker images
+      - name: Install Trivy
+        uses: aquasecurity/trivy-action@v0.16.1
+        with:
+          version: latest
 
-      - name: 🔍 Run Trivy via Docker (scan local image)
-        run: |
-          docker run --rm \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -v $HOME/.cache:/root/.cache/ \
-            aquasec/trivy:latest \
-            image --format table --exit-code 1 --ignore-unfixed \
-            --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL \
-            python-samples-fastapi-restful:latest
+      - name: Run Trivy scan (como en Windows)
+        run: trivy image --no-progress --format table -o trivy-report.txt python-samples-fastapi-restful
+
+      - name: Upload Trivy report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-scan-report
+          path: trivy-report.txt
