@@ -26,9 +26,9 @@ jobs:
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Run Trivy scan (como en Windows)
+      - name: Run Trivy scan 
         run: |
-          ./trivy image --no-progress --format table -o trivy-report.txt python-samples-fastapi-restful
+          trivy image --no-progress --format table -o trivy-report.txt python-samples-fastapi-restful
 
       - name: Upload Trivy report
         uses: actions/upload-artifact@v4
