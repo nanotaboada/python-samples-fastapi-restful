@@ -41,21 +41,40 @@ http://localhost:9000/docs
 
 ![API Documentation](assets/images/swagger.png)
 
-## Docker
+## Container
 
-This project includes a multi-stage `Dockerfile` for local development and production builds.
+### Docker Compose
 
-### Build the image
+This setup uses [Docker Compose](https://docs.docker.com/compose/) to build and run the app and manage a persistent SQLite database stored in a Docker volume.
 
-```bash
-docker build -t python-samples-fastapi-restful .
-```
-
-### Run the container
+#### Build the image
 
 ```bash
-docker run -p 9000:9000 python-samples-fastapi-restful:latest
+docker compose build
 ```
+
+#### Start the app
+
+```bash
+docker compose up
+```
+
+> On first run, the container copies a pre-seeded SQLite database into a persistent volume
+> On subsequent runs, that volume is reused and the data is preserved
+
+#### Stop the app
+
+```bash
+docker compose down
+```
+
+#### Optional: database reset
+
+```bash
+docker compose down -v
+```
+
+> This removes the volume and will reinitialize the database from the built-in seed file the next time you `up`.
 
 ## Credits
 

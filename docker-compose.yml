@@ -1,0 +1,18 @@
+services:
+  api:
+    image: python-samples-fastapi-restful
+    container_name: fastapi-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - sqlite3-db:/sqlite3-db/
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DATABASE_FILE_PATH=/sqlite3-db/players-sqlite3.db
+    restart: unless-stopped
+
+volumes:
+  sqlite3-db:

@@ -7,7 +7,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Respo
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiocache import SimpleMemoryCache
 
-from data.player_database import generate_async_session
+from database.player_database import generate_async_session
 from models.player_model import PlayerModel
 from services import player_service
 

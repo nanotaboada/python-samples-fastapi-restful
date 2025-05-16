@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 
 from sqlalchemy import Column, String, Integer, Boolean
-from data.player_database import Base
+from database.player_database import Base
 
 
 class Player(Base):
