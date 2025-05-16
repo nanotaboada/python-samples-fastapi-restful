@@ -1,0 +1,30 @@
+name: Validate Docker Image with Trivy (docker-compose)
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🐳 Set up Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: 🛠️ Build image with docker compose
+        run: docker compose build
+
+      - name: 🔍 Scan local image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: python-samples-fastapi-restful:latest  # tu nombre de imagen real
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
