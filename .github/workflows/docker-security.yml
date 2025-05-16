@@ -30,6 +30,9 @@ jobs:
         run: |
           trivy image --no-progress --format table -o trivy-report.txt python-samples-fastapi-restful
 
+      - name: Show Trivy report in logs
+        run: cat trivy-report.txt          
+
       - name: Upload Trivy report
         uses: actions/upload-artifact@v4
         with:
