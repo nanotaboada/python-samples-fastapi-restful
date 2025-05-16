@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+echo "✔ Fixing permissions..."
+chown -R fastapi:fastapi /sqlite3-db
 
 IMAGE_DATABASE_FILE_PATH="/app/docker-compose/players-sqlite3.db"
 VOLUME_DATABASE_FILE_PATH="/sqlite3-db/players-sqlite3.db"
