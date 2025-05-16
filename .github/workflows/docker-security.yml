@@ -1,15 +1,14 @@
-name: Trivy Image Scan
+name: Docker Security Scan
 
 on:
   push:
     branches: [master]
   pull_request:
     branches: [master]
-  workflow_dispatch:
 
 jobs:
   scan:
-    name: Scan Docker Image with Trivy
+    name: Scan Docker Image with Anchore
     runs-on: ubuntu-latest
 
     steps:
@@ -22,19 +21,8 @@ jobs:
       - name: Build image
         run: docker build -t python-samples-fastapi-restful .
 
-      - name: Install Trivy manually
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-
-      - name: Run Trivy scan 
-        run: |
-          trivy image --no-progress --format table -o trivy-report.txt python-samples-fastapi-restful
-
-      - name: Show Trivy report in logs
-        run: cat trivy-report.txt          
-
-      - name: Upload Trivy report
-        uses: actions/upload-artifact@v4
+      - name: Run Anchore scan
+        uses: anchore/scan-action@v2
         with:
-          name: trivy-scan-report
-          path: trivy-report.txt
+          image-reference: python-samples-fastapi-restful
+          fail-build: true
