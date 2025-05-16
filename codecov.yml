@@ -40,7 +40,7 @@ comment:
 # https://docs.codecov.com/docs/ignoring-paths
 ignore:
   - "^assets/.*"
-  - "^data/.*"
+  - "^database/.*"
   - "^models/.*"
   - "^postman_collections/.*"
   - "^schemas/.*"

@@ -3,11 +3,13 @@
 # ------------------------------------------------------------------------------
 
 import logging
+import os
 from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "sqlite+aiosqlite:///./data/players-sqlite3.db"
+database_file_path = os.getenv("DATABASE_FILE_PATH", "./sqlite3-db/players-sqlite3.db")
+DATABASE_URL = f"sqlite+aiosqlite:///{database_file_path}"
 
 logger = logging.getLogger("uvicorn")
 logging.getLogger("sqlalchemy.engine.Engine").handlers = logger.handlers
