@@ -22,13 +22,13 @@ jobs:
       - name: Build image
         run: docker build -t python-samples-fastapi-restful .
 
-      - name: Install Trivy
-        uses: aquasecurity/trivy-action@v0.16.1
-        with:
-          version: latest
+      - name: Install Trivy manually
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Run Trivy scan (como en Windows)
-        run: trivy image --no-progress --format table -o trivy-report.txt python-samples-fastapi-restful
+        run: |
+          ./trivy image --no-progress --format table -o trivy-report.txt python-samples-fastapi-restful
 
       - name: Upload Trivy report
         uses: actions/upload-artifact@v4
