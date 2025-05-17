@@ -47,13 +47,13 @@ COPY --chown=root:root --chmod=755      assets      ./assets
 
 # Copy entrypoint sctipt and SQLite database
 COPY --chown=root:root --chmod=755      scripts/entrypoint.sh       ./entrypoint.sh
-COPY --chown=root:root --chmod=755      sqlite3-db                  ./docker-compose
+COPY --chown=root:root --chmod=755      storage                     ./docker-compose
 
 # Create non-root user and make volume mount point writable
 RUN groupadd --system fastapi && \
     adduser --system --ingroup fastapi --disabled-password --gecos '' fastapi && \
-    mkdir -p /sqlite3-db && \
-    chown fastapi:fastapi /sqlite3-db
+    mkdir -p /storage && \
+    chown fastapi:fastapi /storage
 
 # Drop privileges
 USER fastapi

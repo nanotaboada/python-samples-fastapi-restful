@@ -8,11 +8,11 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - sqlite3-db:/sqlite3-db/
+      - storage:/storage/
     environment:
       - PYTHONUNBUFFERED=1
-      - DATABASE_FILE_PATH=/sqlite3-db/players-sqlite3.db
+      - STORAGE_PATH=/storage/players-sqlite3.db
     restart: unless-stopped
 
 volumes:
-  sqlite3-db:
+  storage:
