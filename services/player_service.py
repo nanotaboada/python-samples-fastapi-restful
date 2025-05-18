@@ -1,7 +1,16 @@
-# ------------------------------------------------------------------------------
-# Service
-# ------------------------------------------------------------------------------
+"""
+Async CRUD operations for Player entities using SQLAlchemy ORM.
 
+Functions:
+- create_async                   : Add a new Player to the database.
+- retrieve_all_async             : Fetch all Player records.
+- retrieve_by_id_async           : Fetch a Player by its ID.
+- retrieve_by_squad_number_async : Fetch a Player by its Squad Number.
+- update_async                   : Fully update an existing Player.
+- delete_async                   : Remove a Player from the database.
+
+Handles SQLAlchemy exceptions with transaction rollback and logs errors.
+"""
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError

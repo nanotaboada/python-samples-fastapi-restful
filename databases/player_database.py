@@ -1,7 +1,13 @@
-# ------------------------------------------------------------------------------
-# Database
-# ------------------------------------------------------------------------------
+"""
+Database setup and session management for async SQLAlchemy with SQLite.
 
+- Configures the async database engine using `aiosqlite` driver.
+- Creates an async sessionmaker for ORM operations.
+- Defines the declarative base class for model definitions.
+- Provides an async generator dependency to yield database sessions.
+
+The `STORAGE_PATH` environment variable controls the SQLite file location.
+"""
 import logging
 import os
 from typing import AsyncGenerator

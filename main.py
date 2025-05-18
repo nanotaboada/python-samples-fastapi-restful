@@ -1,7 +1,12 @@
-# ------------------------------------------------------------------------------
-# Main
-# ------------------------------------------------------------------------------
+"""
+Main application module for the FastAPI RESTful API.
 
+- Sets up the FastAPI app with metadata (title, description, version).
+- Defines the lifespan event handler for app startup/shutdown logging.
+- Includes API routers for player and health endpoints.
+
+This serves as the entry point for running the API server.
+"""
 from contextlib import asynccontextmanager
 import logging
 from typing import AsyncIterator
@@ -14,7 +19,7 @@ logger = logging.getLogger(UVICORN_LOGGER)
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    """"
+    """
     Lifespan event handler for FastAPI.
     """
     logger.info("Lifespan event handler execution complete.")

@@ -2,7 +2,7 @@
 
 exclude_paths:
   - "assets/**/*"
-  - "database/**/*"
+  - "databases/**/*"
   - "models/**/*"
   - "postman_collections/**/*"
   - "schemas/**/*"

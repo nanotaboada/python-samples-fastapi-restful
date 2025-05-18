@@ -38,7 +38,7 @@ COPY README.md          ./
 COPY assets             ./assets
 
 # Copy pre-built wheels from builder
-COPY --from=builder     /app/wheelhouse    /app/wheelhouse
+COPY --from=builder     /app/wheelhouse     /app/wheelhouse
 
 # Install dependencies
 COPY requirements.txt   .
@@ -53,9 +53,12 @@ COPY routes             ./routes
 COPY schemas            ./schemas
 COPY services           ./services
 
-# Copy entrypoint script and image-bundled, pre-seeded SQLite database
+# https://rules.sonarsource.com/docker/RSPEC-6504/
+
+# Copy entrypoint and healthcheck scripts
 COPY --chmod=755        scripts/entrypoint.sh       ./entrypoint.sh
 COPY --chmod=755        scripts/healthcheck.sh      ./healthcheck.sh
+# Copy pre-seeded SQLite database as init bundle
 COPY --chmod=755        storage                     ./docker-compose
 
 # Add non-root user and make volume mount point writable

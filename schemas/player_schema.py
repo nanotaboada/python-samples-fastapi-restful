@@ -1,9 +1,12 @@
-# ------------------------------------------------------------------------------
-# Schema
-# ------------------------------------------------------------------------------
+"""
+SQLAlchemy ORM model for the Player database table.
 
+Defines the schema and columns corresponding to football player attributes.
+
+Used for async database CRUD operations in the application.
+"""
 from sqlalchemy import Column, String, Integer, Boolean
-from database.player_database import Base
+from databases.player_database import Base
 
 
 class Player(Base):
