@@ -7,6 +7,20 @@ from tests.player_stub import existing_player, nonexistent_player, unknown_playe
 
 PATH = "/players/"
 
+# GET /health/ -----------------------------------------------------------------
+
+def test_given_get_when_request_path_is_health_then_response_status_code_should_be_200_ok(client):
+    """
+        Given   GET /health/
+        when    request
+        then    response Status Code should be 200 OK
+    """
+    # Act
+    response = client.get("/health/")
+    # Assert
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+
 # GET /players/ ----------------------------------------------------------------
 
 
