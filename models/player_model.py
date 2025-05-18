@@ -1,7 +1,11 @@
-# ------------------------------------------------------------------------------
-# Model
-# ------------------------------------------------------------------------------
+"""
+Pydantic models defining the data schema for football players.
 
+- `MainModel`: Base model with common config for camelCase aliasing.
+- `PlayerModel`: Represents a football player with personal and team details.
+
+These models are used for data validation and serialization in the API.
+"""
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel

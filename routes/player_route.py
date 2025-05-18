@@ -1,13 +1,27 @@
-# ------------------------------------------------------------------------------
-# Route
-# ------------------------------------------------------------------------------
+"""
+API routes for managing Player resources.
 
+Provides CRUD endpoints to create, read, update, and delete Player entities.
+
+Features:
+- Caching with in-memory cache to optimize retrieval performance.
+- Async database session dependency injection.
+- Standard HTTP status codes and error handling.
+
+Endpoints:
+- POST /players/                          : Create a new Player.
+- GET /players/                           : Retrieve all Players.
+- GET /players/{player_id}                : Retrieve Player by ID.
+- GET /players/squadnumber/{squad_number} : Retrieve Player by Squad Number.
+- PUT /players/{player_id}                : Update an existing Player.
+- DELETE /players/{player_id}             : Delete an existing Player.
+"""
 from typing import List
 from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiocache import SimpleMemoryCache
 
-from database.player_database import generate_async_session
+from databases.player_database import generate_async_session
 from models.player_model import PlayerModel
 from services import player_service
 

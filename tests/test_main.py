@@ -1,7 +1,20 @@
-# ------------------------------------------------------------------------------
-# Test
-# ------------------------------------------------------------------------------
+"""
+Test suite for the /players/ API endpoints.
 
+Covers:
+- GET    /health/
+- GET    /players/
+- GET    /players/{player_id}
+- GET    /players/squadnumber/{squad_number}
+- POST   /players/
+- PUT    /players/{player_id}
+- DELETE /players/{player_id}
+
+Validates:
+- Status codes, response bodies, headers (e.g., X-Cache)
+- Handling of existing, nonexistent, and malformed requests
+- Conflict and edge case behaviors
+"""
 import json
 from tests.player_stub import existing_player, nonexistent_player, unknown_player
 
