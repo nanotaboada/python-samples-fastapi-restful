@@ -44,9 +44,17 @@ We enforce quality via CI on every push and PR:
 
 Failures must be fixed before review.
 
-## 6. Code of Conduct & Support
+## 6. Formatting
+
+We use [Black](https://black.readthedocs.io/) as the standard Python formatter in this project:
+
+- All Python code must be formatted with Black before committing or pushing
+- You can install the pre-commit hook to automatically format your code before each commit
+
+## 7. Code of Conduct & Support
 
 - Please see `CODE_OF_CONDUCT.md` for behavioral expectations and reporting.
 - For quick questions or discussions, open an issue with the `discussion` label or mention a maintainer.
 
 Thanks again for helping keep this project small, simple, and impactful!
+

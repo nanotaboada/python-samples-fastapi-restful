@@ -7,6 +7,7 @@ Main application module for the FastAPI RESTful API.
 
 This serves as the entry point for running the API server.
 """
+
 from contextlib import asynccontextmanager
 import logging
 from typing import AsyncIterator
@@ -17,6 +18,7 @@ from routes import player_route, health_route
 UVICORN_LOGGER = "uvicorn.error"
 logger = logging.getLogger(UVICORN_LOGGER)
 
+
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     """
@@ -25,10 +27,13 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     logger.info("Lifespan event handler execution complete.")
     yield
 
-app = FastAPI(lifespan=lifespan,
-              title="python-samples-fastapi-restful",
-              description="🧪 Proof of Concept for a RESTful API made with Python 3 and FastAPI",
-              version="1.0.0",)
+
+app = FastAPI(
+    lifespan=lifespan,
+    title="python-samples-fastapi-restful",
+    description="🧪 Proof of Concept for a RESTful API made with Python 3 and FastAPI",
+    version="1.0.0",
+)
 
 app.include_router(player_route.api_router)
 app.include_router(health_route.api_router)
