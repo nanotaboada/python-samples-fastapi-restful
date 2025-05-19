@@ -47,7 +47,7 @@ RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse -r requir
 
 # Copy application source code
 COPY main.py            ./
-COPY database           ./database
+COPY databases          ./databases
 COPY models             ./models
 COPY routes             ./routes
 COPY schemas            ./schemas
