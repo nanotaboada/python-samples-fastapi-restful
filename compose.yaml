@@ -16,3 +16,4 @@ services:
 
 volumes:
   storage:
+    name: python-samples-fastapi-restful_storage
