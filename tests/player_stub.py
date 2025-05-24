@@ -15,7 +15,7 @@ class Player:
         abbr_position=None,
         team=None,
         league=None,
-        starting11=None
+        starting11=None,
     ):
         self.id = id
         self.first_name = first_name
@@ -77,5 +77,5 @@ def unknown_player():
         first_name="John",
         last_name="Doe",
         squad_number="999",
-        position="Lipsum"
+        position="Lipsum",
     )

@@ -16,6 +16,7 @@ Endpoints:
 - PUT /players/{player_id}                : Update an existing Player.
 - DELETE /players/{player_id}             : Delete an existing Player.
 """
+
 from typing import List
 from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Response
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,7 +30,7 @@ api_router = APIRouter()
 simple_memory_cache = SimpleMemoryCache()
 
 CACHE_KEY = "players"
-CACHE_TTL = 600 # 10 minutes
+CACHE_TTL = 600  # 10 minutes
 
 # POST -------------------------------------------------------------------------
 
@@ -38,11 +39,11 @@ CACHE_TTL = 600 # 10 minutes
     "/players/",
     status_code=status.HTTP_201_CREATED,
     summary="Creates a new Player",
-    tags=["Players"]
+    tags=["Players"],
 )
 async def post_async(
     player_model: PlayerModel = Body(...),
-    async_session: AsyncSession = Depends(generate_async_session)
+    async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
     Endpoint to create a new player.
@@ -60,6 +61,7 @@ async def post_async(
     await player_service.create_async(async_session, player_model)
     await simple_memory_cache.clear(CACHE_KEY)
 
+
 # GET --------------------------------------------------------------------------
 
 
@@ -68,11 +70,10 @@ async def post_async(
     response_model=List[PlayerModel],
     status_code=status.HTTP_200_OK,
     summary="Retrieves a collection of Players",
-    tags=["Players"]
+    tags=["Players"],
 )
 async def get_all_async(
-    response: Response,
-    async_session: AsyncSession = Depends(generate_async_session)
+    response: Response, async_session: AsyncSession = Depends(generate_async_session)
 ):
     """
     Endpoint to retrieve all players.
@@ -97,11 +98,11 @@ async def get_all_async(
     response_model=PlayerModel,
     status_code=status.HTTP_200_OK,
     summary="Retrieves a Player by its Id",
-    tags=["Players"]
+    tags=["Players"],
 )
 async def get_by_id_async(
     player_id: int = Path(..., title="The ID of the Player"),
-    async_session: AsyncSession = Depends(generate_async_session)
+    async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
     Endpoint to retrieve a Player by its ID.
@@ -127,11 +128,11 @@ async def get_by_id_async(
     response_model=PlayerModel,
     status_code=status.HTTP_200_OK,
     summary="Retrieves a Player by its Squad Number",
-    tags=["Players"]
+    tags=["Players"],
 )
 async def get_by_squad_number_async(
     squad_number: int = Path(..., title="The Squad Number of the Player"),
-    async_session: AsyncSession = Depends(generate_async_session)
+    async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
     Endpoint to retrieve a Player by its Squad Number.
@@ -146,10 +147,13 @@ async def get_by_squad_number_async(
     Raises:
         HTTPException: HTTP 404 Not Found error if the Player with the specified Squad Number does not exist.
     """
-    player = await player_service.retrieve_by_squad_number_async(async_session, squad_number)
+    player = await player_service.retrieve_by_squad_number_async(
+        async_session, squad_number
+    )
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return player
+
 
 # PUT --------------------------------------------------------------------------
 
@@ -158,12 +162,12 @@ async def get_by_squad_number_async(
     "/players/{player_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Updates an existing Player",
-    tags=["Players"]
+    tags=["Players"],
 )
 async def put_async(
     player_id: int = Path(..., title="The ID of the Player"),
     player_model: PlayerModel = Body(...),
-    async_session: AsyncSession = Depends(generate_async_session)
+    async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
     Endpoint to entirely update an existing Player.
@@ -182,6 +186,7 @@ async def put_async(
     await player_service.update_async(async_session, player_model)
     await simple_memory_cache.clear(CACHE_KEY)
 
+
 # DELETE -----------------------------------------------------------------------
 
 
@@ -189,11 +194,11 @@ async def put_async(
     "/players/{player_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Deletes an existing Player",
-    tags=["Players"]
+    tags=["Players"],
 )
 async def delete_async(
     player_id: int = Path(..., title="The ID of the Player"),
-    async_session: AsyncSession = Depends(generate_async_session)
+    async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
     Endpoint to delete an existing Player.

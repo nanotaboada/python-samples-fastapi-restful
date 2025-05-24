@@ -11,6 +11,7 @@ Functions:
 
 Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 """
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
@@ -41,6 +42,7 @@ async def create_async(async_session: AsyncSession, player_model: PlayerModel):
         print(f"Error trying to create the Player: {error}")
         await async_session.rollback()
         return False
+
 
 # Retrieve ---------------------------------------------------------------------
 
@@ -77,7 +79,9 @@ async def retrieve_by_id_async(async_session: AsyncSession, player_id: int):
     return player
 
 
-async def retrieve_by_squad_number_async(async_session: AsyncSession, squad_number: int):
+async def retrieve_by_squad_number_async(
+    async_session: AsyncSession, squad_number: int
+):
     """
     Retrieves a Player by its Squad Number from the database.
 
@@ -92,6 +96,7 @@ async def retrieve_by_squad_number_async(async_session: AsyncSession, squad_numb
     result = await async_session.execute(statement)
     player = result.scalars().first()
     return player
+
 
 # Update -----------------------------------------------------------------------
 
@@ -126,6 +131,7 @@ async def update_async(async_session: AsyncSession, player_model: PlayerModel):
         print(f"Error trying to update the Player: {error}")
         await async_session.rollback()
         return False
+
 
 # Delete -----------------------------------------------------------------------
 
