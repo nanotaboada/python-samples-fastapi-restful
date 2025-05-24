@@ -19,3 +19,7 @@ CONTRIBUTING.md
 coverage.xml
 LICENSE
 /tests/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
