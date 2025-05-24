@@ -35,10 +35,10 @@ LABEL org.opencontainers.image.source="https://github.com/nanotaboada/python-sam
 
 # Copy metadata docs for container registries (e.g.: GitHub Container Registry)
 COPY README.md          ./
-COPY assets             ./assets
+COPY assets/            ./assets/
 
 # Copy pre-built wheels from builder
-COPY --from=builder     /app/wheelhouse     /app/wheelhouse
+COPY --from=builder     /app/wheelhouse/            /app/wheelhouse/
 
 # Install dependencies
 COPY requirements.txt   .
@@ -47,29 +47,29 @@ RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse -r requir
 
 # Copy application source code
 COPY main.py            ./
-COPY databases          ./databases
-COPY models             ./models
-COPY routes             ./routes
-COPY schemas            ./schemas
-COPY services           ./services
+COPY databases/         ./databases/
+COPY models/            ./models/
+COPY routes/            ./routes/
+COPY schemas/           ./schemas/
+COPY services/          ./services/
 
 # https://rules.sonarsource.com/docker/RSPEC-6504/
 
 # Copy entrypoint and healthcheck scripts
 COPY --chmod=755        scripts/entrypoint.sh       ./entrypoint.sh
 COPY --chmod=755        scripts/healthcheck.sh      ./healthcheck.sh
-# Copy pre-seeded SQLite database as init bundle
-COPY --chmod=755        storage                     ./docker-compose
+# The 'hold' is our storage compartment within the image. Here, we copy a
+# pre-seeded SQLite database file, which Compose will mount as a persistent
+# 'storage' volume when the container starts up.
+COPY --chmod=755        storage/                    ./hold/
 
 # Add non-root user and make volume mount point writable
-RUN groupadd --system fastapi && \
-    adduser --system --ingroup fastapi --disabled-password --gecos '' fastapi && \
+RUN adduser --system --disabled-password --group fastapi && \
     mkdir -p /storage && \
     chown fastapi:fastapi /storage
 
 ENV PYTHONUNBUFFERED=1
 
-# Drop privileges
 USER fastapi
 
 EXPOSE 9000
