@@ -2,6 +2,7 @@
   "recommendations": [
     "ms-python.python",
     "ms-python.vscode-pylance",
+    "ms-python.black-formatter",
     "github.vscode-pull-request-github",
     "github.vscode-github-actions",
     "ms-azuretools.vscode-containers",

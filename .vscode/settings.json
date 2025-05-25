@@ -7,8 +7,10 @@
     "**/.git": true,
     "**/.DS_Store": true
   },
+  "editor.wordWrapColumn": 88,
+  "editor.rulers": [88],
   "[python]": {
-    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true
   },
   "sonarlint.connectedMode.project": {

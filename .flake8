@@ -1,28 +1,10 @@
 [flake8]
-# Maximum line length allowed
-max-line-length = 127
-
-# Maximum allowed code complexity (10 is a reasonable threshold)
+max-line-length = 88
 max-complexity = 10
-
-# Only check for specific error codes:
-# - E9  -> Syntax errors
-# - F63 -> Issues related to improper usage of `+=`, `-=`, etc.
-# - F7  -> Issues related to improper `break`, `continue`, etc.
-# - F82 -> Undefined names
-select = E9,F63,F7,F82
-
-# Exclude `.venv` from linting (prevents checking dependencies)
+select = E,F,W
+extend-ignore = E203, W503
 exclude = .venv
-
-# Print the count of linting errors
 count = True
-
-# Show the exact source of the error
 show-source = True
-
-# Display statistics of errors at the end of the report
 statistics = True
-
-# Enable verbose mode for more detailed output
 verbose = True
