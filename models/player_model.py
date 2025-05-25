@@ -6,6 +6,7 @@ Pydantic models defining the data schema for football players.
 
 These models are used for data validation and serialization in the API.
 """
+
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
@@ -24,6 +25,7 @@ class MainModel(BaseModel):
                 Here, it uses `to_camel` to convert field names to camelCase.
             populate_by_name (bool): Allows population of fields by name when using Pydantic models.
     """
+
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
 
@@ -44,6 +46,7 @@ class PlayerModel(MainModel):
         league (Optional[str]): The league where the team plays, if any.
         starting11 (Optional[bool]): Indicates if the Player is in the starting 11, if provided.
     """
+
     id: int
     first_name: str
     middle_name: Optional[str]

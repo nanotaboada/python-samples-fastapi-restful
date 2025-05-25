@@ -5,12 +5,16 @@ include = '\.pyi?$'
 exclude = '''
 /(
     \.git
+  | \.github
+  | \.pytest_cache
   | \.venv
-  | build
-  | dist
+  | \.vscode
+  | assets
+  | htmlcov
+  | postman_collections
+  | scripts
+  | storage
   | __pycache__
-  | \.eggs
-  | \.mypy_cache
-  | \.tox
+  | tests/test_main\.py
 )/
 '''

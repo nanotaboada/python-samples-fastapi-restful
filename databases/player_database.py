@@ -8,6 +8,7 @@ Database setup and session management for async SQLAlchemy with SQLite.
 
 The `STORAGE_PATH` environment variable controls the SQLite file location.
 """
+
 import logging
 import os
 from typing import AsyncGenerator
@@ -21,16 +22,11 @@ logger = logging.getLogger("uvicorn")
 logging.getLogger("sqlalchemy.engine.Engine").handlers = logger.handlers
 
 async_engine = create_async_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    echo=True
+    DATABASE_URL, connect_args={"check_same_thread": False}, echo=True
 )
 
 async_sessionmaker = sessionmaker(
-    bind=async_engine,
-    class_=AsyncSession,
-    autocommit=False,
-    autoflush=False
+    bind=async_engine, class_=AsyncSession, autocommit=False, autoflush=False
 )
 
 Base = declarative_base()

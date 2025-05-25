@@ -4,6 +4,7 @@ max-complexity = 10
 select = E,F,W
 extend-ignore = E203, W503
 exclude = .venv
+per-file-ignores = tests/test_main.py: E501
 count = True
 show-source = True
 statistics = True
