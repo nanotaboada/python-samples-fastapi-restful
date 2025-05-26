@@ -49,7 +49,8 @@ async def post_async(
     Endpoint to create a new player.
 
     Args:
-        player_model (PlayerModel): The Pydantic model representing the Player to create.
+        player_model (PlayerModel): The Pydantic model representing the Player to
+        create.
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
 
     Raises:
@@ -115,7 +116,8 @@ async def get_by_id_async(
         PlayerModel: The Pydantic model representing the matching Player.
 
     Raises:
-        HTTPException: Not found error if the Player with the specified ID does not exist.
+        HTTPException: Not found error if the Player with the specified ID does not
+        exist.
     """
     player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:
@@ -145,7 +147,8 @@ async def get_by_squad_number_async(
         PlayerModel: The Pydantic model representing the matching Player.
 
     Raises:
-        HTTPException: HTTP 404 Not Found error if the Player with the specified Squad Number does not exist.
+        HTTPException: HTTP 404 Not Found error if the Player with the specified
+        Squad Number does not exist.
     """
     player = await player_service.retrieve_by_squad_number_async(
         async_session, squad_number
@@ -174,11 +177,13 @@ async def put_async(
 
     Args:
         player_id (int): The ID of the Player to update.
-        player_model (PlayerModel): The Pydantic model representing the Player to update.
+        player_model (PlayerModel): The Pydantic model representing the Player to
+        update.
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
 
     Raises:
-        HTTPException: HTTP 404 Not Found error if the Player with the specified ID does not exist.
+        HTTPException: HTTP 404 Not Found error if the Player with the specified ID
+        does not exist.
     """
     player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:
@@ -208,7 +213,8 @@ async def delete_async(
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
 
     Raises:
-        HTTPException: HTTP 404 Not Found error if the Player with the specified ID does not exist.
+        HTTPException: HTTP 404 Not Found error if the Player with the specified ID
+        does not exist.
     """
     player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:

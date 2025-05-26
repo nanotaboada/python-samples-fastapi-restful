@@ -1,7 +1,4 @@
 {
-  "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["tests"],
   "files.exclude": {
     "**/__pycache__": true,
     "**/.git": true,
@@ -12,6 +9,44 @@
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true
+  },
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["tests"],
+  "flake8.enabled": true,
+  "flake8.importStrategy": "fromEnvironment",
+  "flake8.path": ["${interpreter}", "-m", "flake8"],
+  // Point flake8 to use your existing config file automatically
+  "flake8.args": [
+    "--max-line-length=88",
+    "--max-complexity=10",
+    "--select=E,F,W",
+    "--extend-ignore=E203,W503",
+    "--exclude=.venv",
+    "--per-file-ignores=tests/test_main.py:E501"
+  ],
+  // Exclude files/folders you don’t want to lint (matching Black’s exclude)
+  "flake8.ignorePatterns": [
+    "**/.git/**",
+    "**/.github/**",
+    "**/.pytest_cache/**",
+    "**/.venv/**",
+    "**/.vscode/**",
+    "**/assets/**",
+    "**/htmlcov/**",
+    "**/postman_collections/**",
+    "**/scripts/**",
+    "**/storage/**",
+    "**/__pycache__/**",
+    "**/tests/test_main.py"
+  ],
+  "flake8.severity": {
+    "convention": "Information",
+    "error": "Error",
+    "fatal": "Error",
+    "refactor": "Hint",
+    "warning": "Warning",
+    "info": "Information"
   },
   "sonarlint.connectedMode.project": {
     "connectionId": "nanotaboada",

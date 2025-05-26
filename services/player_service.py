@@ -27,7 +27,8 @@ async def create_async(async_session: AsyncSession, player_model: PlayerModel):
 
     Args:
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
-        player_model (PlayerModel): The Pydantic model representing the Player to create.
+        player_model (PlayerModel): The Pydantic model representing the Player to
+        create.
 
     Returns:
         True if the Player was created successfully, False otherwise.
@@ -107,7 +108,8 @@ async def update_async(async_session: AsyncSession, player_model: PlayerModel):
 
     Args:
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
-        player_model (PlayerModel): The Pydantic model representing the Player to update.
+        player_model (PlayerModel): The Pydantic model representing the Player to
+        update.
 
     Returns:
         True if the Player was updated successfully, False otherwise.
