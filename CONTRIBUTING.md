@@ -10,43 +10,58 @@ We value **incremental, detail‑first contributions** over big rewrites or abst
 ## 2. Code & Commit Conventions
 
 - **Conventional Commits**
-  Follow <https://www.conventionalcommits.org/en/v1.0.0/>:
-  - `feat: …` for new features
-  - `fix: …` for bug fixes
-  - `chore: …` for maintenance
+  Follow <https://www.conventionalcommits.org/en/v1.0.0/>:
+  - `feat: ` for new features
+  - `fix: ` for bug fixes
+  - `chore: ` for maintenance or tooling
 
 - **Logical Commits**
-  Group changes by purpose. It’s okay to have multiple commits in a PR, but if they’re mere checkpoints, squash them into a single logical commit.
+  Group changes by purpose. Multiple commits are fine, but avoid noise. Squash when appropriate.
 
-- **Lint & Tests**
-  Run existing linters/formatters and ensure all tests pass.
+- **Python Formatting & Style**
+  - Use **[Black](https://black.readthedocs.io/)** for consistent code formatting.
+    - Black is opinionated: don't argue with it, just run it.
+    - Line length is set to **88**, matching the default.
+  - Use **[flake8](https://flake8.pycqa.org/en/latest/)** for static checks.
+    - Line length also set to 88.
+    - Some flake8 warnings are disabled (e.g. `E203`, `W503`) to avoid conflicts with Black.
+  - Run `black .` and `flake8` before submitting.
+  - Use Python **3.13.x** for local testing and formatting.
+
+- **Testing**
+  - Run `pytest` before pushing.
+  - Ensure coverage isn’t regressing.
 
 ## 3. Pull Request Workflow
 
 - **One logical change per PR.**
-- **Rebase or squash** before opening to keep history concise.
+- **Rebase or squash** before opening to keep history clean.
 - **Title & Description**
-  - Title uses Conventional Commits style.
-  - Description explains _what_ and _why_—keep context minimal.
+  - Use Conventional Commit format.
+  - Explain _what_ and _why_ concisely in the PR body.
 
 ## 4. Issue Reporting
 
-- Search existing issues first.
-- Provide a minimal reproducible example and clear steps.
+- Search open issues before creating a new one.
+- Include clear steps to reproduce and environment details.
+- Prefer **focused** issues—don’t bundle multiple topics.
 
 ## 5. Automation & Checks
 
-We enforce quality via CI on every push and PR:
+All PRs and pushes go through CI:
 
-- **Commitlint** for commit‑message style
-- **Linters/Formatters**
-- **Unit tests**
+- **Commitlint** for commit style
+- **Black** for formatting
+- **flake8** for static checks
+- **pytest** with coverage
 
-Failures must be fixed before review.
+PRs must pass all checks to be reviewed.
 
 ## 6. Code of Conduct & Support
 
-- Please see `CODE_OF_CONDUCT.md` for behavioral expectations and reporting.
-- For quick questions or discussions, open an issue with the `discussion` label or mention a maintainer.
+- See `CODE_OF_CONDUCT.md` for guidelines and reporting.
+- For questions or planning, open an issue and use the `discussion` label, or mention a maintainer.
 
-Thanks again for helping keep this project small, simple, and impactful!
+---
+
+Thanks again for helping keep this project small, sharp, and focused.

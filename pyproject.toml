@@ -1,0 +1,20 @@
+[tool.black]
+line-length = 88
+target-version = ['py313']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.github
+  | \.pytest_cache
+  | \.venv
+  | \.vscode
+  | assets
+  | htmlcov
+  | postman_collections
+  | scripts
+  | storage
+  | __pycache__
+  | tests/test_main\.py
+)/
+'''

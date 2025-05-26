@@ -1,7 +1,8 @@
 {
   "recommendations": [
     "ms-python.python",
-    "ms-python.vscode-pylance",
+    "ms-python.flake8",
+    "ms-python.black-formatter",
     "github.vscode-pull-request-github",
     "github.vscode-github-actions",
     "ms-azuretools.vscode-containers",

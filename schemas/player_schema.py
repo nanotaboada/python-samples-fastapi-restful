@@ -5,6 +5,7 @@ Defines the schema and columns corresponding to football player attributes.
 
 Used for async database CRUD operations in the application.
 """
+
 from sqlalchemy import Column, String, Integer, Boolean
 from databases.player_database import Base
 
@@ -30,13 +31,13 @@ class Player(Base):
     __tablename__ = "players"
 
     id = Column(Integer, primary_key=True)
-    first_name = Column(String, name='firstName', nullable=False)
-    middle_name = Column(String, name='middleName')
-    last_name = Column(String, name='lastName', nullable=False)
+    first_name = Column(String, name="firstName", nullable=False)
+    middle_name = Column(String, name="middleName")
+    last_name = Column(String, name="lastName", nullable=False)
     date_of_birth = Column(String, name="dateOfBirth")
-    squad_number = Column(Integer, name='squadNumber', unique=True, nullable=False)
+    squad_number = Column(Integer, name="squadNumber", unique=True, nullable=False)
     position = Column(String, nullable=False)
-    abbr_position = Column(String, name='abbrPosition')
+    abbr_position = Column(String, name="abbrPosition")
     team = Column(String)
     league = Column(String)
     starting11 = Column(Boolean)

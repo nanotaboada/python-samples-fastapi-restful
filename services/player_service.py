@@ -11,6 +11,7 @@ Functions:
 
 Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 """
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
@@ -26,7 +27,8 @@ async def create_async(async_session: AsyncSession, player_model: PlayerModel):
 
     Args:
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
-        player_model (PlayerModel): The Pydantic model representing the Player to create.
+        player_model (PlayerModel): The Pydantic model representing the Player to
+        create.
 
     Returns:
         True if the Player was created successfully, False otherwise.
@@ -41,6 +43,7 @@ async def create_async(async_session: AsyncSession, player_model: PlayerModel):
         print(f"Error trying to create the Player: {error}")
         await async_session.rollback()
         return False
+
 
 # Retrieve ---------------------------------------------------------------------
 
@@ -77,7 +80,9 @@ async def retrieve_by_id_async(async_session: AsyncSession, player_id: int):
     return player
 
 
-async def retrieve_by_squad_number_async(async_session: AsyncSession, squad_number: int):
+async def retrieve_by_squad_number_async(
+    async_session: AsyncSession, squad_number: int
+):
     """
     Retrieves a Player by its Squad Number from the database.
 
@@ -93,6 +98,7 @@ async def retrieve_by_squad_number_async(async_session: AsyncSession, squad_numb
     player = result.scalars().first()
     return player
 
+
 # Update -----------------------------------------------------------------------
 
 
@@ -102,7 +108,8 @@ async def update_async(async_session: AsyncSession, player_model: PlayerModel):
 
     Args:
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
-        player_model (PlayerModel): The Pydantic model representing the Player to update.
+        player_model (PlayerModel): The Pydantic model representing the Player to
+        update.
 
     Returns:
         True if the Player was updated successfully, False otherwise.
@@ -126,6 +133,7 @@ async def update_async(async_session: AsyncSession, player_model: PlayerModel):
         print(f"Error trying to update the Player: {error}")
         await async_session.rollback()
         return False
+
 
 # Delete -----------------------------------------------------------------------
 
