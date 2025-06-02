@@ -22,20 +22,22 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Respo
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiocache import SimpleMemoryCache
 
-from databases.player_database import generate_async_session
-from models.player_model import PlayerModel
-from services import player_service
+from app.databases.player import generate_async_session
+from app.models.player import PlayerModel
+from app.services import player
 
-api_router = APIRouter()
+router = APIRouter()
 simple_memory_cache = SimpleMemoryCache()
 
 CACHE_KEY = "players"
 CACHE_TTL = 600  # 10 minutes
 
+PLAYER_TITLE = "The ID of the Player"
+
 # POST -------------------------------------------------------------------------
 
 
-@api_router.post(
+@router.post(
     "/players/",
     status_code=status.HTTP_201_CREATED,
     summary="Creates a new Player",
@@ -56,17 +58,17 @@ async def post_async(
     Raises:
         HTTPException: HTTP 409 Conflict error if the Player already exists.
     """
-    player = await player_service.retrieve_by_id_async(async_session, player_model.id)
-    if player:
+    player_res = await player.retrieve_by_id_async(async_session, player_model.id)
+    if player_res:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
-    await player_service.create_async(async_session, player_model)
+    await player.create_async(async_session, player_model)
     await simple_memory_cache.clear(CACHE_KEY)
 
 
 # GET --------------------------------------------------------------------------
 
 
-@api_router.get(
+@router.get(
     "/players/",
     response_model=List[PlayerModel],
     status_code=status.HTTP_200_OK,
@@ -88,13 +90,13 @@ async def get_all_async(
     players = await simple_memory_cache.get(CACHE_KEY)
     response.headers["X-Cache"] = "HIT"
     if not players:
-        players = await player_service.retrieve_all_async(async_session)
+        players = await player.retrieve_all_async(async_session)
         await simple_memory_cache.set(CACHE_KEY, players, ttl=CACHE_TTL)
         response.headers["X-Cache"] = "MISS"
     return players
 
 
-@api_router.get(
+@router.get(
     "/players/{player_id}",
     response_model=PlayerModel,
     status_code=status.HTTP_200_OK,
@@ -102,7 +104,7 @@ async def get_all_async(
     tags=["Players"],
 )
 async def get_by_id_async(
-    player_id: int = Path(..., title="The ID of the Player"),
+    player_id: int = Path(..., title=PLAYER_TITLE),
     async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
@@ -119,13 +121,13 @@ async def get_by_id_async(
         HTTPException: Not found error if the Player with the specified ID does not
         exist.
     """
-    player = await player_service.retrieve_by_id_async(async_session, player_id)
-    if not player:
+    player_res = await player.retrieve_by_id_async(async_session, player_id)
+    if not player_res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return player
+    return player_res
 
 
-@api_router.get(
+@router.get(
     "/players/squadnumber/{squad_number}",
     response_model=PlayerModel,
     status_code=status.HTTP_200_OK,
@@ -150,25 +152,25 @@ async def get_by_squad_number_async(
         HTTPException: HTTP 404 Not Found error if the Player with the specified
         Squad Number does not exist.
     """
-    player = await player_service.retrieve_by_squad_number_async(
+    player_res = await player.retrieve_by_squad_number_async(
         async_session, squad_number
     )
-    if not player:
+    if not player_res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return player
+    return player_res
 
 
 # PUT --------------------------------------------------------------------------
 
 
-@api_router.put(
+@router.put(
     "/players/{player_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Updates an existing Player",
     tags=["Players"],
 )
 async def put_async(
-    player_id: int = Path(..., title="The ID of the Player"),
+    player_id: int = Path(..., title=PLAYER_TITLE),
     player_model: PlayerModel = Body(...),
     async_session: AsyncSession = Depends(generate_async_session),
 ):
@@ -185,24 +187,24 @@ async def put_async(
         HTTPException: HTTP 404 Not Found error if the Player with the specified ID
         does not exist.
     """
-    player = await player_service.retrieve_by_id_async(async_session, player_id)
-    if not player:
+    player_res = await player.retrieve_by_id_async(async_session, player_id)
+    if not player_res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    await player_service.update_async(async_session, player_model)
+    await player.update_async(async_session, player_model)
     await simple_memory_cache.clear(CACHE_KEY)
 
 
 # DELETE -----------------------------------------------------------------------
 
 
-@api_router.delete(
+@router.delete(
     "/players/{player_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Deletes an existing Player",
     tags=["Players"],
 )
 async def delete_async(
-    player_id: int = Path(..., title="The ID of the Player"),
+    player_id: int = Path(..., title=PLAYER_TITLE),
     async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
@@ -216,8 +218,8 @@ async def delete_async(
         HTTPException: HTTP 404 Not Found error if the Player with the specified ID
         does not exist.
     """
-    player = await player_service.retrieve_by_id_async(async_session, player_id)
-    if not player:
+    player_res = await player.retrieve_by_id_async(async_session, player_id)
+    if not player_res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    await player_service.delete_async(async_session, player_id)
+    await player.delete_async(async_session, player_id)
     await simple_memory_cache.clear(CACHE_KEY)

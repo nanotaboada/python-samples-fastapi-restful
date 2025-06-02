@@ -15,8 +15,8 @@ Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
-from models.player_model import PlayerModel
-from schemas.player_schema import Player
+from app.models.player import PlayerModel
+from app.schemas.player import Player
 
 # Create -----------------------------------------------------------------------
 

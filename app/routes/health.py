@@ -7,10 +7,10 @@ Returns a JSON response with a "status" key set to "ok".
 
 from fastapi import APIRouter
 
-api_router = APIRouter()
+router = APIRouter()
 
 
-@api_router.get("/health", tags=["Health"])
+@router.get("/health", tags=["Health"])
 async def health_check():
     """
     Simple health check endpoint.

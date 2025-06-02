@@ -7,7 +7,7 @@ Used for async database CRUD operations in the application.
 """
 
 from sqlalchemy import Column, String, Integer, Boolean
-from databases.player_database import Base
+from app.databases.player import Base
 
 
 class Player(Base):

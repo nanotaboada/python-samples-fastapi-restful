@@ -1,7 +1,7 @@
 import warnings
 import pytest
 from fastapi.testclient import TestClient
-from main import app
+from app.main import app
 
 # Suppress the DeprecationWarning from httpx
 warnings.filterwarnings("ignore", category=DeprecationWarning)
