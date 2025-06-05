@@ -22,9 +22,9 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Respo
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiocache import SimpleMemoryCache
 
-from app.databases.player import generate_async_session
-from app.models.player import PlayerModel
-from app.services import player
+from src.databases.player import generate_async_session
+from src.models.player import PlayerModel
+from src.services import player
 
 router = APIRouter()
 simple_memory_cache = SimpleMemoryCache()

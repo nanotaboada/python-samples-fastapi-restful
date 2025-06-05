@@ -46,12 +46,12 @@ RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse -r requir
     rm -rf /app/wheelhouse
 
 # Copy application source code 
-COPY app/main.py            ./
-COPY app/databases/         ./databases/
-COPY app/models/            ./models/
-COPY app/routes/            ./routes/
-COPY app/schemas/           ./schemas/
-COPY app/services/          ./services/
+COPY src/main.py            ./src/
+COPY src/databases/         ./src/databases/
+COPY src/models/            ./src/models/
+COPY src/routes/            ./src/routes/
+COPY src/schemas/           ./src/schemas/
+COPY src/services/          ./src/services/
 
 # https://rules.sonarsource.com/docker/RSPEC-6504/
 
@@ -78,4 +78,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
     CMD ["./healthcheck.sh"]
 
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "9000"]

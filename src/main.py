@@ -12,7 +12,7 @@ from contextlib import asynccontextmanager
 import logging
 from typing import AsyncIterator
 from fastapi import FastAPI
-from app.routes import player, health
+from src.routes import player, health
 
 # https://github.com/encode/uvicorn/issues/562
 UVICORN_LOGGER = "uvicorn.error"
