@@ -1,6 +1,6 @@
 -r requirements.txt
 
-pytest==8.3.5
+pytest==8.4.0
 pytest-cov==6.1.1
 pytest-sugar==1.0.0
 gevent==25.5.1
