@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     # Only run coverage for PRs from the same repository (not forks)
     # This ensures secrets are available for Codecov and Codacy
-    if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
         service: [codecov, codacy]
