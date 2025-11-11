@@ -79,6 +79,9 @@ jobs:
   coverage:
     needs: test
     runs-on: ubuntu-latest
+    # Only run coverage for PRs from the same repository (not forks)
+    # This ensures secrets are available for Codecov and Codacy
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
         service: [codecov, codacy]
@@ -107,8 +110,8 @@ jobs:
 
   container:
     needs: coverage
-    runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
