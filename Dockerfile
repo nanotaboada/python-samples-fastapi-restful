@@ -2,6 +2,7 @@
 # Stage 1: Builder
 # This stage builds the application and its dependencies.
 # ------------------------------------------------------------------------------
+# Python version should match .python-version file (currently 3.13.3)
 FROM python:3.13.3-slim-bookworm AS builder
 
 WORKDIR /app
@@ -19,6 +20,7 @@ RUN pip wheel --no-cache-dir --wheel-dir=/app/wheelhouse -r requirements.txt
 # Stage 2: Runtime
 # This stage creates the final, minimal image to run the application.
 # ------------------------------------------------------------------------------
+# Python version should match .python-version file (currently 3.13.3)
 FROM python:3.13.3-slim-bookworm AS runtime
 
 WORKDIR /app
