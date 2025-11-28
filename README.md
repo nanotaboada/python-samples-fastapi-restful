@@ -19,6 +19,12 @@ Proof of Concept for a RESTful API made with [Python 3](https://www.python.org/)
 
 _Figure: Simplified, conceptual project structure and main application flow. Not all dependencies are shown._
 
+## Python Version Management
+
+This project uses `.python-version` to specify the required Python version. If you use [pyenv](https://github.com/pyenv/pyenv), [asdf](https://asdf-vm.com/), or [mise](https://mise.jdx.dev/), the correct Python version will be automatically activated when you enter the project directory.
+
+Alternatively, ensure you have Python 3.13.3 (or the version specified in `.python-version`) installed.
+
 ## Install
 
 ```console

@@ -12,9 +12,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  PYTHON_VERSION: 3.13.3
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -25,10 +22,10 @@ jobs:
       - name: Lint commit messages
         uses: wagoid/commitlint-github-action@v6.2.1
 
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
+      - name: Set up Python
         uses: actions/setup-python@v6.0.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version-file: '.python-version'
           cache: 'pip'
 
       - name: Install lint dependencies
@@ -51,10 +48,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5.0.0
 
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
+      - name: Set up Python
         uses: actions/setup-python@v6.0.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version-file: '.python-version'
           cache: 'pip'
 
       - name: Install test dependencies
