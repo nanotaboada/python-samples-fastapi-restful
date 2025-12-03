@@ -23,7 +23,7 @@ jobs:
         uses: wagoid/commitlint-github-action@v6.2.1
 
       - name: Set up Python
-        uses: actions/setup-python@v6.0.0
+        uses: actions/setup-python@v6.1.0
         with:
           python-version-file: '.python-version'
           cache: 'pip'
