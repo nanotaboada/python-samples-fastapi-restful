@@ -1,5 +1,5 @@
 # https://fastapi.tiangolo.com/#standard-dependencies
-fastapi[standard]==0.123.2
+fastapi[standard]==0.123.5
 SQLAlchemy==2.0.44
 aiosqlite==0.21.0
 aiocache==0.12.3
