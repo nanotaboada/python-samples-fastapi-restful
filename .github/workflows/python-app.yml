@@ -93,7 +93,7 @@ jobs:
 
       - name: Upload coverage report to ${{ matrix.service }}
         if: ${{ matrix.service == 'codecov' }}
-        uses: codecov/codecov-action@v5.5.1
+        uses: codecov/codecov-action@v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
