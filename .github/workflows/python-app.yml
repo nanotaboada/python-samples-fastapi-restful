@@ -3,9 +3,6 @@
 
 name: Python CI
 
-permissions:
-  contents: read
-
 on:
   push:
     branches: [ master ]
@@ -15,6 +12,8 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.1
@@ -44,6 +43,8 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.1
@@ -76,6 +77,8 @@ jobs:
   coverage:
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     # Only run coverage for PRs from the same repository (not forks)
     # This ensures secrets are available for Codecov and Codacy
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository

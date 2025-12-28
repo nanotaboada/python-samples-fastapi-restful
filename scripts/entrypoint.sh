@@ -6,9 +6,9 @@ VOLUME_STORAGE_PATH="/storage/players-sqlite3.db"
 
 echo "✔ Starting container..."
 
-if [ ! -f "$VOLUME_STORAGE_PATH" ]; then
+if [[ ! -f "$VOLUME_STORAGE_PATH" ]]; then
     echo "⚠️ No existing database file found in volume."
-    if [ -f "$IMAGE_STORAGE_PATH" ]; then
+    if [[ -f "$IMAGE_STORAGE_PATH" ]]; then
         echo "Copying database file to writable volume..."
         cp "$IMAGE_STORAGE_PATH" "$VOLUME_STORAGE_PATH"
         echo "✔ Database initialized at $VOLUME_STORAGE_PATH"
