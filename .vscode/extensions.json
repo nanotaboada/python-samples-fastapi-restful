@@ -1,15 +1,27 @@
 {
   "recommendations": [
-    "ms-python.python",
-    "ms-python.flake8",
-    "ms-python.black-formatter",
-    "github.vscode-pull-request-github",
-    "github.vscode-github-actions",
-    "ms-azuretools.vscode-containers",
-    "redhat.vscode-yaml",
-    "sonarsource.sonarlint-vscode",
-    "esbenp.prettier-vscode",
-    "conventionalcommits.extension",
-    "codezombiech.gitignore"
+    // Python Development
+    "ms-python.python",                  // Python language support
+    "ms-python.flake8",                  // Python linting with flake8
+    "ms-python.black-formatter",         // Python code formatting
+
+    // Infrastructure & Workflow
+    "ms-azuretools.vscode-containers",   // Container Tools - Docker and container management
+    "github.copilot-chat",               // GitHub Copilot Chat - AI coding assistant
+    "github.vscode-pull-request-github", // GitHub Pull Requests and Issues - PR management
+    "github.vscode-github-actions",      // GitHub Actions - CI/CD workflow support
+    "redhat.vscode-yaml",                // YAML - Language support for YAML files
+    "foxundermoon.shell-format",         // Shell Format - Shell script formatter
+    "codezombiech.gitignore",            // Gitignore - .gitignore file support
+    "sonarsource.sonarlint-vscode",      // SonarLint - Code quality and security analysis
+    "davidanson.vscode-markdownlint",    // MarkdownLint - Markdown linting
+    "ryanluker.vscode-coverage-gutters", // Coverage Gutters - Test coverage visualization
+    "yy0931.vscode-sqlite3-editor",      // SQLite3 Editor - Database viewer
+  ],
+
+  "unwantedRecommendations": [
+    "ms-azuretools.vscode-docker",       // Docker (legacy) - Use vscode-containers instead
+    "docker.docker",                     // Docker DX - Use ms-azuretools.vscode-containers
+    "github.copilot"                     // Copilot (base) - Unified into copilot-chat
   ]
 }
