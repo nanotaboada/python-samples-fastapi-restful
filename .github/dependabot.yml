@@ -9,14 +9,14 @@ updates:
     groups:
       fastapi:
         patterns:
-        - "fastapi*"
+          - "fastapi*"
       flake8:
         patterns:
-        - "flake8*"
+          - "flake8*"
       pytest:
         patterns:
-        - "pytest*"
-        - "gevent"
+          - "pytest*"
+          - "gevent"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

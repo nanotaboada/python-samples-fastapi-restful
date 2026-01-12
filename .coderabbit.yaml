@@ -1,17 +1,15 @@
+# CodeRabbit Configuration
+# Optimized for Python 3.13 / FastAPI RESTful API project
+
 language: en-US
-tone_instructions: ""
 early_access: true
 enable_free_tier: true
-inheritance: false
+
 reviews:
   profile: chill
   request_changes_workflow: false
   high_level_summary: true
-  high_level_summary_instructions: ""
   high_level_summary_placeholder: "@coderabbitai summary"
-  high_level_summary_in_walkthrough: false
-  auto_title_placeholder: "@coderabbitai"
-  auto_title_instructions: ""
   review_status: true
   commit_status: true
   fail_commit_status: false
@@ -21,175 +19,280 @@ reviews:
   estimate_code_review_effort: true
   assess_linked_issues: true
   related_issues: true
-  related_prs: false
-  suggested_labels: false
-  labeling_instructions: []
+  related_prs: true
+  suggested_labels: true
   auto_apply_labels: false
   suggested_reviewers: false
   auto_assign_reviewers: false
   in_progress_fortune: true
   poem: false
-  enable_prompt_for_ai_agents: true
-  path_filters: []
-  path_instructions: []
   abort_on_close: true
-  disable_cache: false
+
+  # Path-based review instructions for this Python/FastAPI project
+  path_instructions:
+    - path: "**/*.py"
+      instructions: |
+        - Follow PEP 8 style guide and Black formatting (88 char line length)
+        - Use type hints for function parameters and return values
+        - Follow async/await patterns for all I/O operations
+        - Use Google-style docstrings for modules, classes, and functions
+        - Verify imports follow proper grouping (stdlib → third-party → local)
+        - Check that SQLAlchemy 2.0+ style is used (select() not legacy Query)
+
+    - path: "routes/**/*.py"
+      instructions: |
+        - Routes should be thin - delegate to services
+        - Verify proper HTTP status codes and FastAPI response models
+        - Check that dependency injection is used (Depends(generate_async_session))
+        - Ensure Pydantic models are used for request/response validation
+        - Validate async route handlers (async def)
+        - Check for proper cache headers (X-Cache: HIT/MISS)
+
+    - path: "services/**/*.py"
+      instructions: |
+        - Services should contain business logic
+        - Verify async database operations via repositories/database layer
+        - Check cache invalidation on POST/PUT/DELETE operations
+        - Ensure proper error handling with try/except where needed
+        - Validate that Pydantic models are converted properly (model_dump())
+
+    - path: "databases/**/*.py"
+      instructions: |
+        - Verify AsyncSession usage with proper async context managers
+        - Check that async_session generator uses yield pattern
+        - Ensure SQLAlchemy engine is configured with aiosqlite
+        - Validate database initialization in lifespan handler
+
+    - path: "schemas/**/*.py"
+      instructions: |
+        - SQLAlchemy ORM schemas should use declarative base
+        - Check proper column types and constraints
+        - Verify table names are explicitly set
+        - Ensure relationships are defined if needed
+
+    - path: "models/**/*.py"
+      instructions: |
+        - Pydantic models should use Field for validation
+        - Verify camelCase aliasing with Config.alias_generator = to_camel
+        - Check that validation constraints match business rules
+        - Ensure models are separate from database schemas
+
+    - path: "tests/**/*.py"
+      instructions: |
+        - Tests should use pytest with fixtures from conftest.py
+        - Verify test naming follows given_when_then pattern
+        - Check that TestClient is used for endpoint testing
+        - Ensure test data uses stubs (e.g., player_stub.py)
+        - Tests should use async test functions where appropriate
+        - Validate coverage targets (80% minimum)
+
+    - path: "main.py"
+      instructions: |
+        - Verify FastAPI app initialization with proper settings
+        - Check lifespan handler for database initialization
+        - Ensure router registration is correct
+        - Validate CORS and middleware configuration
+
+    - path: "**/Dockerfile"
+      instructions: |
+        - Verify Python 3.13 base image (python:3.13-alpine)
+        - Check multi-stage builds for optimization
+        - Ensure non-root user is used for security
+        - Validate HEALTHCHECK instruction is present
+        - Check that requirements are installed in correct order
+
+    - path: "requirements*.txt"
+      instructions: |
+        - Verify pinned versions for reproducibility
+        - Check separation: requirements.txt (runtime), requirements-test.txt, requirements-lint.txt
+        - Ensure dependencies are up to date with security patches
+
+    - path: "pyproject.toml"
+      instructions: |
+        - Verify Black configuration (line-length = 88, target-version = ["py313"])
+        - Check pytest configuration matches test execution
+        - Ensure tool configurations are consistent with CI
+
+  # Ignore patterns for this project
+  path_filters:
+    - "!**/__pycache__/**"
+    - "!**/.pytest_cache/**"
+    - "!**/htmlcov/**"
+    - "!**/*.pyc"
+    - "!**/.venv/**"
+    - "!**/venv/**"
+    - "!**/storage/**"
+    - "!**/*.db"
+    - "!**/*.db-shm"
+    - "!**/*.db-wal"
+    - "!**/assets/**"
+    - "!**/postman_collections/**"
+
   auto_review:
     enabled: true
     auto_incremental_review: true
-    ignore_title_keywords: []
-    labels:
-      - planning
+    ignore_title_keywords:
+      - "WIP"
+      - "DO NOT REVIEW"
+      - "wip"
     drafts: false
-    base_branches: []
-    ignore_usernames: []
+    base_branches:
+      - master
+      - main
+
   finishing_touches:
     docstrings:
       enabled: true
     unit_tests:
       enabled: true
+
   pre_merge_checks:
     docstrings:
       mode: warning
-      threshold: 80
+      threshold: 75
     title:
       mode: warning
-      requirements: ""
+      requirements: |
+        - Use Conventional Commits format (feat:, fix:, chore:, docs:, test:, refactor:)
+        - Keep under 80 characters
+        - Be descriptive and specific
     description:
       mode: warning
     issue_assessment:
       mode: warning
-    custom_checks: []
+
   tools:
-    ast-grep:
-      rule_dirs: []
-      util_dirs: []
-      essential_rules: true
-      packages: []
-    shellcheck:
-      enabled: true
+    # Relevant tools for Python projects
     ruff:
       enabled: true
-    markdownlint:
+    flake8:
       enabled: true
-    github-checks:
-      enabled: true
-      timeout_ms: 90000
-    languagetool:
-      enabled: true
-      enabled_rules: []
-      disabled_rules: []
-      enabled_categories: []
-      disabled_categories: []
-      enabled_only: false
-      level: default
-    biome:
-      enabled: true
-    hadolint:
-      enabled: true
-    swiftlint:
-      enabled: true
-    phpstan:
-      enabled: true
-      level: default
-    phpmd:
-      enabled: true
-    phpcs:
-      enabled: true
-    golangci-lint:
-      enabled: true
-    yamllint:
+    pylint:
       enabled: true
     gitleaks:
       enabled: true
     checkov:
       enabled: true
-    detekt:
+    hadolint:
       enabled: true
-    eslint:
-      enabled: true
-    flake8:
-      enabled: true
-    fortitudeLint:
-      enabled: true
-    rubocop:
-      enabled: true
-    buf:
-      enabled: true
-    regal:
+    yamllint:
       enabled: true
     actionlint:
       enabled: true
-    pmd:
-      enabled: true
-    clang:
-      enabled: true
-    cppcheck:
-      enabled: true
     semgrep:
       enabled: true
-    circleci:
+    markdownlint:
       enabled: true
-    clippy:
+    github-checks:
       enabled: true
-    sqlfluff:
-      enabled: true
-    prismaLint:
-      enabled: true
-    pylint:
-      enabled: true
-    oxc:
-      enabled: true
-    shopifyThemeCheck:
-      enabled: true
-    luacheck:
-      enabled: true
-    brakeman:
-      enabled: true
+      timeout_ms: 120000
     dotenvLint:
-      enabled: true
-    htmlhint:
       enabled: true
     checkmake:
       enabled: true
     osvScanner:
       enabled: true
+
+    # Disable irrelevant tools for Python project
+    shellcheck:
+      enabled: false
+    biome:
+      enabled: false
+    swiftlint:
+      enabled: false
+    phpstan:
+      enabled: false
+    phpmd:
+      enabled: false
+    phpcs:
+      enabled: false
+    golangci-lint:
+      enabled: false
+    detekt:
+      enabled: false
+    eslint:
+      enabled: false
+    rubocop:
+      enabled: false
+    buf:
+      enabled: false
+    regal:
+      enabled: false
+    pmd:
+      enabled: false
+    clang:
+      enabled: false
+    cppcheck:
+      enabled: false
+    clippy:
+      enabled: false
+    sqlfluff:
+      enabled: false
+    prismaLint:
+      enabled: false
+    oxc:
+      enabled: false
+    shopifyThemeCheck:
+      enabled: false
+    luacheck:
+      enabled: false
+    brakeman:
+      enabled: false
+    htmlhint:
+      enabled: false
+    languagetool:
+      enabled: false
+    circleci:
+      enabled: false
+    fortitudeLint:
+      enabled: false
+
 chat:
   art: true
   auto_reply: true
-  integrations:
-    jira:
-      usage: disabled
-    linear:
-      usage: disabled
+
 knowledge_base:
   opt_out: false
   web_search:
     enabled: true
   code_guidelines:
     enabled: true
-    filePatterns: []
+    filePatterns:
+      - "**/*.py"
+      - "**/requirements*.txt"
+      - "**/pyproject.toml"
+      - "**/Dockerfile"
+      - "**/*.{yml,yaml}"
   learnings:
     scope: auto
   issues:
     scope: auto
-  jira:
-    usage: disabled
-    project_keys: []
-  linear:
-    usage: disabled
-    team_keys: []
   pull_requests:
     scope: auto
   mcp:
     usage: auto
-    disabled_servers: []
+
 code_generation:
   docstrings:
     language: en-US
-    path_instructions: []
+    path_instructions:
+      - path: "**/*.py"
+        instructions: |
+          - Use Google-style docstrings with Args, Returns, Raises sections
+          - Keep documentation concise and meaningful
+          - Include type information in docstrings when helpful
+          - Document async functions and their async behavior
   unit_tests:
-    path_instructions: []
+    path_instructions:
+      - path: "tests/**/*.py"
+        instructions: |
+          - Use pytest framework with async support (pytest-asyncio)
+          - Follow given_when_then or arrange_act_assert patterns
+          - Use fixtures from conftest.py for TestClient
+          - Use test stubs for consistent test data
+          - Ensure async tests are properly decorated
+          - Target 80% code coverage minimum
+
 issue_enrichment:
   auto_enrich:
     enabled: true
