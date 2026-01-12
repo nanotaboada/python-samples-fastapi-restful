@@ -109,7 +109,7 @@ reviews:
 
     - path: "pyproject.toml"
       instructions: |
-        - Verify Black configuration (line-length = 88, target-version = py313)
+        - Verify Black configuration (line-length = 88, target-version = ["py313"])
         - Check pytest configuration matches test execution
         - Ensure tool configurations are consistent with CI
 
