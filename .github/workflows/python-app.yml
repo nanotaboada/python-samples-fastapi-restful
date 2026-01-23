@@ -16,7 +16,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Lint commit messages
         uses: wagoid/commitlint-github-action@v6.2.1
@@ -47,7 +47,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Set up Python
         uses: actions/setup-python@v6.2.0
@@ -87,7 +87,7 @@ jobs:
         service: [codecov, codacy]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Download coverage report artifact
         uses: actions/download-artifact@v7.0.0
@@ -119,7 +119,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3.6.0
