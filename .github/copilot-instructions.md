@@ -1,53 +1,81 @@
-# Copilot Instructions for python-samples-fastapi-restful
+# GitHub Copilot Instructions
 
-## Project Overview
+> **⚡ Token Efficiency Note**: This is a minimal pointer file (~500 tokens, auto-loaded by Copilot).  
+> For complete operational details, reference: `#file:AGENTS.md` (~2,500 tokens, loaded on-demand)  
+> For specialized knowledge, use: `#file:SKILLS/<skill-name>/SKILL.md` (loaded on-demand when needed)
 
-This is a RESTful API proof of concept built with **Python 3.13** and **FastAPI**. The application manages football player data with full CRUD operations, featuring async SQLAlchemy ORM, in-memory caching, and SQLite database storage.
+## 🎯 Quick Context
 
-## Tech Stack
+**Project**: FastAPI REST API demonstrating modern Python async patterns  
+**Stack**: Python 3.13 • FastAPI • SQLAlchemy (async) • SQLite • Docker • pytest  
+**Pattern**: Routes → Services → Database (layered architecture)  
+**Philosophy**: Learning-focused PoC emphasizing async/await and type safety
 
-- **Framework**: FastAPI 0.123.0 with standard dependencies
-- **Database**: SQLite with async support (`aiosqlite 0.21.0`)
-- **ORM**: SQLAlchemy 2.0.44 (async)
-- **Caching**: aiocache 0.12.3 (SimpleMemoryCache)
-- **Testing**: pytest 9.0.1, pytest-cov 7.0.0, pytest-sugar 1.1.1, gevent 25.9.1
-- **Linting**: flake8 7.3.0, black 25.11.0
-- **Python Version**: 3.13.3 (see `.python-version`)
-- **Server**: uvicorn (included in FastAPI standard dependencies)
-- **Container**: Docker with multi-stage builds, Docker Compose
+## 📐 Core Conventions
 
-## Project Structure
+- **Naming**: snake_case for functions/variables, PascalCase for classes
+- **Type Hints**: Mandatory throughout (enforced by mypy if enabled)
+- **Async**: All I/O operations use `async`/`await`
+- **Testing**: pytest with fixtures and async support
+- **Formatting**: black (opinionated), flake8 (linting)
+
+## 🏗️ Architecture at a Glance
 
 ```
-├── main.py                    # FastAPI app entry point, lifespan handler, router registration
-├── databases/
-│   └── player_database.py     # Async engine, sessionmaker, Base, session generator
-├── models/
-│   └── player_model.py        # Pydantic models for API request/response validation
-├── schemas/
-│   └── player_schema.py       # SQLAlchemy ORM table schema definitions
-├── routes/
-│   ├── player_route.py        # Player CRUD endpoints with caching
-│   └── health_route.py        # Health check endpoint
-├── services/
-│   └── player_service.py      # Async database CRUD operations
-├── tests/
-│   ├── conftest.py            # pytest fixtures (TestClient)
-│   ├── test_main.py           # Test suite for all endpoints
-│   └── player_stub.py         # Test data stubs
-├── storage/                   # SQLite database file (seeded)
-├── scripts/
-│   ├── entrypoint.sh          # Docker entrypoint for DB initialization
-│   └── healthcheck.sh         # Docker health check script
-└── postman_collections/       # Postman collection for API testing
+Route → Service → Database
+  ↓         ↓
+Cache    Session
 ```
 
-## Key Architectural Patterns
+- **Routes**: FastAPI endpoints with dependency injection
+- **Services**: Async database operations via SQLAlchemy
+- **Database**: SQLite with async support (`aiosqlite`)
+- **Models**: Pydantic for validation, SQLAlchemy for ORM
+- **Cache**: aiocache SimpleMemoryCache (10min/1hr TTL)
 
-1. **Layered Architecture**: Routes → Services → Database
-2. **Dependency Injection**: `AsyncSession` via `Depends(generate_async_session)`
-3. **Pydantic for Validation**: `PlayerModel` with camelCase aliasing (`to_camel`)
-4. **SQLAlchemy ORM**: `Player` schema mapped to `players` table
+## ✅ Copilot Should
+
+- Generate idiomatic async FastAPI code with proper type hints
+- Use SQLAlchemy async APIs (`select()`, `scalars()`, `session.commit()`)
+- Follow dependency injection pattern with `Depends()`
+- Write tests with pytest async fixtures
+- Apply Pydantic models for request/response validation
+- Use structured logging (avoid print statements)
+- Implement proper HTTP status codes and responses
+
+## 🚫 Copilot Should Avoid
+
+- Synchronous database operations
+- Mixing sync and async code
+- Missing type hints on functions
+- Using `print()` instead of logging
+- Creating routes without caching consideration
+- Ignoring Pydantic validation
+
+## ⚡ Quick Commands
+
+```bash
+# Run with hot reload
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+# Test with coverage
+pytest --cov=. --cov-report=term-missing
+
+# Docker
+docker compose up
+
+# Swagger: http://localhost:8000/docs
+```
+
+## 📚 Need More Detail?
+
+**For operational procedures**: Load `#file:AGENTS.md`  
+**For Docker expertise**: *(Planned)* `#file:SKILLS/docker-containerization/SKILL.md`  
+**For testing patterns**: *(Planned)* `#file:SKILLS/testing-patterns/SKILL.md`
+
+---
+
+💡 **Why this structure?** Copilot auto-loads this file on every chat (~500 tokens). Loading `AGENTS.md` or `SKILLS/` explicitly gives you deep context only when needed, saving 80% of your token budget!
 5. **Caching**: In-memory cache (10 min TTL) with `X-Cache` headers (HIT/MISS)
 6. **Async/Await**: All database operations are async
 
