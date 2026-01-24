@@ -2,7 +2,7 @@
 
 ## Status
 
-[![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-app.yml)
+[![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nanotaboada_python-samples-fastapi-restful&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nanotaboada_python-samples-fastapi-restful)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8f9bab37f6f444c895a8b25d5df772fc)](https://app.codacy.com/gh/nanotaboada/python-samples-fastapi-restful/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![codecov](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful/branch/master/graph/badge.svg?token=A1WNZPRQEJ)](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful)
@@ -81,6 +81,62 @@ docker compose down -v
 ```
 
 > This removes the volume and will reinitialize the database from the built-in seed file the next time you `up`.
+
+## Releases
+
+This project uses famous football coaches as release names ♟️
+
+### Create a Release
+
+Releases are created by pushing version tags in the format `v{MAJOR}.{MINOR}.{PATCH}-{COACH}`:
+
+```bash
+# Example: Creating the first release (Ancelotti)
+git tag -a v1.0.0-ancelotti -m "Release 1.0.0 - Ancelotti"
+git push origin v1.0.0-ancelotti
+```
+
+The CD pipeline will automatically:
+
+- Run tests and generate coverage reports
+- Build and push Docker images with multiple tags
+- Generate a changelog from git commits
+- Create a GitHub Release with auto-generated notes
+
+### Pull Docker Images
+
+Official releases are published to GitHub Container Registry (GHCR):
+
+```bash
+# By semantic version (recommended)
+docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:1.0.0
+
+# By coach name
+docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:ancelotti
+
+# Latest
+docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:latest
+```
+
+### Coach Names (A-Z)
+
+| Letter | Coach | Tag Name | Letter | Coach | Tag Name |
+|--------|-------|----------|--------|-------|----------|
+| A | Ancelotti | `ancelotti` | N | Nagelsmann | `nagelsmann` |
+| B | Bielsa | `bielsa` | O | Ottmar | `ottmar` |
+| C | Capello | `capello` | P | Pochettino | `pochettino` |
+| D | Del Bosque | `delbosque` | Q | Queiroz | `queiroz` |
+| E | Eriksson | `eriksson` | R | Ranieri | `ranieri` |
+| F | Ferguson | `ferguson` | S | Simeone | `simeone` |
+| G | Guardiola | `guardiola` | T | Tuchel | `tuchel` |
+| H | Heynckes | `heynckes` | U | Unai | `unai` |
+| I | Inzaghi | `inzaghi` | V | Van Gaal | `vangaal` |
+| J | Klopp | `klopp` | W | Wenger | `wenger` |
+| K | Kovač | `kovac` | X | Xavi | `xavi` |
+| L | Löw | `low` | Y | Yozhef | `yozhef` |
+| M | Mourinho | `mourinho` | Z | Zeman | `zeman` |
+
+See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
 ## Credits
 
