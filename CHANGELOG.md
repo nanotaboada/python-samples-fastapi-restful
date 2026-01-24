@@ -52,7 +52,7 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ---
 
-## [1.0.0 - Ancelotti] - 2026-XX-XX
+## [1.0.0 - Ancelotti] - TBD
 
 ### Added
 

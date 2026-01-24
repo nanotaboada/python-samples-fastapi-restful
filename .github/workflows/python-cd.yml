@@ -156,6 +156,10 @@ jobs:
             docker pull ghcr.io/${{ env.PACKAGE_NAME }}:latest
             ```
 
+            ## Changelog
+
+            ${{ steps.changelog.outputs.changelog }}
+
             ---
 
             📦 **Package:** [ghcr.io/${{ env.PACKAGE_NAME }}](https://github.com/${{ github.repository }}/pkgs/container/python-samples-fastapi-restful)
