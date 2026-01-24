@@ -1,0 +1,164 @@
+# Building, testing, and publishing Python releases
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python CD
+
+on:
+  push:
+    tags:
+      - 'v*.*.*-*'
+
+env:
+  PYTHON_VERSION_FILE: '.python-version'
+  PACKAGE_NAME: nanotaboada/python-samples-fastapi-restful
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          # Extract semver (e.g., v1.0.0-ancelotti -> 1.0.0)
+          SEMVER=$(echo $TAG_NAME | sed -E 's/^v([0-9]+\.[0-9]+\.[0-9]+)-.*/\1/')
+          # Extract coach name (e.g., v1.0.0-ancelotti -> ancelotti)
+          COACH=$(echo $TAG_NAME | sed -E 's/^v[0-9]+\.[0-9]+\.[0-9]+-//')
+
+          # Validate semver format (X.Y.Z)
+          if ! echo "$SEMVER" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "❌ Error: Invalid semantic version '$SEMVER' extracted from tag '$TAG_NAME'"
+            echo "Expected format: v{MAJOR}.{MINOR}.{PATCH}-{COACH} (e.g., v1.0.0-ancelotti)"
+            exit 1
+          fi
+
+          # Valid coach names (A-Z from CHANGELOG.md)
+          VALID_COACHES="ancelotti bielsa capello delbosque eriksson ferguson guardiola heynckes inzaghi klopp kovac low mourinho nagelsmann ottmar pochettino queiroz ranieri simeone tuchel unai vangaal wenger xavi yozhef zeman"
+
+          # Validate coach name against the list
+          if [ -z "$COACH" ]; then
+            echo "❌ Error: Coach name is empty in tag '$TAG_NAME'"
+            echo "Expected format: v{MAJOR}.{MINOR}.{PATCH}-{COACH} (e.g., v1.0.0-ancelotti)"
+            exit 1
+          fi
+
+          if ! echo "$VALID_COACHES" | grep -qw "$COACH"; then
+            echo "❌ Error: Invalid coach name '$COACH' in tag '$TAG_NAME'"
+            echo "Valid coaches (A-Z): $VALID_COACHES"
+            echo "See CHANGELOG.md for the complete list"
+            exit 1
+          fi
+
+          # Export validated outputs
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "semver=$SEMVER" >> $GITHUB_OUTPUT
+          echo "coach=$COACH" >> $GITHUB_OUTPUT
+
+          echo "📦 Release version: $SEMVER"
+          echo "♟️ Coach name: $COACH"
+
+      - name: Set up Python
+        uses: actions/setup-python@v6.1.0
+        with:
+          python-version-file: ${{ env.PYTHON_VERSION_FILE }}
+          cache: 'pip'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+
+      - name: Run tests with pytest
+        run: |
+          pytest -v
+
+      - name: Generate coverage report
+        run: |
+          pytest --cov=./ --cov-report=xml --cov-report=term
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.12.0
+
+      - name: Build and push Docker image to GitHub Container Registry
+        uses: docker/build-push-action@v6.18.0
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            ghcr.io/${{ env.PACKAGE_NAME }}:${{ steps.version.outputs.semver }}
+            ghcr.io/${{ env.PACKAGE_NAME }}:${{ steps.version.outputs.coach }}
+            ghcr.io/${{ env.PACKAGE_NAME }}:latest
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get the previous tag (second most recent tag matching the version pattern)
+          PREVIOUS_TAG=$(git tag -l 'v*.*.*-*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+-' | sed -n '2p')
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "📝 First release - no previous tag found"
+            CHANGELOG="Initial release"
+          else
+            echo "📝 Generating changelog from $PREVIOUS_TAG to ${{ steps.version.outputs.tag_name }}"
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${{ steps.version.outputs.tag_name }})
+          fi
+
+          # Write changelog to file
+          echo "$CHANGELOG" > changelog.txt
+          cat changelog.txt
+
+          # Set output for use in release body
+          {
+            echo "changelog<<EOF"
+            echo "$CHANGELOG"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2.2.0
+        with:
+          name: "v${{ steps.version.outputs.semver }} - ${{ steps.version.outputs.coach }} ♟️"
+          tag_name: ${{ steps.version.outputs.tag_name }}
+          body: |
+            # ♟️ Release ${{ steps.version.outputs.semver }} - ${{ steps.version.outputs.coach }}
+
+            ## Docker Images
+
+            Pull this release using any of the following tags:
+
+            ```bash
+            # By semantic version (recommended)
+            docker pull ghcr.io/${{ env.PACKAGE_NAME }}:${{ steps.version.outputs.semver }}
+
+            # By coach name
+            docker pull ghcr.io/${{ env.PACKAGE_NAME }}:${{ steps.version.outputs.coach }}
+
+            # Latest
+            docker pull ghcr.io/${{ env.PACKAGE_NAME }}:latest
+            ```
+
+            ---
+
+            📦 **Package:** [ghcr.io/${{ env.PACKAGE_NAME }}](https://github.com/${{ github.repository }}/pkgs/container/python-samples-fastapi-restful)
+          draft: false
+          prerelease: false
+          generate_release_notes: true
