@@ -118,25 +118,7 @@ docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:ancelotti
 docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:latest
 ```
 
-### Coach Names (A-Z)
-
-| Letter | Coach | Tag Name | Letter | Coach | Tag Name |
-|--------|-------|----------|--------|-------|----------|
-| A | Ancelotti | `ancelotti` | N | Nagelsmann | `nagelsmann` |
-| B | Bielsa | `bielsa` | O | Ottmar | `ottmar` |
-| C | Capello | `capello` | P | Pochettino | `pochettino` |
-| D | Del Bosque | `delbosque` | Q | Queiroz | `queiroz` |
-| E | Eriksson | `eriksson` | R | Ranieri | `ranieri` |
-| F | Ferguson | `ferguson` | S | Simeone | `simeone` |
-| G | Guardiola | `guardiola` | T | Tuchel | `tuchel` |
-| H | Heynckes | `heynckes` | U | Unai | `unai` |
-| I | Inzaghi | `inzaghi` | V | Van Gaal | `vangaal` |
-| J | Klopp | `klopp` | W | Wenger | `wenger` |
-| K | Kovač | `kovac` | X | Xavi | `xavi` |
-| L | Löw | `low` | Y | Yozhef | `yozhef` |
-| M | Mourinho | `mourinho` | Z | Zeman | `zeman` |
-
-See [CHANGELOG.md](CHANGELOG.md) for full release history.
+> 💡 **Note:** See [CHANGELOG.md](CHANGELOG.md) for the complete coach list (A-Z) and release history.
 
 ## Credits
 
