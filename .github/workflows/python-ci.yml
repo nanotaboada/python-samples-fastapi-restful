@@ -80,11 +80,8 @@ jobs:
     permissions:
       contents: read
     # Only run coverage for PRs from the same repository (not forks)
-    # This ensures secrets are available for Codecov and Codacy
+    # This ensures secrets are available for Codecov
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-    strategy:
-      matrix:
-        service: [codecov, codacy]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
@@ -94,16 +91,8 @@ jobs:
         with:
           name: coverage.xml
 
-      - name: Upload coverage report to ${{ matrix.service }}
-        if: ${{ matrix.service == 'codecov' }}
+      - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
-
-      - name: Upload coverage report to ${{ matrix.service }}
-        if: ${{ matrix.service == 'codacy' }}
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: coverage.xml
