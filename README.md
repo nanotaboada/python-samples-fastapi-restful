@@ -5,7 +5,6 @@
 [![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml)
 [![Python CD](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-cd.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-cd.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nanotaboada_python-samples-fastapi-restful&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nanotaboada_python-samples-fastapi-restful)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8f9bab37f6f444c895a8b25d5df772fc)](https://app.codacy.com/gh/nanotaboada/python-samples-fastapi-restful/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![codecov](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful/branch/master/graph/badge.svg?token=A1WNZPRQEJ)](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful)
 [![CodeFactor](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful/badge)](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -119,25 +118,7 @@ docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:ancelotti
 docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:latest
 ```
 
-### Coach Names (A-Z)
-
-| Letter | Coach | Tag Name | Letter | Coach | Tag Name |
-|--------|-------|----------|--------|-------|----------|
-| A | Ancelotti | `ancelotti` | N | Nagelsmann | `nagelsmann` |
-| B | Bielsa | `bielsa` | O | Ottmar | `ottmar` |
-| C | Capello | `capello` | P | Pochettino | `pochettino` |
-| D | Del Bosque | `delbosque` | Q | Queiroz | `queiroz` |
-| E | Eriksson | `eriksson` | R | Ranieri | `ranieri` |
-| F | Ferguson | `ferguson` | S | Simeone | `simeone` |
-| G | Guardiola | `guardiola` | T | Tuchel | `tuchel` |
-| H | Heynckes | `heynckes` | U | Unai | `unai` |
-| I | Inzaghi | `inzaghi` | V | Van Gaal | `vangaal` |
-| J | Klopp | `klopp` | W | Wenger | `wenger` |
-| K | Kovač | `kovac` | X | Xavi | `xavi` |
-| L | Löw | `low` | Y | Yozhef | `yozhef` |
-| M | Mourinho | `mourinho` | Z | Zeman | `zeman` |
-
-See [CHANGELOG.md](CHANGELOG.md) for full release history.
+> 💡 **Note:** See [CHANGELOG.md](CHANGELOG.md) for the complete coach list (A-Z) and release history.
 
 ## Credits
 
