@@ -68,23 +68,7 @@ To create a new release, follow these steps in order:
 
 ### 1. Update CHANGELOG.md
 
-Move items from the `[Unreleased]` section to a new release section:
-
-```markdown
-## [X.Y.Z - COACH_NAME] - YYYY-MM-DD
-
-### Added
-- New features here
-
-### Changed
-- Changes here
-
-### Fixed
-- Bug fixes here
-
-### Removed
-- Removed features here
-```
+Move items from the `[Unreleased]` section to a new release section using the template format provided at the bottom of this file (see the commented template).
 
 **Important:** Commit and push this change before creating the tag.
 
