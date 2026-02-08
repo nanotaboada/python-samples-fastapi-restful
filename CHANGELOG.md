@@ -46,64 +46,104 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Changed
 
-### Fixed
+### Deprecated
 
 ### Removed
+
+### Fixed
+
+### Security
 
 ---
 
-## [1.0.0 - Ancelotti] - TBD
+## [1.0.0 - Ancelotti] - 2026-01-24
 
-### Added
-
-- Initial stable release
-- Player CRUD operations with FastAPI
-- SQLite database with SQLAlchemy (async)
-- Docker support with Docker Compose
-- In-memory caching with aiocache (10 min TTL)
-- Comprehensive pytest test suite with coverage reporting
-- Health check endpoint
-- CI/CD pipeline with tag-based releases
-- Famous coaches release naming convention ♟️
-
-### Changed
-
-- N/A
-
-### Fixed
-
-- N/A
-
-### Removed
-
-- N/A
+Initial release. See [README.md](README.md) for complete feature list and documentation.
 
 ---
 
 ## How to Release
 
-1. Update this CHANGELOG.md with the new version details
-2. Create a tag with the format `v{MAJOR}.{MINOR}.{PATCH}-{COACH}`
-3. Push the tag to trigger the CD pipeline
+To create a new release, follow these steps in order:
+
+### 1. Update CHANGELOG.md
+
+Move items from the `[Unreleased]` section to a new release section:
+
+```markdown
+## [X.Y.Z - COACH_NAME] - YYYY-MM-DD
+
+### Added
+- New features here
+
+### Changed
+- Changes here
+
+### Fixed
+- Bug fixes here
+
+### Removed
+- Removed features here
+```
+
+**Important:** Commit and push this change before creating the tag.
+
+### 2. Create and Push Version Tag
 
 ```bash
-# Example: Creating the first release (Ancelotti)
+git tag -a vX.Y.Z-coach -m "Release X.Y.Z - Coach"
+git push origin vX.Y.Z-coach
+```
+
+Example:
+
+```bash
 git tag -a v1.0.0-ancelotti -m "Release 1.0.0 - Ancelotti"
 git push origin v1.0.0-ancelotti
 ```
 
-The CD pipeline will automatically:
+### 3. Automated CD Workflow
 
-- Run tests and generate coverage reports
-- Build and push Docker images with multiple tags (`:1.0.0`, `:ancelotti`, `:latest`)
-- Generate a changelog from git commits
-- Create a GitHub Release with auto-generated notes
+The CD workflow automatically:
 
-## Version History
+- ✅ Validates the coach name against the A-Z list
+- ✅ Builds and tests the project with coverage
+- ✅ Publishes Docker images to GHCR with three tags (`:X.Y.Z`, `:coach`, `:latest`)
+- ✅ Creates a GitHub Release with auto-generated notes from commits
 
-<!--
-Add release summaries here as they are published:
+### Pre-Release Checklist
 
-### [1.0.0 - Ancelotti] (2026-XX-XX)
-- Initial stable release with core functionality
+- [ ] CHANGELOG.md updated with release notes
+- [ ] CHANGELOG.md changes committed and pushed
+- [ ] Tag created with correct format: `vX.Y.Z-coach`
+- [ ] Coach name is valid (A-Z from table above)
+- [ ] Tag pushed to trigger CD workflow
+
+<!-- Template for new releases:
+
+## [X.Y.Z - COACH_NAME] - YYYY-MM-DD
+
+### Added
+- New features
+
+### Changed
+- Changes in existing functionality
+
+### Deprecated
+- Soon-to-be removed features
+
+### Removed
+- Removed features
+
+### Fixed
+- Bug fixes
+
+### Security
+- Security vulnerability fixes
+
 -->
+
+---
+
+[unreleased]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.0.0-ancelotti...HEAD
+[1.0.0 - Ancelotti]: https://github.com/nanotaboada/python-samples-fastapi-restful/releases/tag/v1.0.0-ancelotti
