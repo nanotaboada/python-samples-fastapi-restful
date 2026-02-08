@@ -191,21 +191,26 @@ curl http://localhost:9000/health
 
 When ready to release:
 
-1. **Update CHANGELOG.md**: Move items from `[Unreleased]` to a new versioned section:
+1. **Update CHANGELOG.md**: Move items from `[Unreleased]` to a new versioned section, then commit and push:
 
    ```markdown
    ## [1.1.0 - bielsa] - 2026-02-15
    ```
 
-2. **Commit and push** CHANGELOG changes
-3. **Create and push tag**:
+   ```bash
+   git add CHANGELOG.md
+   git commit -m "docs: prepare changelog for v1.1.0-bielsa release"
+   git push
+   ```
+
+2. **Create and push tag**:
 
    ```bash
    git tag -a v1.1.0-bielsa -m "Release 1.1.0 - Bielsa"
    git push origin v1.1.0-bielsa
    ```
 
-4. **CD workflow runs automatically** to publish Docker images and create GitHub Release
+3. **CD workflow runs automatically** to publish Docker images and create GitHub Release
 
 See [CHANGELOG.md](CHANGELOG.md#how-to-release) for complete release instructions and coach naming convention.
 
