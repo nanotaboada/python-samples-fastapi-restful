@@ -92,9 +92,11 @@ black .
 
 **Pre-commit checklist**:
 
-1. Run `flake8 .` - must pass with no errors
-2. Run `black --check .` - must pass with no formatting changes needed (or run `black .` to auto-fix)
-3. Run `pytest --cov=./ --cov-report=term` - all tests must pass
+1. Update CHANGELOG.md `[Unreleased]` section with your changes (Added/Changed/Deprecated/Removed/Fixed/Security)
+2. Run `flake8 .` - must pass with no errors
+3. Run `black --check .` - must pass with no formatting changes needed (or run `black .` to auto-fix)
+4. Run `pytest --cov=./ --cov-report=term` - all tests must pass
+5. Follow conventional commit format (enforced by commitlint)
 
 **Style rules** (enforced by Black + Flake8):
 
@@ -147,6 +149,71 @@ curl http://localhost:9000/health
 
 **First run behavior**: Container copies pre-seeded SQLite database into persistent volume. Subsequent runs reuse that volume to preserve data.
 
+## Release Management
+
+### CHANGELOG Maintenance
+
+**Important**: Update CHANGELOG.md continuously as you work, not just before releases.
+
+**For every meaningful commit**:
+
+1. Add your changes to the `[Unreleased]` section in CHANGELOG.md
+2. Categorize under the appropriate heading:
+   - **Added**: New features
+   - **Changed**: Changes in existing functionality
+   - **Deprecated**: Soon-to-be removed features
+   - **Removed**: Removed features
+   - **Fixed**: Bug fixes
+   - **Security**: Security vulnerability fixes
+3. Use clear, user-facing descriptions (not just commit messages)
+4. Include PR/issue numbers when relevant (#123)
+
+**Example**:
+
+```markdown
+## [Unreleased]
+
+### Added
+- User authentication with JWT tokens (#145)
+- Rate limiting middleware for API endpoints
+
+### Deprecated
+- Legacy authentication endpoint /api/v1/auth (use /api/v2/auth instead)
+
+### Fixed
+- Null reference exception in player service (#147)
+
+### Security
+- Fix SQL injection vulnerability in search endpoint (#148)
+```
+
+### Creating a Release
+
+When ready to release:
+
+1. **Update CHANGELOG.md**: Move items from `[Unreleased]` to a new versioned section, then commit and push:
+
+   ```markdown
+   ## [1.1.0 - bielsa] - 2026-02-15
+   ```
+
+   ```bash
+   git add CHANGELOG.md
+   git commit -m "docs: prepare changelog for v1.1.0-bielsa release"
+   git push
+   ```
+
+2. **Create and push tag**:
+
+   ```bash
+   git tag -a v1.1.0-bielsa -m "Release 1.1.0 - Bielsa"
+   git push origin v1.1.0-bielsa
+   ```
+
+3. **CD workflow runs automatically** to publish Docker images and create GitHub Release
+
+See [CHANGELOG.md](CHANGELOG.md#how-to-release) for complete release instructions and coach naming convention.
+
 ## CI/CD Pipeline
 
 ### Continuous Integration (python-ci.yml)
@@ -157,7 +224,7 @@ curl http://localhost:9000/health
 
 1. **Lint**: Commit messages (commitlint) → Flake8 → Black check
 2. **Test**: pytest with verbose output → coverage report generation
-3. **Coverage**: Upload to Codecov and Codacy (requires secrets)
+3. **Coverage**: Upload to Codecov (requires secrets)
 
 **Local validation** (run this before pushing):
 
@@ -387,6 +454,7 @@ Settings (`.vscode/settings.json`):
 
 ## Important Notes
 
+- **CHANGELOG maintenance**: Update CHANGELOG.md `[Unreleased]` section with every meaningful change
 - **Never commit secrets**: No API keys, tokens, or credentials in code
 - **Test coverage**: Maintain existing coverage levels (currently high)
 - **Commit messages**: Follow conventional commits (enforced by commitlint)

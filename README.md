@@ -13,6 +13,17 @@
 
 Proof of Concept for a RESTful API made with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/).
 
+## Features
+
+- 🏗️ **Modern async architecture** - Async/await throughout, Pydantic validation, and SQLAlchemy 2.0+ patterns
+- 📚 **Interactive API exploration** - Auto-generated OpenAPI docs with FastAPI's built-in Swagger UI
+- ⚡ **Performance optimizations** - Async SQLAlchemy, in-memory caching with aiocache, and efficient database operations
+- 🧪 **High test coverage** - Pytest suite with 80% minimum coverage and automated reporting to Codecov
+- 📖 **Token-efficient documentation** - AGENTS.md + auto-loaded Copilot instructions for AI-assisted development
+- 🐳 **Full containerization** - Production-ready Docker setup with Docker Compose orchestration
+- 🔄 **Complete CI/CD pipeline** - Automated linting (Black/Flake8), testing, Docker publishing, and GitHub releases
+- ♟️ **Coach-themed semantic versioning** - Memorable, alphabetical release names honoring legendary football coaches
+
 ## Structure
 
 ![Simplified, conceptual project structure and main application flow](assets/images/structure.svg)
@@ -88,20 +99,39 @@ This project uses famous football coaches as release names ♟️
 
 ### Create a Release
 
-Releases are created by pushing version tags in the format `v{MAJOR}.{MINOR}.{PATCH}-{COACH}`:
+To create a new release, follow this workflow:
+
+#### 1. Update CHANGELOG.md
+
+First, document your changes in [CHANGELOG.md](CHANGELOG.md):
 
 ```bash
-# Example: Creating the first release (Ancelotti)
+# Move items from [Unreleased] to new release section
+# Example: [1.0.0 - Ancelotti] - 2026-02-15
+git add CHANGELOG.md
+git commit -m "docs: prepare changelog for v1.0.0-ancelotti release"
+git push
+```
+
+#### 2. Create and Push Tag
+
+Then create and push the version tag:
+
+```bash
 git tag -a v1.0.0-ancelotti -m "Release 1.0.0 - Ancelotti"
 git push origin v1.0.0-ancelotti
 ```
 
-The CD pipeline will automatically:
+#### 3. Automated CD Workflow
 
-- Run tests and generate coverage reports
-- Build and push Docker images with multiple tags
-- Generate a changelog from git commits
-- Create a GitHub Release with auto-generated notes
+This triggers the CD workflow which automatically:
+
+1. Validates the coach name
+2. Builds and tests the project with coverage
+3. Publishes Docker images to GitHub Container Registry with three tags
+4. Creates a GitHub Release with auto-generated changelog from commits
+
+> 💡 Always update CHANGELOG.md before creating the tag. See [CHANGELOG.md](CHANGELOG.md#how-to-release) for detailed release instructions.
 
 ### Pull Docker Images
 
@@ -118,7 +148,7 @@ docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:ancelotti
 docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:latest
 ```
 
-> 💡 **Note:** See [CHANGELOG.md](CHANGELOG.md) for the complete coach list (A-Z) and release history.
+> 💡 See [CHANGELOG.md](CHANGELOG.md) for the complete coach list (A-Z) and release history.
 
 ## Credits
 
