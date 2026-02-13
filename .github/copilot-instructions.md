@@ -39,7 +39,7 @@ docker compose down -v  # Reset database
 
 ## Architecture
 
-```
+```text
 Request → Routes → Services → SQLAlchemy → SQLite
           (API)    (Logic)    (Async ORM)  (Storage)
             ↓
@@ -168,7 +168,7 @@ Follow Conventional Commits format (enforced by commitlint in CI):
 - Issue number: Required suffix
 
 **Examples:**
-```
+```text
 feat(api): add player stats endpoint (#42)
 fix(db): resolve async session leak (#88)
 ```
