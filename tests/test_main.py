@@ -239,7 +239,7 @@ def test_request_delete_player_id_unknown_response_status_not_found(client):
 def test_request_delete_player_id_existing_response_status_no_content(client):
     """DELETE /players/{player_id} with existing ID returns 204 No Content"""
     # Arrange
-    player_id = 21  # Alejandro Gómez - intentionally removed from collection
+    player_id = 24  # Thiago Almada - created by POST test, now deleted (atomic)
     # Act
     response = client.delete(PATH + str(player_id))
     # Assert
