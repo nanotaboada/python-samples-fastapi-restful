@@ -120,6 +120,11 @@ jobs:
           else
             echo "📝 Generating changelog from $PREVIOUS_TAG to ${{ steps.version.outputs.tag_name }}"
             CHANGELOG=$(git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${{ steps.version.outputs.tag_name }})
+
+            # Guard against empty changelog (e.g., re-tagging same commit)
+            if [ -z "$CHANGELOG" ]; then
+              CHANGELOG="No new changes since $PREVIOUS_TAG"
+            fi
           fi
 
           # Write changelog to file

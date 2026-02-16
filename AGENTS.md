@@ -71,7 +71,8 @@ async def get_stats(
 1. Tests (`tests/test_main.py`):
 
 ```python
-async def test_given_get_when_player_stats_then_returns_200():
+def test_request_get_player_id_existing_stats_response_status_ok(client):
+    """GET /players/{player_id}/stats with existing ID returns 200 OK"""
     ...
 ```
 
@@ -110,10 +111,22 @@ No Alembic migrations:
 
 ## Testing Strategy
 
+**Naming Pattern:**
+
+```text
+test_request_{method}_{resource}_{param_or_context}_response_{outcome}
+```
+
+- `players` (collection) vs `player` (single resource)
+- Examples: `test_request_get_players_response_status_ok`, `test_request_post_player_body_empty_response_status_unprocessable`
+
+**Guidelines:**
+
 - Use `tests/player_stub.py` for data
 - Test real DB (fixtures handle setup)
 - Cover: happy paths + errors + edges
 - Cache tests: verify `X-Cache` header
+- Docstrings: Single-line, concise, no "Expected:" prefix
 
 ## Planning Tips
 
@@ -130,7 +143,7 @@ No Alembic migrations:
 - `test_main.py`: Excluded from Black
 - SQLAlchemy errors: Catch + rollback in services
 - Validation errors: 422 (not 400)
-- Test file naming: `test_given_when_then` pattern
+- Test naming: `test_request_{method}_{resource}_{context}_response_{outcome}` pattern
 
 ## Cross-Tool Notes
 
