@@ -47,6 +47,7 @@ Request → Routes → Services → SQLAlchemy → SQLite
 ```
 
 **Key Directories:**
+
 - `routes/` - API endpoints (player_route.py, health_route.py)
 - `services/` - Business logic (player_service.py)
 - `models/` - Pydantic validation (camelCase JSON API)
@@ -56,6 +57,7 @@ Request → Routes → Services → SQLAlchemy → SQLite
 - `tests/` - pytest suite (test_main.py, conftest.py)
 
 **Config Files:**
+
 - `.flake8` - Linter (max-line-length=88, complexity=10)
 - `pyproject.toml` - Black formatter (line-length=88)
 - `.coveragerc` - Coverage config (80% target)
@@ -65,6 +67,7 @@ Request → Routes → Services → SQLAlchemy → SQLite
 ## API Endpoints
 
 All async with `AsyncSession` injection:
+
 - `POST /players/` → 201|409|422
 - `GET /players/` → 200 (cached 10min)
 - `GET /players/{player_id}` → 200|404
@@ -78,11 +81,13 @@ JSON: camelCase (e.g., `squadNumber`, `firstName`)
 ## CI/CD
 
 **python-ci.yml** (push/PR to master):
+
 1. Lint: commitlint → `flake8 .` → `black --check .`
 2. Test: `pytest -v` → coverage
 3. Upload to Codecov
 
 **python-cd.yml** (tags `v*.*.*-*`):
+
 1. Validate semver + coach name
 2. Run tests
 3. Build Docker (amd64/arm64)
@@ -92,6 +97,7 @@ JSON: camelCase (e.g., `squadNumber`, `firstName`)
 ## Critical Patterns
 
 ### Async Everywhere
+
 ```python
 # Always use async/await
 async def get_player(async_session: AsyncSession, player_id: int):
@@ -99,12 +105,14 @@ async def get_player(async_session: AsyncSession, player_id: int):
     result = await async_session.execute(stmt)
     return result.scalar_one_or_none()
 ```
+
 - All routes: `async def`
 - Database: `AsyncSession` (never `Session`)
 - Driver: `aiosqlite` (not `sqlite3`)
 - SQLAlchemy 2.0: `select()` (not `session.query()`)
 
 ### camelCase API Contract
+
 ```python
 class PlayerModel(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel)
@@ -113,7 +121,9 @@ class PlayerModel(BaseModel):
 ```
 
 ### Database Schema Changes
+
 ⚠️ No Alembic yet - manual process:
+
 1. Update `schemas/player_schema.py`
 2. Manually update `storage/players-sqlite3.db` (SQLite CLI/DB Browser)
 3. Preserve 26 players
@@ -121,6 +131,7 @@ class PlayerModel(BaseModel):
 5. Update services + tests
 
 ### Caching
+
 - Key: `"players"` (hardcoded)
 - TTL: 600s (10min)
 - Cleared on POST/PUT/DELETE
@@ -160,11 +171,13 @@ curl http://localhost:9000/players    # 200 OK
 Integration tests follow an action-oriented pattern:
 
 **Pattern:**
-```
+
+```text
 test_request_{method}_{resource}_{param_or_context}_response_{outcome}
 ```
 
 **Components:**
+
 - `method` - HTTP verb: `get`, `post`, `put`, `delete`
 - `resource` - `players` (collection) or `player` (single resource)
 - `param_or_context` - Request details: `id_existing`, `squadnumber_nonexistent`, `body_empty`
@@ -172,6 +185,7 @@ test_request_{method}_{resource}_{param_or_context}_response_{outcome}
 - `outcome` - What's asserted: `status_ok`, `status_not_found`, `body_players`, `header_cache_miss`
 
 **Examples:**
+
 ```python
 def test_request_get_players_response_status_ok(client):
     """GET /players/ returns 200 OK"""
@@ -184,6 +198,7 @@ def test_request_post_player_body_empty_response_status_unprocessable(client):
 ```
 
 **Docstrings:**
+
 - Single-line, concise descriptions
 - Complements test name (doesn't repeat)
 - No "Expected:" prefix (redundant)
@@ -195,12 +210,14 @@ Follow Conventional Commits format (enforced by commitlint in CI):
 **Format:** `type(scope): description (#issue)`
 
 **Rules:**
+
 - Max 80 characters
 - Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `ci`, `perf`, `style`, `build`
 - Scope: Optional (e.g., `api`, `db`, `service`, `route`)
 - Issue number: Required suffix
 
 **Examples:**
+
 ```text
 feat(api): add player stats endpoint (#42)
 fix(db): resolve async session leak (#88)
