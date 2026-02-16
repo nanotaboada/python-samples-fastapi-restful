@@ -16,7 +16,6 @@ Validates:
 - Conflict and edge case behaviors
 """
 
-import json
 from tests.player_stub import existing_player, nonexistent_player, unknown_player
 
 PATH = "/players/"
@@ -151,10 +150,8 @@ def test_request_get_player_squadnumber_existing_response_body_player_match(clie
 
 def test_request_post_player_body_empty_response_status_unprocessable(client):
     """POST /players/ with empty body returns 422 Unprocessable Entity"""
-    # Arrange
-    body = {}
     # Act
-    response = client.post(PATH, data=body)
+    response = client.post(PATH, json={})
     # Assert
     assert response.status_code == 422
 
@@ -163,9 +160,8 @@ def test_request_post_player_body_existing_response_status_conflict(client):
     """POST /players/ with existing player returns 409 Conflict"""
     # Arrange
     player = existing_player()
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.post(PATH, data=body)
+    response = client.post(PATH, json=player.__dict__)
     # Assert
     assert response.status_code == 409
 
@@ -174,9 +170,8 @@ def test_request_post_player_body_nonexistent_response_status_created(client):
     """POST /players/ with nonexistent player returns 201 Created"""
     # Arrange
     player = nonexistent_player()
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.post(PATH, data=body)
+    response = client.post(PATH, json=player.__dict__)
     # Assert
     assert response.status_code == 201
 
@@ -190,9 +185,8 @@ def test_request_put_player_id_existing_body_empty_response_status_unprocessable
     """PUT /players/{player_id} with empty body returns 422 Unprocessable Entity"""
     # Arrange
     player_id = existing_player().id
-    body = {}
     # Act
-    response = client.put(PATH + str(player_id), data=body)
+    response = client.put(PATH + str(player_id), json={})
     # Assert
     assert response.status_code == 422
 
@@ -202,9 +196,8 @@ def test_request_put_player_id_unknown_response_status_not_found(client):
     # Arrange
     player_id = unknown_player().id
     player = unknown_player()
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.put(PATH + str(player_id), data=body)
+    response = client.put(PATH + str(player_id), json=player.__dict__)
     # Assert
     assert response.status_code == 404
 
@@ -216,9 +209,8 @@ def test_request_put_player_id_existing_response_status_no_content(client):
     player = existing_player()
     player.first_name = "Emiliano"
     player.middle_name = ""
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.put(PATH + str(player_id), data=body)
+    response = client.put(PATH + str(player_id), json=player.__dict__)
     # Assert
     assert response.status_code == 204
 
