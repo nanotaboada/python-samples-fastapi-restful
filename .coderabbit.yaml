@@ -80,7 +80,7 @@ reviews:
     - path: "tests/**/*.py"
       instructions: |
         - Tests should use pytest with fixtures from conftest.py
-        - Verify test naming follows given_when_then pattern
+        - Verify test naming follows test_request_{method}_{resource}_{param_or_context}_response_{outcome} pattern
         - Check that TestClient is used for endpoint testing
         - Ensure test data uses stubs (e.g., player_stub.py)
         - Tests should use async test functions where appropriate
@@ -287,7 +287,8 @@ code_generation:
       - path: "tests/**/*.py"
         instructions: |
           - Use pytest framework with async support (pytest-asyncio)
-          - Follow given_when_then or arrange_act_assert patterns
+          - Follow test_request_{method}_{resource}_{param_or_context}_response_{outcome} pattern
+          - Tests use arrange-act-assert structure within test body
           - Use fixtures from conftest.py for TestClient
           - Use test stubs for consistent test data
           - Ensure async tests are properly decorated

@@ -16,7 +16,6 @@ Validates:
 - Conflict and edge case behaviors
 """
 
-import json
 from tests.player_stub import existing_player, nonexistent_player, unknown_player
 
 PATH = "/players/"
@@ -24,14 +23,8 @@ PATH = "/players/"
 # GET /health/ -----------------------------------------------------------------
 
 
-def test_given_get_when_request_path_is_health_then_response_status_code_is_200(
-    client,
-):
-    """
-    Given   GET /health/
-    when    request
-    then    response Status Code is 200 (OK)
-    """
+def test_request_get_health_response_status_ok(client):
+    """GET /health/ returns 200 OK"""
     # Act
     response = client.get("/health/")
     # Assert
@@ -42,14 +35,8 @@ def test_given_get_when_request_path_is_health_then_response_status_code_is_200(
 # GET /players/ ----------------------------------------------------------------
 
 
-def test_given_get_when_request_is_initial_then_response_header_x_cache_is_miss(
-    client,
-):
-    """
-    Given   GET /players/
-    when    request is initial
-    then    response Header X-Cache value is MISS
-    """
+def test_request_get_players_response_header_cache_miss(client):
+    """GET /players/ initial request returns X-Cache: MISS"""
     # Act
     response = client.get(PATH)
 
@@ -58,14 +45,8 @@ def test_given_get_when_request_is_initial_then_response_header_x_cache_is_miss(
     assert response.headers.get("X-Cache") == "MISS"
 
 
-def test_given_get_when_request_is_subsequent_then_response_header_x_cache_is_hit(
-    client,
-):
-    """
-    Given   GET /players/
-    when    request is subsequent
-    then    response Header X-Cache is HIT
-    """
+def test_request_get_players_response_header_cache_hit(client):
+    """GET /players/ subsequent request returns X-Cache: HIT"""
     # Act
     client.get(PATH)  # initial
     response = client.get(PATH)  # subsequent (cached)
@@ -75,49 +56,32 @@ def test_given_get_when_request_is_subsequent_then_response_header_x_cache_is_hi
     assert response.headers.get("X-Cache") == "HIT"
 
 
-def test_given_get_when_request_path_has_no_id_then_response_status_code_is_200(
-    client,
-):
-    """
-    Given   GET /players/
-    when    request path has no ID
-    then    response Status Code is 200 (OK)
-    """
+def test_request_get_players_response_status_ok(client):
+    """GET /players/ returns 200 OK"""
     # Act
     response = client.get(PATH)
     # Assert
     assert response.status_code == 200
 
 
-def test_given_get_when_request_path_has_no_id_then_response_body_is_list_of_players(
-    client,
-):
-    """
-    Given   GET /players/
-    when    request path has no ID
-    then    response Body is list of players
-    """
+def test_request_get_players_response_body_players(client):
+    """GET /players/ returns list of players"""
     # Act
     response = client.get(PATH)
     # Assert
     players = response.json()
-    player_id = 0
-    for player in players:
-        player_id += 1
-        assert player["id"] == player_id
+    assert (
+        len(players) == 25
+    )  # Database has 25 players (ID 24 reserved for creation test)
+    assert all("id" in player for player in players)  # Each player has an ID
+    assert all(player["id"] != 24 for player in players)  # ID 24 not in database yet
 
 
 # GET /players/{player_id} -----------------------------------------------------
 
 
-def test_given_get_when_request_path_is_nonexistent_id_then_response_status_code_is_404(
-    client,
-):
-    """
-    Given   GET /players/{player_id}
-    when    request path is nonexistent ID
-    then    response Status Code is 404 (Not Found)
-    """
+def test_request_get_player_id_nonexistent_response_status_not_found(client):
+    """GET /players/{player_id} with nonexistent ID returns 404 Not Found"""
     # Arrange
     player_id = nonexistent_player().id
     # Act
@@ -126,14 +90,8 @@ def test_given_get_when_request_path_is_nonexistent_id_then_response_status_code
     assert response.status_code == 404
 
 
-def test_given_get_when_request_path_is_existing_id_then_response_status_code_is_200(
-    client,
-):
-    """
-    Given   GET /players/{player_id}
-    when    request path is existing ID
-    then    response Status Code is 200 (OK)
-    """
+def test_request_get_player_id_existing_response_status_ok(client):
+    """GET /players/{player_id} with existing ID returns 200 OK"""
     # Arrange
     player_id = existing_player().id
     # Act
@@ -142,14 +100,8 @@ def test_given_get_when_request_path_is_existing_id_then_response_status_code_is
     assert response.status_code == 200
 
 
-def test_given_get_when_request_path_is_existing_id_then_response_is_matching_player(
-    client,
-):
-    """
-    Given   GET /players/{player_id}
-    when    request path is existing ID
-    then    response is matching Player
-    """
+def test_request_get_player_id_existing_response_body_player_match(client):
+    """GET /players/{player_id} with existing ID returns matching player"""
     # Arrange
     player_id = existing_player().id
     # Act
@@ -162,14 +114,8 @@ def test_given_get_when_request_path_is_existing_id_then_response_is_matching_pl
 # GET /players/squadnumber/{squad_number} --------------------------------------
 
 
-def test_given_get_when_request_path_is_nonexistent_squad_number_then_response_status_code_is_404(
-    client,
-):
-    """
-    Given   GET /players/squadnumber/{squad_number}
-    when    request path is nonexistent Squad Number
-    then    response Status Code is 404 (Not Found)
-    """
+def test_request_get_player_squadnumber_nonexistent_response_status_not_found(client):
+    """GET /players/squadnumber/{squad_number} with nonexistent number returns 404 Not Found"""
     # Arrange
     squad_number = nonexistent_player().squad_number
     # Act
@@ -178,14 +124,8 @@ def test_given_get_when_request_path_is_nonexistent_squad_number_then_response_s
     assert response.status_code == 404
 
 
-def test_given_get_when_request_path_is_existing_squad_number_then_response_status_code_is_200(
-    client,
-):
-    """
-    Given   GET /players/squadnumber/{squad_number}
-    when    request path is existing Squad Number
-    then    response Status Code is 200 (OK)
-    """
+def test_request_get_player_squadnumber_existing_response_status_ok(client):
+    """GET /players/squadnumber/{squad_number} with existing number returns 200 OK"""
     # Arrange
     squad_number = existing_player().squad_number
     # Act
@@ -194,14 +134,8 @@ def test_given_get_when_request_path_is_existing_squad_number_then_response_stat
     assert response.status_code == 200
 
 
-def test_given_get_when_request_path_is_existing_squad_number_then_response_is_matching_player(
-    client,
-):
-    """
-    Given   GET /players/squadnumber/{squad_number}
-    when    request path is existing Squad Number
-    then    response is matching Player
-    """
+def test_request_get_player_squadnumber_existing_response_body_player_match(client):
+    """GET /players/squadnumber/{squad_number} with existing number returns matching player"""
     # Arrange
     squad_number = existing_player().squad_number
     # Act
@@ -214,52 +148,30 @@ def test_given_get_when_request_path_is_existing_squad_number_then_response_is_m
 # POST /players/ ---------------------------------------------------------------
 
 
-def test_given_post_when_request_body_is_empty_then_response_status_code_is_422(
-    client,
-):
-    """
-    Given   POST /players/
-    when    request body is empty
-    then    response Status Code is 422 (Unprocessable Entity)
-    """
-    # Arrange
-    body = {}
+def test_request_post_player_body_empty_response_status_unprocessable(client):
+    """POST /players/ with empty body returns 422 Unprocessable Entity"""
     # Act
-    response = client.post(PATH, data=body)
+    response = client.post(PATH, json={})
     # Assert
     assert response.status_code == 422
 
 
-def test_given_post_when_request_body_is_existing_player_then_response_status_code_is_409(
-    client,
-):
-    """
-    Given   POST /players/
-    when    request body is existing Player
-    then    response Status Code is 409 (Conflict)
-    """
+def test_request_post_player_body_existing_response_status_conflict(client):
+    """POST /players/ with existing player returns 409 Conflict"""
     # Arrange
     player = existing_player()
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.post(PATH, data=body)
+    response = client.post(PATH, json=player.__dict__)
     # Assert
     assert response.status_code == 409
 
 
-def test_given_post_when_request_body_is_nonexistent_player_then_response_status_code_is_201(
-    client,
-):
-    """
-    Given   POST /players/
-    when    request body is nonexistent Player
-    then    response Status Code is 201 (Created)
-    """
+def test_request_post_player_body_nonexistent_response_status_created(client):
+    """POST /players/ with nonexistent player returns 201 Created"""
     # Arrange
     player = nonexistent_player()
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.post(PATH, data=body)
+    response = client.post(PATH, json=player.__dict__)
     # Assert
     assert response.status_code == 201
 
@@ -267,57 +179,38 @@ def test_given_post_when_request_body_is_nonexistent_player_then_response_status
 # PUT /players/{player_id} -----------------------------------------------------
 
 
-def test_given_put_when_request_body_is_empty_then_response_status_code_is_422(
+def test_request_put_player_id_existing_body_empty_response_status_unprocessable(
     client,
 ):
-    """
-    Given   PUT /players/{player_id}
-    when    request body is empty
-    then    response Status Code is 422 (Unprocessable Entity)
-    """
+    """PUT /players/{player_id} with empty body returns 422 Unprocessable Entity"""
     # Arrange
     player_id = existing_player().id
-    body = {}
     # Act
-    response = client.put(PATH + str(player_id), data=body)
+    response = client.put(PATH + str(player_id), json={})
     # Assert
     assert response.status_code == 422
 
 
-def test_given_put_when_request_path_is_unknown_id_then_response_status_code_is_404(
-    client,
-):
-    """
-    Given   PUT /players/{player_id}
-    when    request path is unknown ID
-    then    response Status Code is 404 (Not Found)
-    """
+def test_request_put_player_id_unknown_response_status_not_found(client):
+    """PUT /players/{player_id} with unknown ID returns 404 Not Found"""
     # Arrange
     player_id = unknown_player().id
     player = unknown_player()
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.put(PATH + str(player_id), data=body)
+    response = client.put(PATH + str(player_id), json=player.__dict__)
     # Assert
     assert response.status_code == 404
 
 
-def test_given_put_when_request_path_is_existing_id_then_response_status_code_is_204(
-    client,
-):
-    """
-    Given   PUT /players/{player_id}
-    when    request path is existing ID
-    then    response Status Code is 204 (No Content)
-    """
+def test_request_put_player_id_existing_response_status_no_content(client):
+    """PUT /players/{player_id} with existing ID returns 204 No Content"""
     # Arrange
     player_id = existing_player().id
     player = existing_player()
     player.first_name = "Emiliano"
     player.middle_name = ""
-    body = json.dumps(player.__dict__)
     # Act
-    response = client.put(PATH + str(player_id), data=body)
+    response = client.put(PATH + str(player_id), json=player.__dict__)
     # Assert
     assert response.status_code == 204
 
@@ -325,14 +218,8 @@ def test_given_put_when_request_path_is_existing_id_then_response_status_code_is
 # DELETE /players/{player_id} --------------------------------------------------
 
 
-def test_given_delete_when_request_path_is_unknown_id_then_response_status_code_is_404(
-    client,
-):
-    """
-    Given   DELETE /players/{player_id}
-    when    request path is unknown ID
-    then    response Status Code is 404 (Not Found)
-    """
+def test_request_delete_player_id_unknown_response_status_not_found(client):
+    """DELETE /players/{player_id} with unknown ID returns 404 Not Found"""
     # Arrange
     player_id = unknown_player().id
     # Act
@@ -341,16 +228,10 @@ def test_given_delete_when_request_path_is_unknown_id_then_response_status_code_
     assert response.status_code == 404
 
 
-def test_given_delete_when_request_path_is_existing_id_then_response_status_code_is_204(
-    client,
-):
-    """
-    Given   DELETE /players/{player_id}
-    when    request path is existing ID
-    then    response Status Code is 204 (No Content)
-    """
+def test_request_delete_player_id_existing_response_status_no_content(client):
+    """DELETE /players/{player_id} with existing ID returns 204 No Content"""
     # Arrange
-    player_id = 12  # nonexistent_player() previously created
+    player_id = 24  # Thiago Almada - created by POST test, now deleted (atomic)
     # Act
     response = client.delete(PATH + str(player_id))
     # Assert
