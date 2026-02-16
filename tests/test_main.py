@@ -71,10 +71,11 @@ def test_request_get_players_response_body_players(client):
     response = client.get(PATH)
     # Assert
     players = response.json()
-    player_id = 0
-    for player in players:
-        player_id += 1
-        assert player["id"] == player_id
+    assert (
+        len(players) == 25
+    )  # Database has 25 players (ID 24 reserved for creation test)
+    assert all("id" in player for player in players)  # Each player has an ID
+    assert all(player["id"] != 24 for player in players)  # ID 24 not in database yet
 
 
 # GET /players/{player_id} -----------------------------------------------------
@@ -238,7 +239,7 @@ def test_request_delete_player_id_unknown_response_status_not_found(client):
 def test_request_delete_player_id_existing_response_status_no_content(client):
     """DELETE /players/{player_id} with existing ID returns 204 No Content"""
     # Arrange
-    player_id = 12  # nonexistent_player() previously created
+    player_id = 21  # Alejandro Gómez - intentionally removed from collection
     # Act
     response = client.delete(PATH + str(player_id))
     # Assert

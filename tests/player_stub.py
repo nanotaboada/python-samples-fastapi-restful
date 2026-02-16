@@ -54,16 +54,16 @@ def nonexistent_player():
     Creates a test stub for a nonexistent (new) Player.
     """
     return Player(
-        id=12,
-        first_name="Leandro",
-        middle_name="Daniel",
-        last_name="Paredes",
-        date_of_birth="1994-06-29T00:00:00.000Z",
-        squad_number=5,
-        position="Defensive Midfield",
-        abbr_position="DM",
-        team="AS Roma",
-        league="Serie A",
+        id=24,
+        first_name="Thiago",
+        middle_name="Ezequiel",
+        last_name="Almada",
+        date_of_birth="2001-04-26T00:00:00.000Z",
+        squad_number=16,
+        position="Attacking Midfield",
+        abbr_position="AM",
+        team="Atlanta United FC",
+        league="Major League Soccer",
         starting11=0,
     )
 
