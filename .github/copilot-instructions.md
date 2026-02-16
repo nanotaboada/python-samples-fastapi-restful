@@ -129,7 +129,7 @@ class PlayerModel(BaseModel):
 ## Common Issues
 
 1. **SQLAlchemy errors** → Always catch + rollback in services
-2. **Test file** → `test_main.py` excluded from Black (preserves long names)
+2. **Test file** → `test_main.py` excluded from Black
 3. **Database location** → Local: `./storage/`, Docker: `/storage/` (volume)
 4. **Pydantic validation** → Returns 422 (not 400)
 5. **Import order** → stdlib → third-party → local
@@ -154,6 +154,39 @@ curl http://localhost:9000/players    # 200 OK
 - Errors: Catch specific exceptions
 - Line length: 88
 - Complexity: ≤10
+
+## Test Naming Convention
+
+Integration tests follow an action-oriented pattern:
+
+**Pattern:**
+```
+test_request_{method}_{resource}_{param_or_context}_response_{outcome}
+```
+
+**Components:**
+- `method` - HTTP verb: `get`, `post`, `put`, `delete`
+- `resource` - `players` (collection) or `player` (single resource)
+- `param_or_context` - Request details: `id_existing`, `squadnumber_nonexistent`, `body_empty`
+- `response` - Literal separator
+- `outcome` - What's asserted: `status_ok`, `status_not_found`, `body_players`, `header_cache_miss`
+
+**Examples:**
+```python
+def test_request_get_players_response_status_ok(client):
+    """GET /players/ returns 200 OK"""
+
+def test_request_get_player_id_existing_response_body_player_match(client):
+    """GET /players/{player_id} with existing ID returns matching player"""
+
+def test_request_post_player_body_empty_response_status_unprocessable(client):
+    """POST /players/ with empty body returns 422 Unprocessable Entity"""
+```
+
+**Docstrings:**
+- Single-line, concise descriptions
+- Complements test name (doesn't repeat)
+- No "Expected:" prefix (redundant)
 
 ## Commit Messages
 
