@@ -1,228 +1,120 @@
-# Copilot Instructions
+# GitHub Copilot Instructions
 
-## Project Summary
+## Overview
 
-RESTful API with Python 3.13 + FastAPI demonstrating modern async patterns. Player registry with CRUD operations, SQLite + SQLAlchemy 2.0 (async), Pydantic validation, containerization. Part of multi-language comparison study (Java, .NET, TypeScript, Python, Go, Rust). Target: 80%+ test coverage.
+REST API for managing football players built with Python and FastAPI. Implements async CRUD operations with SQLAlchemy 2.0 (async), SQLite, Pydantic validation, and in-memory caching. Part of a cross-language comparison study (.NET, Go, Java, Rust, TypeScript).
 
-## Quick Start
+## Tech Stack
+
+- **Language**: Python 3.13
+- **Framework**: FastAPI + Uvicorn
+- **ORM**: SQLAlchemy 2.0 (async) + aiosqlite
+- **Database**: SQLite
+- **Validation**: Pydantic
+- **Caching**: aiocache (in-memory, 10-minute TTL)
+- **Testing**: pytest + pytest-cov + httpx
+- **Linting/Formatting**: Flake8 + Black
+- **Containerization**: Docker
+
+## Structure
+
+```text
+main.py         — application entry point: FastAPI setup, router registration
+routes/         — HTTP route definitions + dependency injection     [HTTP layer]
+services/       — async business logic + cache management           [business layer]
+schemas/        — SQLAlchemy ORM models (database schema)           [data layer]
+databases/      — async SQLAlchemy session setup
+models/         — Pydantic models for request/response validation
+storage/        — SQLite database file (players-sqlite3.db, pre-seeded)
+tests/          — pytest integration tests
+```
+
+**Layer rule**: `Routes → Services → SQLAlchemy → SQLite`. Routes handle HTTP concerns only; business logic belongs in services.
+
+## Coding Guidelines
+
+- **Naming**: snake_case (files, functions, variables), PascalCase (classes)
+- **Type hints**: Required everywhere — functions, variables, return types
+- **Async**: All routes and service functions must be `async def`; use `AsyncSession` (never `Session`); use `aiosqlite` (never `sqlite3`); use SQLAlchemy 2.0 `select()` (never `session.query()`)
+- **API contract**: camelCase JSON via Pydantic `alias_generator=to_camel`; Python internals stay snake_case
+- **Caching**: cache key `"players"` (hardcoded); clear on POST/PUT/DELETE; `X-Cache` header (HIT/MISS)
+- **Errors**: Catch specific exceptions with rollback in services; Pydantic validation returns 422 (not 400)
+- **Logging**: `logging` module only; never `print()`
+- **Line length**: 88; complexity ≤ 10
+- **Import order**: stdlib → third-party → local
+- **Tests**: naming pattern `test_request_{method}_{resource}_{context}_response_{outcome}`; docstrings single-line, concise; `tests/player_stub.py` for test data; `tests/test_main.py` excluded from Black
+- **Avoid**: sync DB access, mixing sync/async, `print()`, missing type hints, unhandled exceptions
+
+## Commands
+
+### Quick Start
 
 ```bash
-# Install dependencies
 pip install -r requirements.txt
-pip install -r requirements-lint.txt
 pip install -r requirements-test.txt
-
-# Run development server
-uvicorn main:app --reload --port 9000
-# Access: http://localhost:9000/docs
-
-# Run tests with coverage
-pytest --cov=./ --cov-report=html
-
-# Lint and format
+pip install -r requirements-lint.txt
+uvicorn main:app --reload --port 9000       # http://localhost:9000/docs
+pytest                                      # run tests
+pytest --cov=./ --cov-report=term           # with coverage (target >=80%)
 flake8 .
-black --check .  # or: black . (to auto-format)
-
-# Docker
+black --check .
 docker compose up
-docker compose down -v  # Reset database
+docker compose down -v
 ```
 
-## Stack
+### Pre-commit Checks
 
-- Python 3.13.3 (`.python-version` - auto-detected by pyenv/asdf/mise)
-- FastAPI 0.128.6, Uvicorn
-- SQLite + SQLAlchemy 2.0 (async) + aiosqlite
-- pytest + pytest-cov + httpx
-- Flake8 + Black
-- aiocache (in-memory, 10min TTL)
+1. Update `CHANGELOG.md` `[Unreleased]` section (Added / Changed / Fixed / Removed)
+2. `flake8 .` — must pass
+3. `black --check .` — must pass
+4. `pytest` — all tests must pass
+5. `pytest --cov=./ --cov-report=term` — coverage must be >=80%
+6. Commit message follows Conventional Commits format (enforced by commitlint)
 
-## Architecture
+### Commits
+
+Format: `type(scope): description (#issue)` — max 80 chars
+Types: `feat` `fix` `chore` `docs` `test` `refactor` `ci` `perf`
+Example: `feat(api): add player stats endpoint (#42)`
+
+## Agent Mode
+
+### Proceed freely
+
+- Add/modify routes and endpoints
+- Service layer logic and cache management
+- Tests (maintain async patterns and naming convention)
+- Documentation and docstring updates
+- Lint/format fixes
+- Refactoring within existing architectural patterns
+
+### Ask before changing
+
+- Database schema (`schemas/player_schema.py` — no Alembic, manual process)
+- Dependencies (`requirements*.txt`)
+- CI/CD configuration (`.github/workflows/`)
+- Docker setup
+- API contracts (breaking Pydantic model changes)
+- Global error handling
+
+### Never modify
+
+- `.env` files (secrets)
+- Production configurations
+- Async/await patterns (mandatory throughout)
+- Type hints (mandatory throughout)
+- Core layered architecture
+
+### Key workflows
+
+**Add an endpoint**: Add Pydantic model in `models/` → add async service method in `services/` with error handling → add route in `routes/` with `Depends(generate_async_session)` → add tests following naming pattern → run pre-commit checks.
+
+**Modify schema**: Update `schemas/player_schema.py` → manually update `storage/players-sqlite3.db` (preserve 26 players) → update `models/player_model.py` if API changes → update services and tests → run `pytest`.
+
+**After completing work**: Suggest a branch name (e.g. `feat/add-player-stats`) and a commit message following Conventional Commits including co-author line:
 
 ```text
-Request → Routes → Services → SQLAlchemy → SQLite
-          (API)    (Logic)    (Async ORM)  (Storage)
-            ↓
-    Pydantic (Validation)
+feat(scope): description (#issue)
+
+Co-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>
 ```
-
-**Key Directories:**
-
-- `routes/` - API endpoints (player_route.py, health_route.py)
-- `services/` - Business logic (player_service.py)
-- `models/` - Pydantic validation (camelCase JSON API)
-- `schemas/` - SQLAlchemy ORM models
-- `databases/` - Async DB setup, session factory
-- `storage/` - SQLite file (pre-seeded, 26 players)
-- `tests/` - pytest suite (test_main.py, conftest.py)
-
-**Config Files:**
-
-- `.flake8` - Linter (max-line-length=88, complexity=10)
-- `pyproject.toml` - Black formatter (line-length=88)
-- `.coveragerc` - Coverage config (80% target)
-- `compose.yaml` - Docker orchestration
-- `Dockerfile` - Multi-stage build
-
-## API Endpoints
-
-All async with `AsyncSession` injection:
-
-- `POST /players/` → 201|409|422
-- `GET /players/` → 200 (cached 10min)
-- `GET /players/{player_id}` → 200|404
-- `GET /players/squadnumber/{squad_number}` → 200|404
-- `PUT /players/{player_id}` → 200|404|422
-- `DELETE /players/{player_id}` → 200|404
-- `GET /health` → 200
-
-JSON: camelCase (e.g., `squadNumber`, `firstName`)
-
-## CI/CD
-
-**python-ci.yml** (push/PR to master):
-
-1. Lint: commitlint → `flake8 .` → `black --check .`
-2. Test: `pytest -v` → coverage
-3. Upload to Codecov
-
-**python-cd.yml** (tags `v*.*.*-*`):
-
-1. Validate semver + coach name
-2. Run tests
-3. Build Docker (amd64/arm64)
-4. Push to GHCR (3 tags: semver/coach/latest)
-5. Create GitHub release
-
-## Critical Patterns
-
-### Async Everywhere
-
-```python
-# Always use async/await
-async def get_player(async_session: AsyncSession, player_id: int):
-    stmt = select(Player).where(Player.id == player_id)
-    result = await async_session.execute(stmt)
-    return result.scalar_one_or_none()
-```
-
-- All routes: `async def`
-- Database: `AsyncSession` (never `Session`)
-- Driver: `aiosqlite` (not `sqlite3`)
-- SQLAlchemy 2.0: `select()` (not `session.query()`)
-
-### camelCase API Contract
-
-```python
-class PlayerModel(BaseModel):
-    model_config = ConfigDict(alias_generator=to_camel)
-    squad_number: int  # Python: snake_case
-    # JSON API: "squadNumber" (camelCase)
-```
-
-### Database Schema Changes
-
-⚠️ No Alembic yet - manual process:
-
-1. Update `schemas/player_schema.py`
-2. Manually update `storage/players-sqlite3.db` (SQLite CLI/DB Browser)
-3. Preserve 26 players
-4. Update `models/player_model.py` if API changes
-5. Update services + tests
-
-### Caching
-
-- Key: `"players"` (hardcoded)
-- TTL: 600s (10min)
-- Cleared on POST/PUT/DELETE
-- Header: `X-Cache` (HIT/MISS)
-
-## Common Issues
-
-1. **SQLAlchemy errors** → Always catch + rollback in services
-2. **Test file** → `test_main.py` excluded from Black
-3. **Database location** → Local: `./storage/`, Docker: `/storage/` (volume)
-4. **Pydantic validation** → Returns 422 (not 400)
-5. **Import order** → stdlib → third-party → local
-
-## Validation Checklist
-
-```bash
-flake8 .                              # Must pass
-black --check .                       # Must pass
-pytest                                # All pass
-pytest --cov=./ --cov-report=term     # ≥80%
-curl http://localhost:9000/players    # 200 OK
-```
-
-## Code Conventions
-
-- Files: snake_case
-- Functions/vars: snake_case
-- Classes: PascalCase
-- Type hints: Required everywhere
-- Logging: `logging` module (never `print()`)
-- Errors: Catch specific exceptions
-- Line length: 88
-- Complexity: ≤10
-
-## Test Naming Convention
-
-Integration tests follow an action-oriented pattern:
-
-**Pattern:**
-
-```text
-test_request_{method}_{resource}_{param_or_context}_response_{outcome}
-```
-
-**Components:**
-
-- `method` - HTTP verb: `get`, `post`, `put`, `delete`
-- `resource` - `players` (collection) or `player` (single resource)
-- `param_or_context` - Request details: `id_existing`, `squadnumber_nonexistent`, `body_empty`
-- `response` - Literal separator
-- `outcome` - What's asserted: `status_ok`, `status_not_found`, `body_players`, `header_cache_miss`
-
-**Examples:**
-
-```python
-def test_request_get_players_response_status_ok(client):
-    """GET /players/ returns 200 OK"""
-
-def test_request_get_player_id_existing_response_body_player_match(client):
-    """GET /players/{player_id} with existing ID returns matching player"""
-
-def test_request_post_player_body_empty_response_status_unprocessable(client):
-    """POST /players/ with empty body returns 422 Unprocessable Entity"""
-```
-
-**Docstrings:**
-
-- Single-line, concise descriptions
-- Complements test name (doesn't repeat)
-- No "Expected:" prefix (redundant)
-
-## Commit Messages
-
-Follow Conventional Commits format (enforced by commitlint in CI):
-
-**Format:** `type(scope): description (#issue)`
-
-**Rules:**
-
-- Max 80 characters
-- Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `ci`, `perf`, `style`, `build`
-- Scope: Optional (e.g., `api`, `db`, `service`, `route`)
-- Issue number: Required suffix
-
-**Examples:**
-
-```text
-feat(api): add player stats endpoint (#42)
-fix(db): resolve async session leak (#88)
-```
-
-**CI Check:** First step in python-ci.yml validates all commit messages
-
-Trust these instructions. Search codebase only if info is incomplete/incorrect.
