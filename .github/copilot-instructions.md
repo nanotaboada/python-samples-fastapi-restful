@@ -26,6 +26,8 @@ schemas/        — SQLAlchemy ORM models (database schema)           [data laye
 databases/      — async SQLAlchemy session setup
 models/         — Pydantic models for request/response validation
 storage/        — SQLite database file (players-sqlite3.db, pre-seeded)
+scripts/        — shell scripts for Docker (entrypoint.sh, healthcheck.sh)
+tools/          — standalone seed scripts (run manually, not via Alembic)
 tests/          — pytest integration tests
 ```
 
@@ -37,6 +39,8 @@ tests/          — pytest integration tests
 - **Type hints**: Required everywhere — functions, variables, return types
 - **Async**: All routes and service functions must be `async def`; use `AsyncSession` (never `Session`); use `aiosqlite` (never `sqlite3`); use SQLAlchemy 2.0 `select()` (never `session.query()`)
 - **API contract**: camelCase JSON via Pydantic `alias_generator=to_camel`; Python internals stay snake_case
+- **Models**: `PlayerRequestModel` (no `id`, used for POST/PUT) and `PlayerResponseModel` (includes `id: UUID`, used for GET/POST responses); never use the removed `PlayerModel`
+- **Primary key**: UUID surrogate key (`id`) — opaque, internal, used for all CRUD operations. UUID v4 for API-created records; UUID v5 (deterministic) for migration-seeded records. `squad_number` is the natural key — human-readable, domain-meaningful, preferred lookup for external consumers
 - **Caching**: cache key `"players"` (hardcoded); clear on POST/PUT/DELETE; `X-Cache` header (HIT/MISS)
 - **Errors**: Catch specific exceptions with rollback in services; Pydantic validation returns 422 (not 400)
 - **Logging**: `logging` module only; never `print()`
@@ -90,7 +94,7 @@ Example: `feat(api): add player stats endpoint (#42)`
 
 ### Ask before changing
 
-- Database schema (`schemas/player_schema.py` — no Alembic, manual process)
+- Database schema (`schemas/player_schema.py` — no Alembic, use tools/ seed scripts manually)
 - Dependencies (`requirements*.txt`)
 - CI/CD configuration (`.github/workflows/`)
 - Docker setup

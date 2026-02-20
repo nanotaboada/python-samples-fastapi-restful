@@ -44,7 +44,20 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- UUID v4 primary key for the `players` table, replacing the previous integer PK (#66)
+- `PlayerRequestModel` Pydantic model for POST/PUT request bodies (no `id` field) (#66)
+- `PlayerResponseModel` Pydantic model for GET/POST response bodies (includes `id: UUID`) (#66)
+- `tools/seed_001_starting_eleven.py`: standalone seed script populating 11 starting-eleven players with deterministic UUID v5 PKs (#66)
+- `tools/seed_002_substitutes.py`: standalone seed script populating 14 substitute players with deterministic UUID v5 PKs (#66)
+- `HyphenatedUUID` custom `TypeDecorator` in `schemas/player_schema.py` storing UUIDs as hyphenated `CHAR(36)` strings in SQLite, returning `uuid.UUID` objects in Python (#66)
+
 ### Changed
+
+- `PlayerModel` split into `PlayerRequestModel` and `PlayerResponseModel` in `models/player_model.py` (#66)
+- All route path parameters and service function signatures updated from `int` to `uuid.UUID` (#66)
+- POST conflict detection changed from ID lookup to `squad_number` uniqueness check (#66)
+- `tests/player_stub.py` updated with UUID-based test fixtures (#66)
+- `tests/test_main.py` updated to assert UUID presence and format in API responses (#66)
 
 ### Deprecated
 

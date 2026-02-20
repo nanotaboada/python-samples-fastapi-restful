@@ -2,12 +2,14 @@
 Pydantic models defining the data schema for football players.
 
 - `MainModel`: Base model with common config for camelCase aliasing.
-- `PlayerModel`: Represents a football player with personal and team details.
+- `PlayerRequestModel`: Represents player data for Create and Update operations.
+- `PlayerResponseModel`: Represents player data including UUID for Retrieve operations.
 
 These models are used for data validation and serialization in the API.
 """
 
 from typing import Optional
+from uuid import UUID
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
@@ -27,15 +29,17 @@ class MainModel(BaseModel):
             Pydantic models.
     """
 
-    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+    model_config = ConfigDict(
+        alias_generator=to_camel, populate_by_name=True, from_attributes=True
+    )
 
 
-class PlayerModel(MainModel):
+class PlayerRequestModel(MainModel):
     """
-    Pydantic model representing a football Player.
+    Pydantic model representing the data required for Create and Update operations
+    on a football Player.
 
     Attributes:
-        id (int): The unique identifier for the Player.
         first_name (str): The first name of the Player.
         middle_name (Optional[str]): The middle name of the Player, if any.
         last_name (str): The last name of the Player.
@@ -50,7 +54,6 @@ class PlayerModel(MainModel):
         if provided.
     """
 
-    id: int
     first_name: str
     middle_name: Optional[str]
     last_name: str
@@ -61,3 +64,14 @@ class PlayerModel(MainModel):
     team: Optional[str]
     league: Optional[str]
     starting11: Optional[bool]
+
+
+class PlayerResponseModel(PlayerRequestModel):
+    """
+    Pydantic model representing a football Player with a UUID for Retrieve operations.
+
+    Attributes:
+        id (UUID): The unique identifier for the Player (UUID v4).
+    """
+
+    id: UUID
