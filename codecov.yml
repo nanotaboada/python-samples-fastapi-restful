@@ -2,7 +2,7 @@
 # https://docs.codecov.com/docs/codecov-yaml
 
 coverage:
-# https://docs.codecov.com/docs/commit-status
+  # https://docs.codecov.com/docs/commit-status
   status:
     project:
       default:
@@ -42,7 +42,7 @@ ignore:
   - "^assets/.*"
   - "^databases/.*"
   - "^models/.*"
-  - "^postman_collections/.*"
+  - "^rest/.*"
   - "^schemas/.*"
   - "^tools/.*"
   - "^tests/.*"

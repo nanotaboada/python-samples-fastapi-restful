@@ -8,7 +8,7 @@
     "coderabbit.coderabbit-vscode",      // CodeRabbit - AI-powered code review
 
     // Code Quality
-    "sonarsource.sonarlint-vscode",      // SonarLint - Code quality and security analysis
+    // "sonarsource.sonarlint-vscode",      // SonarLint - Code quality and security analysis
 
     // Formatting & Linting
     "ms-python.black-formatter",         // Python code formatting
@@ -29,6 +29,9 @@
     // Containers & Configuration
     "ms-azuretools.vscode-containers",   // Container Tools - Docker and container management
     "yy0931.vscode-sqlite3-editor",      // SQLite3 Editor - View and edit SQLite databases
+
+    // API Development
+    "humao.rest-client",                 // REST Client - Send HTTP requests from .http files
 
     // UI Enhancements
     "github.github-vscode-theme",        // GitHub Theme - GitHub color themes

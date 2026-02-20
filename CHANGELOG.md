@@ -44,6 +44,8 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- `rest/players.rest` file covering all CRUD operations, compatible with the VS Code REST Client extension
+- `humao.rest-client` added to `.vscode/extensions.json` recommendations
 - UUID v4 primary key for the `players` table, replacing the previous integer PK (#66)
 - `PlayerRequestModel` Pydantic model for POST/PUT request bodies (no `id` field) (#66)
 - `PlayerResponseModel` Pydantic model for GET/POST response bodies (includes `id: UUID`) (#66)
@@ -68,6 +70,8 @@ This project uses famous football coaches as release codenames, following an A-Z
 ### Deprecated
 
 ### Removed
+
+- `postman_collections/` directory replaced by `rest/players.rest`
 
 ### Fixed
 

@@ -34,7 +34,7 @@
     "**/.vscode/**",
     "**/assets/**",
     "**/htmlcov/**",
-    "**/postman_collections/**",
+    "**/rest/**",
     "**/scripts/**",
     "**/tools/**",
     "**/storage/**",
