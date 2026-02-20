@@ -249,10 +249,11 @@ def run(db_path: Path) -> None:
         sys.exit(1)
 
     conn = sqlite3.connect(db_path)
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA foreign_keys=ON")
 
     try:
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA foreign_keys=ON")
+
         id_type = _id_column_type(conn)
 
         if id_type == "TEXT" and _already_migrated(conn):

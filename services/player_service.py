@@ -15,7 +15,7 @@ Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 """
 
 import logging
-from typing import Optional
+from typing import List, Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -61,7 +61,7 @@ async def create_async(
 # Retrieve ---------------------------------------------------------------------
 
 
-async def retrieve_all_async(async_session: AsyncSession):
+async def retrieve_all_async(async_session: AsyncSession) -> List[Player]:
     """
     Retrieves all the players from the database.
 
@@ -133,6 +133,9 @@ async def update_async(
         True if the Player was updated successfully, False otherwise.
     """
     player = await async_session.get(Player, player_id)
+    if player is None:  # pragma: no cover
+        logger.error("Player not found for update: %s", player_id)
+        return False
     player.first_name = player_model.first_name
     player.middle_name = player_model.middle_name
     player.last_name = player_model.last_name

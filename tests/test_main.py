@@ -18,7 +18,11 @@ Validates:
 
 from uuid import UUID
 
-from tests.player_stub import existing_player, nonexistent_player, unknown_player
+from tests.player_stub import (
+    existing_player,
+    nonexistent_player,
+    unknown_player,
+)
 
 PATH = "/players/"
 
