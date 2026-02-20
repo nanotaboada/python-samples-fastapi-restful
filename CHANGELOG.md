@@ -58,12 +58,24 @@ This project uses famous football coaches as release codenames, following an A-Z
 - POST conflict detection changed from ID lookup to `squad_number` uniqueness check (#66)
 - `tests/player_stub.py` updated with UUID-based test fixtures (#66)
 - `tests/test_main.py` updated to assert UUID presence and format in API responses (#66)
+- `PlayerResponseModel` redeclared with `id` as first field to control JSON serialization order (#66)
+- `HyphenatedUUID` methods now have full type annotations and Google-style docstrings; unused `dialect` params renamed to `_dialect` (#66)
+- Service logger changed from `getLogger("uvicorn")` to `getLogger("uvicorn.error")`, aligned with `main.py` (#66)
+- `logger.error(f"...")` replaced with `logger.exception("...: %s", error)` in all `SQLAlchemyError` handlers (#66)
+- EN dashes replaced with ASCII hyphens in `seed_002` log and argparse strings (#66)
+- `logger.error` replaced with `logger.exception` in `sqlite3.Error` handlers in `seed_001` and `seed_002` (#66)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+- POST/PUT/DELETE routes now raise `HTTP 500` on DB failure instead of silently returning success (#66)
+- Cache cleared only after confirmed successful create, update, or delete (#66)
+- DELETE test is now self-contained; no longer depends on POST test having run first (#66)
+- UUID assertion in GET all test replaced with explicit `_is_valid_uuid()` validator (#66)
+- Emiliano Martínez `middleName` corrected from `""` to `None` in `seed_001` (#66)
 
 ### Security
 
