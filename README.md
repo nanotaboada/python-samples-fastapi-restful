@@ -58,6 +58,10 @@ http://localhost:9000/docs
 
 ![API Documentation](assets/images/swagger.png)
 
+## HTTP Requests
+
+The [`rest/players.rest`](rest/players.rest) file covers all CRUD operations and can be run directly in VS Code with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension.
+
 ## Container
 
 ### Docker Compose
