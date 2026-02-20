@@ -2,12 +2,14 @@
 Pydantic models defining the data schema for football players.
 
 - `MainModel`: Base model with common config for camelCase aliasing.
-- `PlayerModel`: Represents a football player with personal and team details.
+- `PlayerRequestModel`: Represents player data for Create and Update operations.
+- `PlayerResponseModel`: Represents player data including UUID for Retrieve operations.
 
 These models are used for data validation and serialization in the API.
 """
 
 from typing import Optional
+from uuid import UUID
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
@@ -27,15 +29,17 @@ class MainModel(BaseModel):
             Pydantic models.
     """
 
-    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+    model_config = ConfigDict(
+        alias_generator=to_camel, populate_by_name=True, from_attributes=True
+    )
 
 
-class PlayerModel(MainModel):
+class PlayerRequestModel(MainModel):
     """
-    Pydantic model representing a football Player.
+    Pydantic model representing the data required for Create and Update operations
+    on a football Player.
 
     Attributes:
-        id (int): The unique identifier for the Player.
         first_name (str): The first name of the Player.
         middle_name (Optional[str]): The middle name of the Player, if any.
         last_name (str): The last name of the Player.
@@ -50,14 +54,47 @@ class PlayerModel(MainModel):
         if provided.
     """
 
-    id: int
     first_name: str
-    middle_name: Optional[str]
+    middle_name: Optional[str] = None
     last_name: str
-    date_of_birth: Optional[str]
+    date_of_birth: Optional[str] = None
     squad_number: int
     position: str
-    abbr_position: Optional[str]
-    team: Optional[str]
-    league: Optional[str]
-    starting11: Optional[bool]
+    abbr_position: Optional[str] = None
+    team: Optional[str] = None
+    league: Optional[str] = None
+    starting11: Optional[bool] = None
+
+
+class PlayerResponseModel(MainModel):
+    """
+    Pydantic model representing a football Player with a UUID for Retrieve operations.
+
+    Attributes:
+        id (UUID): The unique identifier for the Player (UUID v4 for API-created
+            records, UUID v5 for migration-seeded records).
+        first_name (str): The first name of the Player.
+        middle_name (Optional[str]): The middle name of the Player, if any.
+        last_name (str): The last name of the Player.
+        date_of_birth (Optional[str]): The date of birth of the Player, if provided.
+        squad_number (int): The unique squad number assigned to the Player.
+        position (str): The playing position of the Player.
+        abbr_position (Optional[str]): The abbreviated form of the Player's position,
+        if any.
+        team (Optional[str]): The team to which the Player belongs, if any.
+        league (Optional[str]): The league where the team plays, if any.
+        starting11 (Optional[bool]): Indicates if the Player is in the starting 11,
+        if provided.
+    """
+
+    id: UUID
+    first_name: str
+    middle_name: Optional[str] = None
+    last_name: str
+    date_of_birth: Optional[str] = None
+    squad_number: int
+    position: str
+    abbr_position: Optional[str] = None
+    team: Optional[str] = None
+    league: Optional[str] = None
+    starting11: Optional[bool] = None

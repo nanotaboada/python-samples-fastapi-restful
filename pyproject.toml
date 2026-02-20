@@ -13,6 +13,7 @@ exclude = '''
   | htmlcov
   | postman_collections
   | scripts
+  | tools
   | storage
   | __pycache__
   | tests/test_main\.py

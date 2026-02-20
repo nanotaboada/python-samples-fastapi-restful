@@ -16,9 +16,25 @@ Validates:
 - Conflict and edge case behaviors
 """
 
-from tests.player_stub import existing_player, nonexistent_player, unknown_player
+from uuid import UUID
+
+from tests.player_stub import (
+    existing_player,
+    nonexistent_player,
+    unknown_player,
+)
 
 PATH = "/players/"
+
+
+def _is_valid_uuid(value: str) -> bool:
+    """Return True if value is a well-formed UUID string, False otherwise."""
+    try:
+        UUID(value)
+        return True
+    except ValueError:
+        return False
+
 
 # GET /health/ -----------------------------------------------------------------
 
@@ -39,7 +55,6 @@ def test_request_get_players_response_header_cache_miss(client):
     """GET /players/ initial request returns X-Cache: MISS"""
     # Act
     response = client.get(PATH)
-
     # Assert
     assert "X-Cache" in response.headers
     assert response.headers.get("X-Cache") == "MISS"
@@ -50,7 +65,6 @@ def test_request_get_players_response_header_cache_hit(client):
     # Act
     client.get(PATH)  # initial
     response = client.get(PATH)  # subsequent (cached)
-
     # Assert
     assert "X-Cache" in response.headers
     assert response.headers.get("X-Cache") == "HIT"
@@ -64,26 +78,24 @@ def test_request_get_players_response_status_ok(client):
     assert response.status_code == 200
 
 
-def test_request_get_players_response_body_players(client):
-    """GET /players/ returns list of players"""
+def test_request_get_players_response_body_each_player_has_uuid(client):
+    """GET /players/ returns players each containing a UUID id field"""
     # Act
     response = client.get(PATH)
     # Assert
     players = response.json()
-    assert (
-        len(players) == 25
-    )  # Database has 25 players (ID 24 reserved for creation test)
-    assert all("id" in player for player in players)  # Each player has an ID
-    assert all(player["id"] != 24 for player in players)  # ID 24 not in database yet
+    assert all(
+        _is_valid_uuid(player["id"]) for player in players
+    )  # UUID v5 (migration-seeded)
 
 
 # GET /players/{player_id} -----------------------------------------------------
 
 
 def test_request_get_player_id_nonexistent_response_status_not_found(client):
-    """GET /players/{player_id} with nonexistent ID returns 404 Not Found"""
+    """GET /players/{player_id} with nonexistent UUID returns 404 Not Found"""
     # Arrange
-    player_id = nonexistent_player().id
+    player_id = unknown_player().id
     # Act
     response = client.get(PATH + str(player_id))
     # Assert
@@ -108,7 +120,7 @@ def test_request_get_player_id_existing_response_body_player_match(client):
     response = client.get(PATH + str(player_id))
     # Assert
     player = response.json()
-    assert player["id"] == player_id
+    assert player["id"] == str(player_id)
 
 
 # GET /players/squadnumber/{squad_number} --------------------------------------
@@ -167,13 +179,16 @@ def test_request_post_player_body_existing_response_status_conflict(client):
 
 
 def test_request_post_player_body_nonexistent_response_status_created(client):
-    """POST /players/ with nonexistent player returns 201 Created"""
+    """POST /players/ with nonexistent player returns 201 Created with a valid UUID"""
     # Arrange
     player = nonexistent_player()
     # Act
     response = client.post(PATH, json=player.__dict__)
     # Assert
     assert response.status_code == 201
+    body = response.json()
+    assert "id" in body
+    assert UUID(body["id"]).version == 4  # UUID v4 (API-created)
 
 
 # PUT /players/{player_id} -----------------------------------------------------
@@ -229,9 +244,12 @@ def test_request_delete_player_id_unknown_response_status_not_found(client):
 
 
 def test_request_delete_player_id_existing_response_status_no_content(client):
-    """DELETE /players/{player_id} with existing ID returns 204 No Content"""
-    # Arrange
-    player_id = 24  # Thiago Almada - created by POST test, now deleted (atomic)
+    """DELETE /players/{player_id} with existing UUID returns 204 No Content"""
+    # Arrange — create the player to be deleted, then resolve its UUID
+    player = nonexistent_player()
+    client.post(PATH, json=player.__dict__)
+    lookup_response = client.get(PATH + "squadnumber/" + str(player.squad_number))
+    player_id = lookup_response.json()["id"]
     # Act
     response = client.delete(PATH + str(player_id))
     # Assert

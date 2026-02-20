@@ -35,9 +35,9 @@ def existing_player():
     Creates a test stub for an existing Player.
     """
     return Player(
-        id=1,
-        first_name="Damián",
-        middle_name="Emiliano",
+        id="b04965e6-a9bb-591f-8f8a-1adcb2c8dc39",
+        first_name="Emiliano",
+        middle_name="",
         last_name="Martínez",
         date_of_birth="1992-09-02T00:00:00.000Z",
         squad_number=23,
@@ -52,9 +52,9 @@ def existing_player():
 def nonexistent_player():
     """
     Creates a test stub for a nonexistent (new) Player.
+    No id is provided; the server generates a UUID on creation.
     """
     return Player(
-        id=24,
         first_name="Thiago",
         middle_name="Ezequiel",
         last_name="Almada",
@@ -70,12 +70,12 @@ def nonexistent_player():
 
 def unknown_player():
     """
-    Creates a test stub for an unknown Player.
+    Creates a test stub for an unknown Player (valid UUID format, not in database).
     """
     return Player(
-        id=999,
+        id="00000000-0000-0000-0000-000000000000",
         first_name="John",
         last_name="Doe",
-        squad_number="999",
+        squad_number=999,
         position="Lipsum",
     )
