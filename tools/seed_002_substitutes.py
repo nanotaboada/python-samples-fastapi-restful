@@ -271,7 +271,7 @@ def run(db_path: Path) -> None:
 
         if _already_migrated(conn):
             logger.info(
-                "Migration 002 already applied – all substitute UUIDs present. "
+                "Migration 002 already applied - all substitute UUIDs present. "
                 "Skipping."
             )
             return
@@ -280,11 +280,11 @@ def run(db_path: Path) -> None:
         conn.executemany(INSERT_SQL, SUBSTITUTES)
         conn.commit()
 
-        logger.info("Migration 002 – Substitutes completed successfully.")
+        logger.info("Migration 002 - Substitutes completed successfully.")
 
     except sqlite3.Error as exc:
         conn.rollback()
-        logger.error("Migration failed: %s", exc)
+        logger.exception("Migration failed: %s", exc)
         sys.exit(1)
     finally:
         conn.close()
@@ -292,7 +292,7 @@ def run(db_path: Path) -> None:
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Migration 002 – seed substitute players with UUID PKs."
+        description="Migration 002 - seed substitute players with UUID PKs."
     )
     parser.add_argument(
         "--db-path",

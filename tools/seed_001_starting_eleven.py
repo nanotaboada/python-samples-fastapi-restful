@@ -47,7 +47,7 @@ STARTING_ELEVEN = [
     {
         "id": "b04965e6-a9bb-591f-8f8a-1adcb2c8dc39",
         "firstName": "Emiliano",
-        "middleName": "",
+        "middleName": None,
         "lastName": "Martínez",
         "dateOfBirth": "1992-09-02T00:00:00.000Z",
         "squadNumber": 23,
@@ -280,7 +280,7 @@ def run(db_path: Path) -> None:
 
     except sqlite3.Error as exc:
         conn.rollback()
-        logger.error("Migration failed: %s", exc)
+        logger.exception("Migration failed: %s", exc)
         sys.exit(1)
     finally:
         conn.close()

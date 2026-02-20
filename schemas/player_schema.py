@@ -6,6 +6,7 @@ Defines the schema and columns corresponding to football player attributes.
 Used for async database CRUD operations in the application.
 """
 
+from typing import Optional, Union
 from uuid import UUID, uuid4
 from sqlalchemy import Column, String, Integer, Boolean, TypeDecorator
 from databases.player_database import Base
@@ -20,14 +21,35 @@ class HyphenatedUUID(TypeDecorator):
     impl = String(36)
     cache_ok = True
 
-    def process_bind_param(self, value, dialect):
+    def process_bind_param(
+        self, value: Optional[Union[UUID, str]], _dialect
+    ) -> Optional[str]:
+        """Convert a UUID or string to a hyphenated UUID string for storage.
+
+        Args:
+            value: A UUID object, a UUID string, or None.
+            _dialect: The SQLAlchemy dialect (unused).
+
+        Returns:
+            A hyphenated UUID string (e.g. '550e8400-e29b-41d4-a716-446655440000'),
+            or None if value is None.
+        """
         if value is None:
             return None
         if isinstance(value, UUID):
             return str(value)
         return str(UUID(str(value)))
 
-    def process_result_value(self, value, dialect):
+    def process_result_value(self, value: Optional[str], _dialect) -> Optional[UUID]:
+        """Convert a stored hyphenated UUID string back to a Python UUID object.
+
+        Args:
+            value: A hyphenated UUID string, or None.
+            _dialect: The SQLAlchemy dialect (unused).
+
+        Returns:
+            A Python UUID object, or None if value is None.
+        """
         if value is None:
             return None
         return UUID(value)

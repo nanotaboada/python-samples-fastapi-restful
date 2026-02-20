@@ -22,6 +22,16 @@ from tests.player_stub import existing_player, nonexistent_player, unknown_playe
 
 PATH = "/players/"
 
+
+def _is_valid_uuid(value: str) -> bool:
+    """Return True if value is a well-formed UUID string, False otherwise."""
+    try:
+        UUID(value)
+        return True
+    except ValueError:
+        return False
+
+
 # GET /health/ -----------------------------------------------------------------
 
 
@@ -70,7 +80,9 @@ def test_request_get_players_response_body_each_player_has_uuid(client):
     response = client.get(PATH)
     # Assert
     players = response.json()
-    assert all(UUID(player["id"]) for player in players)  # UUID v5 (migration-seeded)
+    assert all(
+        _is_valid_uuid(player["id"]) for player in players
+    )  # UUID v5 (migration-seeded)
 
 
 # GET /players/{player_id} -----------------------------------------------------
@@ -229,9 +241,10 @@ def test_request_delete_player_id_unknown_response_status_not_found(client):
 
 def test_request_delete_player_id_existing_response_status_no_content(client):
     """DELETE /players/{player_id} with existing UUID returns 204 No Content"""
-    # Arrange
-    squad_number = nonexistent_player().squad_number  # created by POST test
-    lookup_response = client.get(PATH + "squadnumber/" + str(squad_number))
+    # Arrange — create the player to be deleted, then resolve its UUID
+    player = nonexistent_player()
+    client.post(PATH, json=player.__dict__)
+    lookup_response = client.get(PATH + "squadnumber/" + str(player.squad_number))
     player_id = lookup_response.json()["id"]
     # Act
     response = client.delete(PATH + str(player_id))

@@ -69,6 +69,11 @@ async def post_async(
     if existing:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
     player = await player_service.create_async(async_session, player_model)
+    if player is None:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create the Player due to a database error.",
+        )
     await simple_memory_cache.clear(CACHE_KEY)
     return player
 
@@ -198,7 +203,12 @@ async def put_async(
     player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    await player_service.update_async(async_session, player_id, player_model)
+    updated = await player_service.update_async(async_session, player_id, player_model)
+    if not updated:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update the Player due to a database error.",
+        )
     await simple_memory_cache.clear(CACHE_KEY)
 
 
@@ -229,5 +239,10 @@ async def delete_async(
     player = await player_service.retrieve_by_id_async(async_session, player_id)
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    await player_service.delete_async(async_session, player_id)
+    deleted = await player_service.delete_async(async_session, player_id)
+    if not deleted:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete the Player due to a database error.",
+        )
     await simple_memory_cache.clear(CACHE_KEY)

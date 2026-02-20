@@ -25,7 +25,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from models.player_model import PlayerRequestModel
 from schemas.player_schema import Player
 
-logger = logging.getLogger("uvicorn")
+# https://github.com/encode/uvicorn/issues/562
+logger = logging.getLogger("uvicorn.error")
 
 # Create -----------------------------------------------------------------------
 
@@ -52,7 +53,7 @@ async def create_async(
         await async_session.refresh(player)
         return player
     except SQLAlchemyError as error:
-        logger.error(f"Error trying to create the Player: {error}")
+        logger.exception("Error trying to create the Player: %s", error)
         await async_session.rollback()
         return None
 
@@ -146,7 +147,7 @@ async def update_async(
         await async_session.commit()
         return True
     except SQLAlchemyError as error:
-        logger.error(f"Error trying to update the Player: {error}")
+        logger.exception("Error trying to update the Player: %s", error)
         await async_session.rollback()
         return False
 
@@ -171,6 +172,6 @@ async def delete_async(async_session: AsyncSession, player_id: UUID) -> bool:
         await async_session.commit()
         return True
     except SQLAlchemyError as error:
-        logger.error(f"Error trying to delete the Player: {error}")
+        logger.exception("Error trying to delete the Player: %s", error)
         await async_session.rollback()
         return False
