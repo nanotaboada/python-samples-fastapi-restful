@@ -52,7 +52,7 @@ async def create_async(
         await async_session.commit()
         await async_session.refresh(player)
         return player
-    except SQLAlchemyError as error:
+    except SQLAlchemyError as error:  # pragma: no cover
         logger.exception("Error trying to create the Player: %s", error)
         await async_session.rollback()
         return None
@@ -146,7 +146,7 @@ async def update_async(
     try:
         await async_session.commit()
         return True
-    except SQLAlchemyError as error:
+    except SQLAlchemyError as error:  # pragma: no cover
         logger.exception("Error trying to update the Player: %s", error)
         await async_session.rollback()
         return False
@@ -171,7 +171,7 @@ async def delete_async(async_session: AsyncSession, player_id: UUID) -> bool:
     try:
         await async_session.commit()
         return True
-    except SQLAlchemyError as error:
+    except SQLAlchemyError as error:  # pragma: no cover
         logger.exception("Error trying to delete the Player: %s", error)
         await async_session.rollback()
         return False

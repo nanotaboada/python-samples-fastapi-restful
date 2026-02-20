@@ -55,15 +55,15 @@ class PlayerRequestModel(MainModel):
     """
 
     first_name: str
-    middle_name: Optional[str]
+    middle_name: Optional[str] = None
     last_name: str
-    date_of_birth: Optional[str]
+    date_of_birth: Optional[str] = None
     squad_number: int
     position: str
-    abbr_position: Optional[str]
-    team: Optional[str]
-    league: Optional[str]
-    starting11: Optional[bool]
+    abbr_position: Optional[str] = None
+    team: Optional[str] = None
+    league: Optional[str] = None
+    starting11: Optional[bool] = None
 
 
 class PlayerResponseModel(MainModel):
@@ -89,12 +89,12 @@ class PlayerResponseModel(MainModel):
 
     id: UUID
     first_name: str
-    middle_name: Optional[str]
+    middle_name: Optional[str] = None
     last_name: str
-    date_of_birth: Optional[str]
+    date_of_birth: Optional[str] = None
     squad_number: int
     position: str
-    abbr_position: Optional[str]
-    team: Optional[str]
-    league: Optional[str]
-    starting11: Optional[bool]
+    abbr_position: Optional[str] = None
+    team: Optional[str] = None
+    league: Optional[str] = None
+    starting11: Optional[bool] = None
