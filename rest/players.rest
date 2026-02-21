@@ -1,0 +1,104 @@
+### RESTful API with Python 3 and FastAPI
+### https://github.com/nanotaboada/python-samples-fastapi-restful
+###
+### Requires the REST Client extension for VS Code:
+### https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+###
+### Key design note:
+###   squad_number = natural key  (domain-meaningful, preferred for lookups)
+###   id (UUID)    = surrogate key (internal, opaque, used for CRUD operations)
+
+@baseUrl = http://localhost:9000
+
+# ------------------------------------------------------------------------------
+# Health
+# ------------------------------------------------------------------------------
+
+### GET /health/ — liveness check
+GET {{baseUrl}}/health/
+Accept: application/json
+
+# ------------------------------------------------------------------------------
+# POST /players/ — Create
+# Thiago Almada (squad 16): not seeded in the database, used as the creation
+# fixture. No id in the body; the server generates a UUID v4 on creation.
+# ------------------------------------------------------------------------------
+
+### POST /players/ — Create a new Player
+POST {{baseUrl}}/players/
+Content-Type: application/json
+
+{
+  "firstName": "Thiago",
+  "middleName": "Ezequiel",
+  "lastName": "Almada",
+  "dateOfBirth": "2001-04-26T00:00:00.000Z",
+  "squadNumber": 16,
+  "position": "Attacking Midfield",
+  "abbrPosition": "AM",
+  "team": "Atlanta United FC",
+  "league": "Major League Soccer",
+  "starting11": false
+}
+
+# ------------------------------------------------------------------------------
+# GET /players/ — Retrieve all
+# ------------------------------------------------------------------------------
+
+### GET /players/ — Retrieve all Players
+GET {{baseUrl}}/players/
+Accept: application/json
+
+# ------------------------------------------------------------------------------
+# GET /players/{player_id} — Retrieve by UUID (surrogate key, internal)
+# Emiliano Martínez (squad 23): UUID v5, seeded by seed_001.
+# ------------------------------------------------------------------------------
+
+### GET /players/{player_id} — Retrieve a Player by UUID
+GET {{baseUrl}}/players/b04965e6-a9bb-591f-8f8a-1adcb2c8dc39
+Accept: application/json
+
+# ------------------------------------------------------------------------------
+# GET /players/squadnumber/{squad_number} — Retrieve by Squad Number (natural key, domain)
+# Preferred lookup for external consumers.
+# ------------------------------------------------------------------------------
+
+### GET /players/squadnumber/{squad_number} — Retrieve a Player by Squad Number
+GET {{baseUrl}}/players/squadnumber/10
+Accept: application/json
+
+# ------------------------------------------------------------------------------
+# PUT /players/{player_id} — Update
+# Emiliano Martínez (squad 23): UUID v5, seeded by seed_001.
+# ------------------------------------------------------------------------------
+
+### PUT /players/{player_id} — Update an existing Player
+PUT {{baseUrl}}/players/b04965e6-a9bb-591f-8f8a-1adcb2c8dc39
+Content-Type: application/json
+
+{
+  "firstName": "Emiliano",
+  "middleName": null,
+  "lastName": "Martínez",
+  "dateOfBirth": "1992-09-02T00:00:00.000Z",
+  "squadNumber": 23,
+  "position": "Goalkeeper",
+  "abbrPosition": "GK",
+  "team": "Aston Villa FC",
+  "league": "Premier League",
+  "starting11": true
+}
+
+# ------------------------------------------------------------------------------
+# DELETE /players/{player_id} — Delete
+# Thiago Almada (squad 16): created by POST above. Since the UUID is generated
+# at runtime, retrieve it first via squad number, then substitute it below.
+# ------------------------------------------------------------------------------
+
+### Step 1 — Look up Almada's UUID by squad number
+GET {{baseUrl}}/players/squadnumber/16
+Accept: application/json
+
+### Step 2 — Delete Almada using the UUID returned above
+# Replace {player_id} with the id field from the response above.
+DELETE {{baseUrl}}/players/{player_id}
