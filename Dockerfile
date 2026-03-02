@@ -1,20 +1,24 @@
 # ------------------------------------------------------------------------------
 # Stage 1: Builder
-# This stage builds the application and its dependencies.
+# This stage resolves and pre-builds all dependency wheels for offline installation.
+# No application source code is copied here — only pyproject.toml and uv.lock.
 # ------------------------------------------------------------------------------
 # Python version should match .python-version file (currently 3.13.3)
 FROM python:3.13.3-slim-bookworm AS builder
 
 WORKDIR /app
 
-# Install system build tools for packages with native extensions
+# Install system build tools required to compile native extensions (e.g. gevent, greenlet)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential gcc libffi-dev libssl-dev && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb
 
-# Build all dependencies into wheels for reproducibility and speed
-COPY --chown=root:root --chmod=644 requirements.txt .
-RUN pip wheel --no-cache-dir --wheel-dir=/app/wheelhouse -r requirements.txt
+# Resolve and build all dependency wheels from pyproject.toml and uv.lock:
+# uv export reads uv.lock to produce a pinned, reproducible dependency list;
+# pip wheel compiles each resolved package into a .whl file for offline installation
+COPY --chown=root:root --chmod=644 pyproject.toml uv.lock ./
+RUN pip install uv --quiet && \
+    uv export --no-hashes | pip wheel --no-cache-dir --wheel-dir=/app/wheelhouse -r /dev/stdin
 
 # ------------------------------------------------------------------------------
 # Stage 2: Runtime
@@ -42,9 +46,8 @@ COPY assets/            ./assets/
 # Copy pre-built wheels from builder
 COPY --from=builder     /app/wheelhouse/            /app/wheelhouse/
 
-# Install dependencies
-COPY requirements.txt   .
-RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse -r requirements.txt && \
+# Install all pre-built wheels from the builder stage; no network access required
+RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse /app/wheelhouse/*.whl && \
     rm -rf /app/wheelhouse
 
 # Copy application source code
@@ -55,8 +58,6 @@ COPY routes/            ./routes/
 COPY schemas/           ./schemas/
 COPY services/          ./services/
 
-# https://rules.sonarsource.com/docker/RSPEC-6504/
-
 # Copy entrypoint and healthcheck scripts
 COPY --chmod=755        scripts/entrypoint.sh       ./entrypoint.sh
 COPY --chmod=755        scripts/healthcheck.sh      ./healthcheck.sh
@@ -66,6 +67,7 @@ COPY --chmod=755        scripts/healthcheck.sh      ./healthcheck.sh
 COPY --chmod=755        storage/                    ./hold/
 
 # Add non-root user and make volume mount point writable
+# Avoids running the container as root (see: https://rules.sonarsource.com/docker/RSPEC-6504/)
 RUN adduser --system --disabled-password --group fastapi && \
     mkdir -p /storage && \
     chown fastapi:fastapi /storage

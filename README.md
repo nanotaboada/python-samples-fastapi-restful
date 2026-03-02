@@ -36,17 +36,63 @@ This project uses `.python-version` to specify the required Python version. If y
 
 Alternatively, ensure you have Python 3.13.3 (or the version specified in `.python-version`) installed.
 
+## Setup
+
+### Prerequisites
+
+- Python 3.13+
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+
+### Installation
+
+1. Install uv (if you haven't already):
+
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+2. Create a virtual environment and install dependencies:
+
+   ```bash
+   uv venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   uv pip install --group dev
+   ```
+
+   **Alternative (using pip)**:
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   pip install -r requirements-lint.txt
+   pip install -r requirements-test.txt
+   ```
+
 ## Install
 
-```console
-pip install -r requirements.txt
-pip install -r requirements-lint.txt
-pip install -r requirements-test.txt
+Dependencies are defined in `pyproject.toml` using PEP 735 standards. Install them with:
+
+```bash
+uv pip install --group dev
 ```
+
+Or with specific groups:
+
+- `uv pip install` - Install production dependencies only
+- `uv pip install --group test` - Install test dependencies
+- `uv pip install --group lint` - Install linting dependencies
+- `uv pip install --group dev` - Install all (test + lint + production)
 
 ## Start
 
-```console
+```bash
+uv run uvicorn main:app --reload --port 9000
+```
+
+Or using pip:
+
+```bash
 uvicorn main:app --reload --port 9000
 ```
 
@@ -62,11 +108,38 @@ http://localhost:9000/docs
 
 The [`rest/players.rest`](rest/players.rest) file covers all CRUD operations and can be run directly in VS Code with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension.
 
+## Running Tests
+
+```bash
+uv run pytest -v
+```
+
+## Code Quality
+
+### Linting
+
+```bash
+uv run flake8 .
+```
+
+### Code Formatting
+
+```bash
+uv run black --check .
+uv run black .  # Auto-format
+```
+
+### Coverage
+
+```bash
+uv run pytest --cov=./ --cov-report=term
+```
+
 ## Container
 
 ### Docker Compose
 
-This setup uses [Docker Compose](https://docs.docker.com/compose/) to build and run the app and manage a persistent SQLite database stored in a Docker volume.
+This setup uses [Docker Compose](https://docs.docker.com/compose/) to build and run the app and manage a persistent SQLite database stored in a Docker volume. The Dockerfile uses PEP 735 dependency groups defined in `pyproject.toml`.
 
 #### Build the image
 

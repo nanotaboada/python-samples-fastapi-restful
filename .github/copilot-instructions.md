@@ -54,14 +54,23 @@ tests/          — pytest integration tests
 ### Quick Start
 
 ```bash
-pip install -r requirements.txt
-pip install -r requirements-test.txt
-pip install -r requirements-lint.txt
-uvicorn main:app --reload --port 9000       # http://localhost:9000/docs
-pytest                                      # run tests
-pytest --cov=./ --cov-report=term           # with coverage (target >=80%)
-flake8 .
-black --check .
+# Setup (using uv)
+uv venv
+source .venv/bin/activate  # Linux/macOS; use .venv\Scripts\activate on Windows
+uv pip install --group dev
+
+# Run application
+uv run uvicorn main:app --reload --port 9000       # http://localhost:9000/docs
+
+# Run tests
+uv run pytest                                      # run tests
+uv run pytest --cov=./ --cov-report=term           # with coverage (target >=80%)
+
+# Linting and formatting
+uv run flake8 .
+uv run black --check .
+
+# Docker
 docker compose up
 docker compose down -v
 ```
@@ -69,10 +78,10 @@ docker compose down -v
 ### Pre-commit Checks
 
 1. Update `CHANGELOG.md` `[Unreleased]` section (Added / Changed / Fixed / Removed)
-2. `flake8 .` — must pass
-3. `black --check .` — must pass
-4. `pytest` — all tests must pass
-5. `pytest --cov=./ --cov-report=term` — coverage must be >=80%
+2. `uv run flake8 .` — must pass
+3. `uv run black --check .` — must pass
+4. `uv run pytest` — all tests must pass
+5. `uv run pytest --cov=./ --cov-report=term` — coverage must be >=80%
 6. Commit message follows Conventional Commits format (enforced by commitlint)
 
 ### Commits
@@ -95,7 +104,7 @@ Example: `feat(api): add player stats endpoint (#42)`
 ### Ask before changing
 
 - Database schema (`schemas/player_schema.py` — no Alembic, use tools/ seed scripts manually)
-- Dependencies (`requirements*.txt`)
+- Dependencies (`pyproject.toml` with PEP 735 dependency groups)
 - CI/CD configuration (`.github/workflows/`)
 - Docker setup
 - API contracts (breaking Pydantic model changes)

@@ -113,6 +113,10 @@ ipython_config.py
 #   https://pdm.fming.dev/#use-with-ide
 .pdm.toml
 
+# uv
+#   uv uses a lock file for reproducible builds. Include it in version control.
+#   No need to ignore uv.lock - it should be committed.
+
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/
 
