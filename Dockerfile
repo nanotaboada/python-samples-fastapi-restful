@@ -57,6 +57,7 @@ COPY models/            ./models/
 COPY routes/            ./routes/
 COPY schemas/           ./schemas/
 COPY services/          ./services/
+COPY tools/             ./tools/
 
 # Copy entrypoint and healthcheck scripts
 COPY --chmod=755        scripts/entrypoint.sh       ./entrypoint.sh
