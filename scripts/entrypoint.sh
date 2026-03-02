@@ -20,6 +20,10 @@ else
     echo "✔ Existing database file found. Skipping seed copy."
 fi
 
+echo "🔄 Running seed scripts to ensure schema is up to date..."
+python /app/tools/seed_001_starting_eleven.py --db-path "$VOLUME_STORAGE_PATH"
+python /app/tools/seed_002_substitutes.py --db-path "$VOLUME_STORAGE_PATH"
+
 echo "✔ Ready!"
 echo "🚀 Launching app..."
 exec "$@"
