@@ -78,16 +78,11 @@ jobs:
       - name: Install test dependencies
         run: |
           uv venv
-          uv pip install --group test
           uv pip install --group dev
 
       - name: Run tests with pytest
         run: |
-          uv run pytest -v
-
-      - name: Generate coverage report
-        run: |
-          uv run pytest --cov=./ --cov-report=xml --cov-report=term
+          uv run pytest --cov=./ --cov-report=xml --cov-report=term -v
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3.7.0

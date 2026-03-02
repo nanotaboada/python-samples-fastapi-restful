@@ -66,7 +66,7 @@ This project uses famous football coaches as release codenames, following an A-Z
 - `logger.error(f"...")` replaced with `logger.exception("...: %s", error)` in all `SQLAlchemyError` handlers (#66)
 - EN dashes replaced with ASCII hyphens in `seed_002` log and argparse strings (#66)
 - `logger.error` replaced with `logger.exception` in `sqlite3.Error` handlers in `seed_001` and `seed_002` (#66)
-- `pyproject.toml` migrated to full PEP 735 format: `[project]`, `[project.dependencies]`, and `[dependency-groups]` (`test`, `lint`, `dev`) (#447)
+- `pyproject.toml` migrated to full PEP 735 format: `[project]` (with `dependencies` field) and `[dependency-groups]` (`test`, `lint`, `dev`) (#447)
 - GitHub Actions CI/CD (`python-ci.yml`, `python-cd.yml`) updated to install and run via `uv` instead of `pip` (#447)
 - Dockerfile updated: builder stage uses `uv export | pip wheel` for reproducible offline wheel builds; runtime installs from pre-built wheels with no network access (#447)
 - `uv.lock` added for fully pinned, reproducible dependency resolution across all environments (#447)

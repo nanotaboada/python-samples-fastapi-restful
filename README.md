@@ -59,16 +59,6 @@ Alternatively, ensure you have Python 3.13.3 (or the version specified in `.pyth
    uv pip install --group dev
    ```
 
-   **Alternative (using pip)**:
-
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
-   pip install -r requirements-lint.txt
-   pip install -r requirements-test.txt
-   ```
-
 ## Install
 
 Dependencies are defined in `pyproject.toml` using PEP 735 standards. Install them with:
