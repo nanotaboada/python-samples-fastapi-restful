@@ -17,8 +17,8 @@ RUN apt-get update && \
 # uv export reads uv.lock to produce a pinned, reproducible dependency list;
 # pip wheel compiles each resolved package into a .whl file for offline installation
 COPY --chown=root:root --chmod=644 pyproject.toml uv.lock ./
-RUN pip install --no-cache-dir uv --quiet && \
-    uv export --no-hashes | pip wheel --no-cache-dir --wheel-dir=/app/wheelhouse -r /dev/stdin
+RUN pip install --no-cache-dir uv==0.10.1 --quiet && \
+    uv export --frozen --no-dev --no-hashes | pip wheel --no-cache-dir --wheel-dir=/app/wheelhouse -r /dev/stdin
 
 # ------------------------------------------------------------------------------
 # Stage 2: Runtime
