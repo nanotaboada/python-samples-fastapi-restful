@@ -42,6 +42,10 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ## [Unreleased]
 
+---
+
+## [1.1.0 - Bielsa] - 2026-03-02
+
 ### Added
 
 - `rest/players.rest` file covering all CRUD operations, compatible with the VS Code REST Client extension (#493)
@@ -51,27 +55,16 @@ This project uses famous football coaches as release codenames, following an A-Z
 - `PlayerResponseModel` Pydantic model for GET/POST response bodies (includes `id: UUID`) (#66)
 - `tools/seed_001_starting_eleven.py`: standalone seed script populating 11 starting-eleven players with deterministic UUID v5 PKs (#66)
 - `tools/seed_002_substitutes.py`: standalone seed script populating 14 substitute players with deterministic UUID v5 PKs (#66)
-- `HyphenatedUUID` custom `TypeDecorator` in `schemas/player_schema.py` storing UUIDs as hyphenated `CHAR(36)` strings in SQLite, returning `uuid.UUID` objects in Python (#66)
 
 ### Changed
 
 - `PlayerModel` split into `PlayerRequestModel` and `PlayerResponseModel` in `models/player_model.py` (#66)
 - All route path parameters and service function signatures updated from `int` to `uuid.UUID` (#66)
 - POST conflict detection changed from ID lookup to `squad_number` uniqueness check (#66)
-- `tests/player_stub.py` updated with UUID-based test fixtures (#66)
-- `tests/test_main.py` updated to assert UUID presence and format in API responses (#66)
-- `PlayerResponseModel` redeclared with `id` as first field to control JSON serialization order (#66)
-- `HyphenatedUUID` methods now have full type annotations and Google-style docstrings; unused `dialect` params renamed to `_dialect` (#66)
-- Service logger changed from `getLogger("uvicorn")` to `getLogger("uvicorn.error")`, aligned with `main.py` (#66)
-- `logger.error(f"...")` replaced with `logger.exception("...: %s", error)` in all `SQLAlchemyError` handlers (#66)
-- EN dashes replaced with ASCII hyphens in `seed_002` log and argparse strings (#66)
-- `logger.error` replaced with `logger.exception` in `sqlite3.Error` handlers in `seed_001` and `seed_002` (#66)
 - `pyproject.toml` migrated to full PEP 735 format: `[project]` (with `dependencies` field) and `[dependency-groups]` (`test`, `lint`, `dev`) (#447)
 - GitHub Actions CI/CD (`python-ci.yml`, `python-cd.yml`) updated to install and run via `uv` instead of `pip` (#447)
 - Dockerfile updated: builder stage uses `uv export | pip wheel` for reproducible offline wheel builds; runtime installs from pre-built wheels with no network access (#447)
 - `uv.lock` added for fully pinned, reproducible dependency resolution across all environments (#447)
-
-### Deprecated
 
 ### Removed
 
@@ -82,11 +75,6 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 - POST/PUT/DELETE routes now raise `HTTP 500` on DB failure instead of silently returning success (#66)
 - Cache cleared only after confirmed successful create, update, or delete (#66)
-- DELETE test is now self-contained; no longer depends on POST test having run first (#66)
-- UUID assertion in GET all test replaced with explicit `_is_valid_uuid()` validator (#66)
-- Emiliano Martínez `middleName` corrected from `""` to `None` in `seed_001` (#66)
-
-### Security
 
 ---
 
@@ -163,5 +151,6 @@ The CD workflow automatically:
 
 ---
 
-[unreleased]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.0.0-ancelotti...HEAD
+[unreleased]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.1.0-bielsa...HEAD
+[1.1.0 - Bielsa]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.0.0-ancelotti...v1.1.0-bielsa
 [1.0.0 - Ancelotti]: https://github.com/nanotaboada/python-samples-fastapi-restful/releases/tag/v1.0.0-ancelotti
