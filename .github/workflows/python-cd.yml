@@ -71,7 +71,7 @@ jobs:
           python-version-file: ${{ env.PYTHON_VERSION_FILE }}
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
 
