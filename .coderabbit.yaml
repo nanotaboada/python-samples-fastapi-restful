@@ -94,7 +94,7 @@ reviews:
 
     - path: "**/Dockerfile"
       instructions: |
-        - Verify Python 3.13 base image (python:3.13-alpine)
+        - Verify Python 3.13 base image (python:3.13.3-slim-bookworm)
         - Check multi-stage build using pyproject.toml + uv.lock → uv export → wheelhouse
         - Ensure runtime stage installs from prebuilt wheels with no network access
         - Ensure non-root user is used for security
