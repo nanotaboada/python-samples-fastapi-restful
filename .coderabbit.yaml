@@ -113,8 +113,8 @@ reviews:
     - path: ".github/workflows/*.yml"
       instructions: |
         - Verify uv is set up via astral-sh/setup-uv with a pinned version
-        - Check that dependencies are installed via uv pip install -e . --group dev
-        - Ensure pytest runs once with combined -v and --cov flags
+        - Check that dependencies are installed via uv pip install --group dev
+        - Ensure pytest runs with -v for verbosity and --cov for coverage reporting
         - Validate coverage report upload step is present
 
   path_filters:
@@ -260,11 +260,12 @@ reviews:
       enabled: true
       timeout_ms: 120000
 
-    # Disable irrelevant tools for this Python project
+    # Prefer ruff over legacy Python linters (flake8, pylint)
     flake8:
       enabled: false
     pylint:
       enabled: false
+    # Disable tools for other languages/platforms
     shellcheck:
       enabled: false
     biome:
