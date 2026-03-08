@@ -1,9 +1,11 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# https://docs.coderabbit.ai/getting-started/configure-coderabbit
+
 # CodeRabbit Configuration
 # Optimized for Python 3.13 / FastAPI RESTful API project
 
 language: en-US
 early_access: true
-enable_free_tier: true
 
 reviews:
   profile: chill
@@ -23,12 +25,9 @@ reviews:
   suggested_labels: true
   auto_apply_labels: false
   suggested_reviewers: false
-  auto_assign_reviewers: false
-  in_progress_fortune: true
   poem: false
   abort_on_close: true
 
-  # Path-based review instructions for this Python/FastAPI project
   path_instructions:
     - path: "**/*.py"
       instructions: |
@@ -95,25 +94,29 @@ reviews:
 
     - path: "**/Dockerfile"
       instructions: |
-        - Verify Python 3.13 base image (python:3.13-alpine)
-        - Check multi-stage builds for optimization
+        - Verify Python 3.13 base image (python:3.13.3-slim-bookworm)
+        - Check multi-stage build using pyproject.toml + uv.lock → uv export → wheelhouse
+        - Ensure runtime stage installs from prebuilt wheels with no network access
         - Ensure non-root user is used for security
         - Validate HEALTHCHECK instruction is present
-        - Check that requirements are installed in correct order
-
-    - path: "requirements*.txt"
-      instructions: |
-        - Verify pinned versions for reproducibility
-        - Check separation: requirements.txt (runtime), requirements-test.txt, requirements-lint.txt
-        - Ensure dependencies are up to date with security patches
+        - Check that uv version is pinned for reproducibility
 
     - path: "pyproject.toml"
       instructions: |
         - Verify Black configuration (line-length = 88, target-version = ["py313"])
         - Check pytest configuration matches test execution
         - Ensure tool configurations are consistent with CI
+        - Dependencies are managed via uv with PEP 735 dependency groups
+        - Verify [dependency-groups] has test, lint, and dev groups defined
+        - Check that uv.lock is present and up to date
 
-  # Ignore patterns for this project
+    - path: ".github/workflows/*.yml"
+      instructions: |
+        - Verify uv is set up via astral-sh/setup-uv with a pinned version
+        - Check that dependencies are installed via uv pip install --group dev
+        - Ensure pytest runs with -v for verbosity and --cov for coverage reporting
+        - Validate coverage report upload step is present
+
   path_filters:
     - "!**/__pycache__/**"
     - "!**/.pytest_cache/**"
@@ -127,6 +130,7 @@ reviews:
     - "!**/*.db-wal"
     - "!**/assets/**"
     - "!**/postman_collections/**"
+    - "!**/uv.lock"
 
   auto_review:
     enabled: true
@@ -145,11 +149,66 @@ reviews:
       enabled: true
     unit_tests:
       enabled: true
+    custom:
+      - name: "sync documentation"
+        instructions: |
+          This is a PoC/learning project targeting developers unfamiliar with the stack.
+          Documentation is a first-class concern. Review the PR changes and perform the
+          following three checks:
+
+          ## 1. Method/function docstrings
+          For every public function, method, or handler touched in the PR:
+          - If it lacks a docstring/doc comment, add one using the idiomatic format
+            for the language and framework in use.
+          - If it has one but no longer matches the current signature, parameters,
+            or behavior, update it.
+          - Docstrings should explain *why* and *what*, not just restate the signature.
+            Assume the reader is learning the language.
+
+          ## 2. README.md
+          Check whether the PR introduces or removes endpoints, changes behavior,
+          adds dependencies, or modifies how to run the project.
+          If so, update the relevant sections of README.md to reflect the current state.
+          Do not rewrite sections unrelated to the changes.
+
+          ## 3. .github/copilot-instructions.md
+          If the PR introduces patterns, conventions, or architectural decisions that
+          should guide future AI-assisted contributions, add or update the relevant
+          instructions in .github/copilot-instructions.md.
+          Focus on things a developer (or AI assistant) unfamiliar with this specific
+          stack implementation should know before writing code here.
+
+      - name: "enforce http error handling"
+        instructions: |
+          Audit all HTTP handler functions in the changed files.
+          Verify that errors return appropriate HTTP status codes (400 for bad input,
+          404 for not found, 500 for unexpected errors) and a consistent JSON error
+          body with at least a "message" field.
+          Flag handlers that return 200 on error, swallow errors silently, or use
+          bare status-only responses without a JSON body.
+          Do not make changes; only report findings as a comment so fixes can be
+          applied consistently across the entire codebase.
+
+      - name: "idiomatic review"
+        instructions: |
+          Review the changed files for non-idiomatic patterns given the language and
+          framework in use. Flag code that looks like it was translated from another
+          language rather than written naturally for this stack. Suggest idiomatic
+          alternatives with brief explanations. This is a PoC comparison project,
+          so idiomatic usage is a first-class concern.
+
+      - name: "verify api contract"
+        instructions: |
+          Review the changed files and verify that all HTTP endpoints (method, path,
+          request body shape, and response shape) match the project's intended REST API
+          contract. Check the README or any spec/contract file in the repo for reference.
+          Flag any deviations — missing fields, wrong status codes, inconsistent naming.
+          Do not make changes; only report findings as a comment.
 
   pre_merge_checks:
     docstrings:
       mode: warning
-      threshold: 75
+      threshold: 80
     title:
       mode: warning
       requirements: |
@@ -157,43 +216,56 @@ reviews:
         - Keep under 80 characters
         - Be descriptive and specific
     description:
-      mode: warning
+      mode: off
     issue_assessment:
-      mode: warning
+      mode: off
 
   tools:
-    # Relevant tools for Python projects
-    ruff:
-      enabled: true
-    flake8:
-      enabled: true
-    pylint:
-      enabled: true
+    # Secret scanners
     gitleaks:
       enabled: true
+    trufflehog:
+      enabled: true
+
+    # IaC / infrastructure
     checkov:
+      enabled: true
+    trivy:
       enabled: true
     hadolint:
       enabled: true
+
+    # General static analysis
+    semgrep:
+      enabled: true
+    opengrep:
+      enabled: true
+    ruff:
+      enabled: true
+
+    # File-type linters
     yamllint:
       enabled: true
     actionlint:
       enabled: true
-    semgrep:
-      enabled: true
     markdownlint:
       enabled: true
-    github-checks:
-      enabled: true
-      timeout_ms: 120000
     dotenvLint:
       enabled: true
     checkmake:
       enabled: true
     osvScanner:
       enabled: true
+    github-checks:
+      enabled: true
+      timeout_ms: 120000
 
-    # Disable irrelevant tools for Python project
+    # Prefer ruff over legacy Python linters (flake8, pylint)
+    flake8:
+      enabled: false
+    pylint:
+      enabled: false
+    # Disable tools for other languages/platforms
     shellcheck:
       enabled: false
     biome:
@@ -246,6 +318,12 @@ reviews:
       enabled: false
     fortitudeLint:
       enabled: false
+    stylelint:
+      enabled: false
+    blinter:
+      enabled: false
+    psscriptanalyzer:
+      enabled: false
 
 chat:
   art: true
@@ -258,11 +336,7 @@ knowledge_base:
   code_guidelines:
     enabled: true
     filePatterns:
-      - "**/*.py"
-      - "**/requirements*.txt"
-      - "**/pyproject.toml"
-      - "**/Dockerfile"
-      - "**/*.{yml,yaml}"
+      - ".github/copilot-instructions.md"
   learnings:
     scope: auto
   issues:
@@ -292,6 +366,7 @@ code_generation:
           - Use fixtures from conftest.py for TestClient
           - Use test stubs for consistent test data
           - Ensure async tests are properly decorated
+          - Run via uv: uv run pytest -v --cov=./ --cov-report=xml --cov-report=term
           - Target 80% code coverage minimum
 
 issue_enrichment:
