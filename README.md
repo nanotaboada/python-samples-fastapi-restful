@@ -60,10 +60,10 @@ Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/
 ```text
 /
 ├── main.py                 # Entry point: FastAPI setup, router registration
-├── routes/                 # HTTP route definitions + dependency injection
+├── routes/                 # HTTP route definitions, dependency injection + caching
 │   ├── player_route.py
 │   └── health_route.py
-├── services/               # Async business logic + cache management
+├── services/               # Async business logic
 │   └── player_service.py
 ├── schemas/                # SQLAlchemy ORM models (database schema)
 │   └── player_schema.py
@@ -147,7 +147,7 @@ graph RL
 
 **Composition Root Pattern:** The `main` module acts as the composition root, creating the FastAPI app and registering all routers. This pattern enables dependency injection via `Depends()`, improves testability, and maintains clear separation of concerns.
 
-**Layered Architecture:** HTTP requests flow through distinct layers: `routes` → `services` → `schemas` → `databases`. Each layer has a specific responsibility — routes handle HTTP mapping and validation, services contain business logic and caching, schemas define the ORM model, and databases manage the async session.
+**Layered Architecture:** HTTP requests flow through distinct layers: `routes` → `services` → `schemas` → `databases`. Each layer has a specific responsibility — routes handle HTTP mapping, validation, and in-memory caching, services contain business logic, schemas define the ORM model, and databases manage the async session.
 
 **Color Coding:** Core packages (blue) implement the application logic, external dependencies (red) are third-party frameworks and ORMs, and tests (green) ensure code quality.
 
