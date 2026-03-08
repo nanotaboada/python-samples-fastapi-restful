@@ -1,186 +1,320 @@
 # 🧪 RESTful API with Python 3 and FastAPI
 
-## Status
-
 [![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml)
 [![Python CD](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-cd.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-cd.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nanotaboada_python-samples-fastapi-restful&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nanotaboada_python-samples-fastapi-restful)
 [![codecov](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful/branch/master/graph/badge.svg?token=A1WNZPRQEJ)](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful)
 [![CodeFactor](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful/badge)](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful)
+[![License: MIT](https://img.shields.io/badge/License-MIT-3DA639.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-enabled-8662C5?logo=githubcopilot&logoColor=white&labelColor=181818)
+![Claude](https://img.shields.io/badge/Claude-Sonnet_4.6-D97757?logo=claude&logoColor=white&labelColor=181818)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/nanotaboada/python-samples-fastapi-restful?utm_source=oss&utm_medium=github&utm_campaign=nanotaboada%2Fpython-samples-fastapi-restful&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews&labelColor=181818)
 
-## About
+Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/). Manage football player data with SQLite, SQLAlchemy 2.0 (async), Pydantic validation, and in-memory caching.
 
-Proof of Concept for a RESTful API made with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/).
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Architecture](#architecture)
+- [API Reference](#api-reference)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Testing](#testing)
+- [Docker](#docker)
+- [Releases](#releases)
+- [Environment Variables](#environment-variables)
+- [Command Summary](#command-summary)
+- [Contributing](#contributing)
+- [Legal](#legal)
 
 ## Features
 
-- 🏗️ **Modern async architecture** - Async/await throughout, Pydantic validation, and SQLAlchemy 2.0+ patterns
-- 📚 **Interactive API exploration** - Auto-generated OpenAPI docs with FastAPI's built-in Swagger UI
-- ⚡ **Performance optimizations** - Async SQLAlchemy, in-memory caching with aiocache, and efficient database operations
-- 🧪 **High test coverage** - Pytest suite with 80% minimum coverage and automated reporting to Codecov
-- 📖 **Token-efficient documentation** - AGENTS.md + auto-loaded Copilot instructions for AI-assisted development
+- 🏗️ **Modern async architecture** - Async/await throughout, Pydantic validation, and SQLAlchemy 2.0 patterns
+- 📚 **Interactive API exploration** - Auto-generated OpenAPI docs with FastAPI's built-in Swagger UI and `.rest` file for REST Client integration
+- ⚡ **Performance optimizations** - Async SQLAlchemy, in-memory caching with aiocache (10-minute TTL), and efficient database operations
+- 🧪 **High test coverage** - Pytest suite with 80% minimum coverage and automated reporting to Codecov and SonarCloud
+- 📖 **Token-efficient documentation** - Copilot instructions with coding guidelines, architecture rules, and agent workflows for AI-assisted development
 - 🐳 **Full containerization** - Production-ready Docker setup with Docker Compose orchestration
 - 🔄 **Complete CI/CD pipeline** - Automated linting (Black/Flake8), testing, Docker publishing, and GitHub releases
 - ♟️ **Coach-themed semantic versioning** - Memorable, alphabetical release names honoring legendary football coaches
 
-## Structure
+## Tech Stack
 
-![Simplified, conceptual project structure and main application flow](assets/images/structure.svg)
+| Category | Technology |
+| -------- | ---------- |
+| **Language** | [Python 3.13](https://www.python.org/) |
+| **Web Framework** | [FastAPI](https://fastapi.tiangolo.com/) + [Uvicorn](https://www.uvicorn.org/) |
+| **ORM** | [SQLAlchemy 2.0 (async)](https://docs.sqlalchemy.org/en/20/) + [aiosqlite](https://github.com/omnilib/aiosqlite) |
+| **Database** | [SQLite](https://www.sqlite.org/) |
+| **Validation** | [Pydantic](https://docs.pydantic.dev/) |
+| **Caching** | [aiocache](https://github.com/aio-libs/aiocache) (in-memory, 10-minute TTL) |
+| **Testing** | [pytest](https://pytest.org/) + [pytest-cov](https://github.com/pytest-dev/pytest-cov) + [httpx](https://www.python-httpx.org/) |
+| **Linting / Formatting** | [Flake8](https://flake8.pycqa.org/) + [Black](https://black.readthedocs.io/) |
+| **Containerization** | [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) |
 
-_Figure: Simplified, conceptual project structure and main application flow. Not all dependencies are shown._
+## Project Structure
 
-## Python Version Management
+```text
+/
+├── main.py                 # Entry point: FastAPI setup, router registration
+├── routes/                 # HTTP route definitions + dependency injection
+│   ├── player_route.py
+│   └── health_route.py
+├── services/               # Async business logic + cache management
+│   └── player_service.py
+├── schemas/                # SQLAlchemy ORM models (database schema)
+│   └── player_schema.py
+├── databases/              # Async SQLAlchemy session setup
+│   └── player_database.py
+├── models/                 # Pydantic models for request/response validation
+│   └── player_model.py
+├── tests/                  # pytest integration tests
+│   ├── conftest.py
+│   ├── player_stub.py
+│   └── test_main.py
+├── rest/                   # HTTP request files
+│   └── players.rest        # CRUD requests (REST Client / JetBrains HTTP Client)
+├── storage/                # SQLite database file (pre-seeded)
+├── scripts/                # Container entrypoint & healthcheck
+└── .github/workflows/      # CI/CD pipelines
+```
 
-This project uses `.python-version` to specify the required Python version. If you use [pyenv](https://github.com/pyenv/pyenv), [asdf](https://asdf-vm.com/), or [mise](https://mise.jdx.dev/), the correct Python version will be automatically activated when you enter the project directory.
+## Architecture
 
-Alternatively, ensure you have Python 3.13.3 (or the version specified in `.python-version`) installed.
+```mermaid
+%%{init: {
+  "theme": "default",
+  "themeVariables": {
+    "fontFamily": "Fira Code, Consolas, monospace",
+    "textColor": "#555",
+    "lineColor": "#555",
+    "lineWidth": 2
+  }
+}}%%
 
-## Setup
+graph RL
+    %% Core application packages
+    main[main]
+    routes[routes]
+    services[services]
+    schemas[schemas]
+    databases[databases]
+    models[models]
 
-### Prerequisites
+    %% External dependencies
+    fastapi[FastAPI]
+    sqlalchemy[SQLAlchemy]
+    pydantic[Pydantic]
+    aiocache[aiocache]
 
-- Python 3.13+
-- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+    %% Test coverage
+    tests[tests]
 
-### Installation
+    %% Module dependencies (solid arrows = imports)
+    routes --> main
+    databases --> main
+    services --> routes
+    models --> routes
+    schemas --> services
+    databases --> services
+    sqlalchemy --> databases
+    pydantic --> models
+    fastapi --> routes
+    aiocache --> routes
+    main --> tests
 
-1. Install uv (if you haven't already):
+    %% Runtime composition (dotted arrows = main creates/wires)
+    fastapi -.-> main
+    services -.-> main
 
-   ```bash
-   curl -LsSf https://astral.sh/uv/install.sh | sh
-   ```
+    %% Node styling
+    classDef core fill:#b3d9ff,stroke:#6db1ff,stroke-width:2px,color:#555,font-family:monospace;
+    classDef deps fill:#ffcccc,stroke:#ff8f8f,stroke-width:2px,color:#555,font-family:monospace;
+    classDef test fill:#ccffcc,stroke:#53c45e,stroke-width:2px,color:#555,font-family:monospace;
 
-2. Create a virtual environment and install dependencies:
+    class main,routes,services,schemas,databases,models core
+    class fastapi,sqlalchemy,pydantic,aiocache deps
+    class tests test
+```
 
-   ```bash
-   uv venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   uv pip install --group dev
-   ```
+**Arrow Semantics:**
 
-## Install
+- **Solid arrows** represent import-time module dependencies. For example, `services → routes` means the services package is imported and used by the routes package.
+- **Dotted arrows** represent runtime composition. The `fastapi` app instance and wired services flow into `main` at startup.
 
-Dependencies are defined in `pyproject.toml` using PEP 735 standards. Install them with:
+**Composition Root Pattern:** The `main` module acts as the composition root, creating the FastAPI app and registering all routers. This pattern enables dependency injection via `Depends()`, improves testability, and maintains clear separation of concerns.
+
+**Layered Architecture:** HTTP requests flow through distinct layers: `routes` → `services` → `schemas` → `databases`. Each layer has a specific responsibility — routes handle HTTP mapping and validation, services contain business logic and caching, schemas define the ORM model, and databases manage the async session.
+
+**Color Coding:** Core packages (blue) implement the application logic, external dependencies (red) are third-party frameworks and ORMs, and tests (green) ensure code quality.
+
+## API Reference
+
+Interactive API documentation is available via Swagger UI at `http://localhost:9000/docs` when the server is running.
+
+**Quick Reference:**
+
+- `GET /players/` — List all players
+- `GET /players/{player_id}` — Get player by UUID (surrogate key)
+- `GET /players/squadnumber/{squad_number}` — Get player by squad number (natural key)
+- `POST /players/` — Create a new player
+- `PUT /players/{player_id}` — Update an existing player
+- `DELETE /players/{player_id}` — Remove a player
+- `GET /health` — Health check
+
+### HTTP Requests
+
+A ready-to-use HTTP request file is available at [`rest/players.rest`](rest/players.rest). It covers all CRUD operations and can be run directly from your editor without leaving the development environment:
+
+- **VS Code** — install the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension (`humao.rest-client`), open `rest/players.rest`, and click **Send Request** above any entry.
+- **JetBrains IDEs** (IntelliJ IDEA, PyCharm, WebStorm) — the built-in HTTP Client supports `.rest` files natively; no plugin required.
+
+The file targets `http://localhost:9000` by default.
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Python 3.13+** — uses `.python-version` for automatic activation with [pyenv](https://github.com/pyenv/pyenv), [asdf](https://asdf-vm.com/), or [mise](https://mise.jdx.dev/)
+- **[uv](https://docs.astral.sh/uv/)** (recommended) — fast Python package and project manager
+- **Docker & Docker Compose** (optional, for containerized deployment)
+
+## Quick Start
+
+### Clone the repository
 
 ```bash
+git clone https://github.com/nanotaboada/python-samples-fastapi-restful.git
+cd python-samples-fastapi-restful
+```
+
+### Install dependencies
+
+Dependencies are defined in `pyproject.toml` using [PEP 735](https://peps.python.org/pep-0735/) dependency groups.
+
+```bash
+# Install uv (if you haven't already)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Create a virtual environment and install all dependencies
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 uv pip install --group dev
 ```
 
 Or with specific groups:
 
-- `uv pip install` - Install production dependencies only
-- `uv pip install --group test` - Install test dependencies
-- `uv pip install --group lint` - Install linting dependencies
-- `uv pip install --group dev` - Install all (test + lint + production)
+| Command | Description |
+| ------- | ----------- |
+| `uv pip install` | Production dependencies only |
+| `uv pip install --group test` | Test dependencies |
+| `uv pip install --group lint` | Linting dependencies |
+| `uv pip install --group dev` | All (test + lint + production) |
 
-## Start
+### Start the development server
 
 ```bash
 uv run uvicorn main:app --reload --port 9000
 ```
 
-Or using pip:
+The server will start on `http://localhost:9000`.
+
+### Access the application
+
+- **API:** `http://localhost:9000`
+- **Swagger Documentation:** `http://localhost:9000/docs`
+- **Health Check:** `http://localhost:9000/health`
+
+## Testing
+
+Run the test suite with coverage:
 
 ```bash
-uvicorn main:app --reload --port 9000
-```
+# Run all tests
+uv run pytest
 
-## Docs
-
-```console
-http://localhost:9000/docs
-```
-
-![API Documentation](assets/images/swagger.png)
-
-## HTTP Requests
-
-The [`rest/players.rest`](rest/players.rest) file covers all CRUD operations and can be run directly in VS Code with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension.
-
-## Running Tests
-
-```bash
+# Run tests with verbose output
 uv run pytest -v
-```
 
-## Code Quality
-
-### Linting
-
-```bash
-uv run flake8 .
-```
-
-### Code Formatting
-
-```bash
-uv run black --check .
-uv run black .  # Auto-format
-```
-
-### Coverage
-
-```bash
+# Run tests with coverage report
 uv run pytest --cov=./ --cov-report=term
 ```
 
-## Container
+Tests are located in the `tests/` directory and use `httpx` for async integration testing. Coverage reports are generated for routes, services, and databases.
 
-### Docker Compose
+**Coverage target:** 80% minimum.
 
-This setup uses [Docker Compose](https://docs.docker.com/compose/) to build and run the app and manage a persistent SQLite database stored in a Docker volume. The Dockerfile uses PEP 735 dependency groups defined in `pyproject.toml`.
+## Docker
 
-#### Build the image
+This project includes full Docker support with Docker Compose for easy deployment.
+
+### Build the Docker image
 
 ```bash
 docker compose build
 ```
 
-#### Start the app
+### Start the application
 
 ```bash
 docker compose up
 ```
 
-> On first run, the container copies a pre-seeded SQLite database into a persistent volume
-> On subsequent runs, that volume is reused and the data is preserved
+> 💡 On first run, the container copies a pre-seeded SQLite database into a persistent volume. On subsequent runs, that volume is reused and the data is preserved.
 
-#### Stop the app
+### Stop the application
 
 ```bash
 docker compose down
 ```
 
-#### Optional: database reset
+### Reset the database
+
+To remove the volume and reinitialize the database from the built-in seed file:
 
 ```bash
 docker compose down -v
 ```
 
-> This removes the volume and will reinitialize the database from the built-in seed file the next time you `up`.
+The containerized application runs on port 9000 and includes health checks that monitor the `/health` endpoint.
 
 ## Releases
 
-This project uses famous football coaches as release names ♟️
+This project uses famous football coaches as release codenames ♟️, following an A-Z naming pattern.
+
+### Release Naming Convention
+
+Releases follow the pattern: `v{SEMVER}-{COACH}` (e.g., `v1.0.0-ancelotti`)
+
+- **Semantic Version**: Standard versioning (MAJOR.MINOR.PATCH)
+- **Coach Name**: Alphabetically ordered codename from the [famous coach list](CHANGELOG.md)
 
 ### Create a Release
 
 To create a new release, follow this workflow:
 
-#### 1. Update CHANGELOG.md
+#### 1. Create a Release Branch
 
-First, document your changes in [CHANGELOG.md](CHANGELOG.md):
+```bash
+git checkout -b release/v1.0.0-ancelotti
+```
+
+#### 2. Update CHANGELOG.md
+
+Document your changes in [CHANGELOG.md](CHANGELOG.md):
 
 ```bash
 # Move items from [Unreleased] to new release section
 # Example: [1.0.0 - Ancelotti] - 2026-02-15
 git add CHANGELOG.md
-git commit -m "docs: prepare changelog for v1.0.0-ancelotti release"
-git push
+git commit -m "docs(changelog): release v1.0.0 Ancelotti"
+git push origin release/v1.0.0-ancelotti
 ```
 
-#### 2. Create and Push Tag
+#### 3. Create and Push Tag
 
 Then create and push the version tag:
 
@@ -189,7 +323,7 @@ git tag -a v1.0.0-ancelotti -m "Release 1.0.0 - Ancelotti"
 git push origin v1.0.0-ancelotti
 ```
 
-#### 3. Automated CD Workflow
+#### 4. Automated CD Workflow
 
 This triggers the CD workflow which automatically:
 
@@ -198,29 +332,66 @@ This triggers the CD workflow which automatically:
 3. Publishes Docker images to GitHub Container Registry with three tags
 4. Creates a GitHub Release with auto-generated changelog from commits
 
-> 💡 Always update CHANGELOG.md before creating the tag. See [CHANGELOG.md](CHANGELOG.md#how-to-release) for detailed release instructions.
+> 💡 Always update CHANGELOG.md before creating the tag. See [CHANGELOG.md](CHANGELOG.md) for detailed release instructions.
 
 ### Pull Docker Images
 
-Official releases are published to GitHub Container Registry (GHCR):
+Each release publishes multiple tags for flexibility:
 
 ```bash
-# By semantic version (recommended)
+# By semantic version (recommended for production)
 docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:1.0.0
 
-# By coach name
+# By coach name (memorable alternative)
 docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:ancelotti
 
-# Latest
+# Latest release
 docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:latest
 ```
 
 > 💡 See [CHANGELOG.md](CHANGELOG.md) for the complete coach list (A-Z) and release history.
 
-## Credits
+## Environment Variables
 
-The solution has been coded using [Visual Studio Code](https://code.visualstudio.com/) with the official [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) extension.
+The application can be configured using the following environment variables (declared in [`compose.yaml`](compose.yaml)):
 
-## Terms
+```bash
+# Database storage path (default: ./storage/players-sqlite3.db)
+# In Docker: /storage/players-sqlite3.db
+STORAGE_PATH=./storage/players-sqlite3.db
 
-All trademarks, registered trademarks, service marks, product names, company names, or logos mentioned on this repository are the property of their respective owners. All usage of such terms herein is for identification purposes only and constitutes neither an endorsement nor a recommendation of those items. Furthermore, the use of such terms is intended to be for educational and informational purposes only.
+# Python output buffering: set to 1 for real-time logs in Docker
+PYTHONUNBUFFERED=1
+```
+
+## Command Summary
+
+| Command | Description |
+| ------- | ----------- |
+| `uv run uvicorn main:app --reload --port 9000` | Start development server |
+| `uv pip install --group dev` | Install all dependencies |
+| `uv run pytest` | Run all tests |
+| `uv run pytest -v` | Run tests with verbose output |
+| `uv run pytest --cov=./ --cov-report=term` | Run tests with coverage |
+| `uv run flake8 .` | Lint code |
+| `uv run black --check .` | Check formatting |
+| `uv run black .` | Auto-format code |
+| `docker compose build` | Build Docker image |
+| `docker compose up` | Start Docker container |
+| `docker compose down` | Stop Docker container |
+| `docker compose down -v` | Stop and remove Docker volume |
+
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and the process for submitting pull requests.
+
+**Key guidelines:**
+
+- Follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
+- Ensure all tests pass (`uv run pytest`)
+- Run `uv run black .` before committing
+- Keep changes small and focused
+
+## Legal
+
+This project is provided for educational and demonstration purposes and may be used in production environments at your discretion. All referenced trademarks, service marks, product names, company names, and logos are the property of their respective owners and are used solely for identification or illustrative purposes.
