@@ -1,4 +1,4 @@
-# GitHub Copilot Instructions
+# Custom Instructions
 
 ## Overview
 
