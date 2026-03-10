@@ -1,1 +1,3 @@
-.github/copilot-instructions.md
+# CLAUDE.md
+
+@.github/copilot-instructions.md
