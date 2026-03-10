@@ -7,7 +7,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful/badge)](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3DA639.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-enabled-8662C5?logo=githubcopilot&logoColor=white&labelColor=181818)
+![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-contributing-8662C5?logo=githubcopilot&logoColor=white&labelColor=181818)
 ![Claude](https://img.shields.io/badge/Claude-Sonnet_4.6-D97757?logo=claude&logoColor=white&labelColor=181818)
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/nanotaboada/python-samples-fastapi-restful?utm_source=oss&utm_medium=github&utm_campaign=nanotaboada%2Fpython-samples-fastapi-restful&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews&labelColor=181818)
 
@@ -95,7 +95,7 @@ Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/
   }
 }}%%
 
-graph RL
+graph BT
     %% Core application packages
     main[main]
     routes[routes]
@@ -108,27 +108,26 @@ graph RL
     fastapi[FastAPI]
     sqlalchemy[SQLAlchemy]
     pydantic[Pydantic]
-    aiocache[aiocache]
 
     %% Test coverage
     tests[tests]
 
-    %% Module dependencies (solid arrows = imports)
+    %% Module dependencies
     routes --> main
-    databases --> main
+    fastapi --> main
     services --> routes
     models --> routes
+    databases --> routes
     schemas --> services
-    databases --> services
+    models --> services
+    databases --> schemas
+    fastapi --> routes
+    sqlalchemy --> routes
+    sqlalchemy --> services
+    sqlalchemy --> schemas
     sqlalchemy --> databases
     pydantic --> models
-    fastapi --> routes
-    aiocache --> routes
-    main --> tests
-
-    %% Runtime composition (dotted arrows = main creates/wires)
-    fastapi -.-> main
-    services -.-> main
+    main -.-> tests
 
     %% Node styling
     classDef core fill:#b3d9ff,stroke:#6db1ff,stroke-width:2px,color:#555,font-family:monospace;
@@ -136,18 +135,15 @@ graph RL
     classDef test fill:#ccffcc,stroke:#53c45e,stroke-width:2px,color:#555,font-family:monospace;
 
     class main,routes,services,schemas,databases,models core
-    class fastapi,sqlalchemy,pydantic,aiocache deps
+    class fastapi,sqlalchemy,pydantic deps
     class tests test
 ```
 
-**Arrow Semantics:**
+**Arrow Semantics:** Solid arrows represent import-time module dependencies — the arrow points from the dependency to the consumer. The dotted arrow to `tests` indicates the integration tests validate the full application stack as wired by `main`.
 
-- **Solid arrows** represent import-time module dependencies. For example, `services → routes` means the services package is imported and used by the routes package.
-- **Dotted arrows** represent runtime composition. The `fastapi` app instance and wired services flow into `main` at startup.
+**Composition Root Pattern:** The `main` module acts as the composition root — it imports `FastAPI` and the route modules, creates the app instance, and registers all routers. This pattern enables dependency injection via `Depends()`, improves testability, and maintains clear separation of concerns.
 
-**Composition Root Pattern:** The `main` module acts as the composition root, creating the FastAPI app and registering all routers. This pattern enables dependency injection via `Depends()`, improves testability, and maintains clear separation of concerns.
-
-**Layered Architecture:** HTTP requests flow through distinct layers: `routes` → `services` → `schemas` → `databases`. Each layer has a specific responsibility — routes handle HTTP mapping, validation, and in-memory caching, services contain business logic, schemas define the ORM model, and databases manage the async session.
+**Layered Architecture:** Each layer has a specific responsibility — routes handle HTTP mapping, validation, and in-memory caching, services contain business logic, schemas define the ORM model, and databases manage the async session.
 
 **Color Coding:** Core packages (blue) implement the application logic, external dependencies (red) are third-party frameworks and ORMs, and tests (green) ensure code quality.
 
