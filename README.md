@@ -2,11 +2,13 @@
 
 [![Python CI](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-ci.yml)
 [![Python CD](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-cd.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/python-cd.yml)
+[![CodeQL Advanced](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/codeql.yml/badge.svg)](https://github.com/nanotaboada/python-samples-fastapi-restful/actions/workflows/codeql.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nanotaboada_python-samples-fastapi-restful&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nanotaboada_python-samples-fastapi-restful)
 [![codecov](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful/branch/master/graph/badge.svg?token=A1WNZPRQEJ)](https://codecov.io/gh/nanotaboada/python-samples-fastapi-restful)
 [![CodeFactor](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful/badge)](https://www.codefactor.io/repository/github/nanotaboada/python-samples-fastapi-restful)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3DA639.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![Dependabot](https://img.shields.io/badge/Dependabot-contributing-025E8C?logo=dependabot&logoColor=white&labelColor=181818)
 ![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-contributing-8662C5?logo=githubcopilot&logoColor=white&labelColor=181818)
 ![Claude](https://img.shields.io/badge/Claude-Sonnet_4.6-D97757?logo=claude&logoColor=white&labelColor=181818)
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/nanotaboada/python-samples-fastapi-restful?utm_source=oss&utm_medium=github&utm_campaign=nanotaboada%2Fpython-samples-fastapi-restful&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews&labelColor=181818)
