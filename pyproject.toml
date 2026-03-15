@@ -21,7 +21,7 @@ test = [
 ]
 lint = [
     "flake8==7.3.0",
-    "black==26.3.0",
+    "black==26.3.1",
 ]
 dev = [
     { include-group = "test" },
