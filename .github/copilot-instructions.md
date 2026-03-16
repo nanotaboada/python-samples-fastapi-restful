@@ -130,4 +130,5 @@ Example: `feat(api): add player stats endpoint (#42)`
 feat(scope): description (#issue)
 
 Co-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>
+Co-authored-by: Claude <noreply@anthropic.com>
 ```

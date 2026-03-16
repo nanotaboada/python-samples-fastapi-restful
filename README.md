@@ -86,68 +86,93 @@ Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/
 
 ## Architecture
 
+Layered architecture with dependency injection via FastAPI's `Depends()` mechanism and Pydantic for request/response validation.
+
 ```mermaid
 %%{init: {
   "theme": "default",
   "themeVariables": {
     "fontFamily": "Fira Code, Consolas, monospace",
     "textColor": "#555",
-    "lineColor": "#555",
-    "lineWidth": 2
+    "lineColor": "#555"
   }
 }}%%
 
-graph BT
-    %% Core application packages
-    main[main]
-    routes[routes]
-    services[services]
-    schemas[schemas]
-    databases[databases]
-    models[models]
+graph RL
 
-    %% External dependencies
-    fastapi[FastAPI]
-    sqlalchemy[SQLAlchemy]
-    pydantic[Pydantic]
-
-    %% Test coverage
     tests[tests]
 
-    %% Module dependencies
+    main[main]
+    routes[routes]
+    fastapi[FastAPI]
+    aiocache[aiocache]
+
+    services[services]
+
+    models[models]
+    pydantic[Pydantic]
+
+    schemas[schemas]
+
+    databases[databases]
+    sqlalchemy[SQLAlchemy]
+
+    %% Strong dependencies
+
     routes --> main
     fastapi --> main
+
+    fastapi --> routes
+    aiocache --> routes
     services --> routes
     models --> routes
     databases --> routes
+
     schemas --> services
     models --> services
-    databases --> schemas
-    fastapi --> routes
-    sqlalchemy --> routes
     sqlalchemy --> services
+    pydantic --> models
+
+    databases --> schemas
     sqlalchemy --> schemas
     sqlalchemy --> databases
-    pydantic --> models
+
+    %% Soft dependencies
+
+    sqlalchemy -.-> routes
     main -.-> tests
 
-    %% Node styling
+    %% Node styling with stroke-width
     classDef core fill:#b3d9ff,stroke:#6db1ff,stroke-width:2px,color:#555,font-family:monospace;
     classDef deps fill:#ffcccc,stroke:#ff8f8f,stroke-width:2px,color:#555,font-family:monospace;
     classDef test fill:#ccffcc,stroke:#53c45e,stroke-width:2px,color:#555,font-family:monospace;
 
     class main,routes,services,schemas,databases,models core
-    class fastapi,sqlalchemy,pydantic deps
+    class fastapi,sqlalchemy,pydantic,aiocache deps
     class tests test
 ```
 
-**Arrow Semantics:** Solid arrows represent import-time module dependencies — the arrow points from the dependency to the consumer. The dotted arrow to `tests` indicates the integration tests validate the full application stack as wired by `main`.
+*Simplified, conceptual view — not all components or dependencies are shown.*
 
-**Composition Root Pattern:** The `main` module acts as the composition root — it imports `FastAPI` and the route modules, creates the app instance, and registers all routers. This pattern enables dependency injection via `Depends()`, improves testability, and maintains clear separation of concerns.
+### Arrow Semantics
 
-**Layered Architecture:** Each layer has a specific responsibility — routes handle HTTP mapping, validation, and in-memory caching, services contain business logic, schemas define the ORM model, and databases manage the async session.
+Arrows point from a dependency toward its consumer. Solid arrows (`-->`) denote **strong (functional) dependencies**: the consumer actively invokes behavior — registering route handlers, dispatching requests, executing async queries, or managing the database session. Dotted arrows (`-.->`) denote **soft (structural) dependencies**: the consumer only references types without invoking runtime behavior. This distinction follows UML's `«use»` dependency notation and classical coupling theory (Myers, 1978): strong arrows approximate *control or stamp coupling*, while soft arrows approximate *data coupling*, where only shared data structures cross the boundary.
 
-**Color Coding:** Core packages (blue) implement the application logic, external dependencies (red) are third-party frameworks and ORMs, and tests (green) ensure code quality.
+### Composition Root Pattern
+
+The `main` module acts as the composition root — it creates the FastAPI application instance, configures the lifespan handler, and registers all route modules via `app.include_router()`. Rather than explicit object construction, dependency injection is provided by FastAPI's built-in `Depends()` mechanism: `routes` declare their dependencies (e.g. `AsyncSession`) as function parameters and FastAPI resolves them at request time. This pattern enables dependency injection, improves testability, and ensures no other module bears responsibility for wiring or lifecycle management.
+
+### Layered Architecture
+
+The codebase is organized into four conceptual layers: Initialization (`main`), HTTP (`routes`), Business (`services`), and Data (`schemas`, `databases`).
+
+Third-party dependencies are co-resident within the layer that consumes them: `FastAPI` and `aiocache` inside HTTP, and `SQLAlchemy` inside Data. `SQLAlchemy` holds a soft dependency on `routes` — `AsyncSession` is referenced only as a type annotation in `Depends()`, without any direct SQLAlchemy method calls at the route level.
+
+The `models` package is a **cross-cutting type concern** — it defines Pydantic request and response models consumed across multiple layers, without containing logic or behavior of its own. Dependencies always flow from consumers toward their lower-level types: each layer depends on (consumes) the layers below it, and no layer invokes behavior in a layer above it.
+
+### Color Coding
+
+Core packages (blue) implement the application logic, third-party dependencies (red) are community packages, and tests (green) ensure code quality.
 
 ## API Reference
 
