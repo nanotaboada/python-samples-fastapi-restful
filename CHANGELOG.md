@@ -42,6 +42,10 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ## [Unreleased]
 
+---
+
+## [2.0.0 - Capello] - 2026-03-17
+
 ### Changed
 
 - **BREAKING**: `PUT /players/{player_id}` replaced by `PUT /players/squadnumber/{squad_number}` — mutation endpoints now use Squad Number (natural key) instead of UUID (surrogate key), consistent with `GET /players/squadnumber/{squad_number}` (#521)
