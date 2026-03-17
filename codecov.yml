@@ -39,7 +39,6 @@ comment:
 
 # https://docs.codecov.com/docs/ignoring-paths
 ignore:
-  - "^assets/.*"
   - "^databases/.*"
   - "^models/.*"
   - "^rest/.*"
