@@ -15,8 +15,8 @@ Endpoints:
                                             (surrogate key, internal).
 - GET /players/squadnumber/{squad_number} : Retrieve Player by Squad Number
                                             (natural key, domain).
-- PUT /players/{player_id}                : Update an existing Player.
-- DELETE /players/{player_id}             : Delete an existing Player.
+- PUT /players/squadnumber/{squad_number} : Update an existing Player.
+- DELETE /players/squadnumber/{squad_number} : Delete an existing Player.
 """
 
 from typing import List
@@ -177,13 +177,13 @@ async def get_by_squad_number_async(
 
 
 @api_router.put(
-    "/players/{player_id}",
+    "/players/squadnumber/{squad_number}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Updates an existing Player",
     tags=["Players"],
 )
 async def put_async(
-    player_id: UUID = Path(..., title="The UUID of the Player"),
+    squad_number: int = Path(..., title="The Squad Number of the Player"),
     player_model: PlayerRequestModel = Body(...),
     async_session: AsyncSession = Depends(generate_async_session),
 ):
@@ -191,19 +191,23 @@ async def put_async(
     Endpoint to entirely update an existing Player.
 
     Args:
-        player_id (UUID): The UUID of the Player to update.
+        squad_number (int): The Squad Number of the Player to update.
         player_model (PlayerRequestModel): The Pydantic model representing the Player
         to update.
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
 
     Raises:
-        HTTPException: HTTP 404 Not Found error if the Player with the specified UUID
-        does not exist.
+        HTTPException: HTTP 404 Not Found error if the Player with the specified Squad
+        Number does not exist.
     """
-    player = await player_service.retrieve_by_id_async(async_session, player_id)
+    player = await player_service.retrieve_by_squad_number_async(
+        async_session, squad_number
+    )
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    updated = await player_service.update_async(async_session, player_id, player_model)
+    updated = await player_service.update_by_squad_number_async(
+        async_session, squad_number, player_model
+    )
     if not updated:  # pragma: no cover
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -216,30 +220,34 @@ async def put_async(
 
 
 @api_router.delete(
-    "/players/{player_id}",
+    "/players/squadnumber/{squad_number}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Deletes an existing Player",
     tags=["Players"],
 )
 async def delete_async(
-    player_id: UUID = Path(..., title="The UUID of the Player"),
+    squad_number: int = Path(..., title="The Squad Number of the Player"),
     async_session: AsyncSession = Depends(generate_async_session),
 ):
     """
     Endpoint to delete an existing Player.
 
     Args:
-        player_id (UUID): The UUID of the Player to delete.
+        squad_number (int): The Squad Number of the Player to delete.
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
 
     Raises:
-        HTTPException: HTTP 404 Not Found error if the Player with the specified UUID
-        does not exist.
+        HTTPException: HTTP 404 Not Found error if the Player with the specified Squad
+        Number does not exist.
     """
-    player = await player_service.retrieve_by_id_async(async_session, player_id)
+    player = await player_service.retrieve_by_squad_number_async(
+        async_session, squad_number
+    )
     if not player:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    deleted = await player_service.delete_async(async_session, player_id)
+    deleted = await player_service.delete_by_squad_number_async(
+        async_session, squad_number
+    )
     if not deleted:  # pragma: no cover
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

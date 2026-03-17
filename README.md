@@ -184,8 +184,8 @@ Interactive API documentation is available via Swagger UI at `http://localhost:9
 - `GET /players/{player_id}` — Get player by UUID (surrogate key)
 - `GET /players/squadnumber/{squad_number}` — Get player by squad number (natural key)
 - `POST /players/` — Create a new player
-- `PUT /players/{player_id}` — Update an existing player
-- `DELETE /players/{player_id}` — Remove a player
+- `PUT /players/squadnumber/{squad_number}` — Update an existing player
+- `DELETE /players/squadnumber/{squad_number}` — Remove a player
 - `GET /health` — Health check
 
 ### HTTP Requests

@@ -5,8 +5,8 @@
 ### https://marketplace.visualstudio.com/items?itemName=humao.rest-client
 ###
 ### Key design note:
-###   squad_number = natural key  (domain-meaningful, preferred for lookups)
-###   id (UUID)    = surrogate key (internal, opaque, used for CRUD operations)
+###   squad_number = natural key  (domain-meaningful, used for all CRUD operations)
+###   id (UUID)    = surrogate key (internal, opaque, used for GET by id only)
 
 @baseUrl = http://localhost:9000
 
@@ -68,12 +68,12 @@ GET {{baseUrl}}/players/squadnumber/10
 Accept: application/json
 
 # ------------------------------------------------------------------------------
-# PUT /players/{player_id} — Update
-# Emiliano Martínez (squad 23): UUID v5, seeded by seed_001.
+# PUT /players/squadnumber/{squad_number} — Update
+# Emiliano Martínez (squad 23): seeded by seed_001.
 # ------------------------------------------------------------------------------
 
-### PUT /players/{player_id} — Update an existing Player
-PUT {{baseUrl}}/players/b04965e6-a9bb-591f-8f8a-1adcb2c8dc39
+### PUT /players/squadnumber/{squad_number} — Update an existing Player
+PUT {{baseUrl}}/players/squadnumber/23
 Content-Type: application/json
 
 {
@@ -90,15 +90,9 @@ Content-Type: application/json
 }
 
 # ------------------------------------------------------------------------------
-# DELETE /players/{player_id} — Delete
-# Thiago Almada (squad 16): created by POST above. Since the UUID is generated
-# at runtime, retrieve it first via squad number, then substitute it below.
+# DELETE /players/squadnumber/{squad_number} — Delete
+# Thiago Almada (squad 16): created by POST above.
 # ------------------------------------------------------------------------------
 
-### Step 1 — Look up Almada's UUID by squad number
-GET {{baseUrl}}/players/squadnumber/16
-Accept: application/json
-
-### Step 2 — Delete Almada using the UUID returned above
-# Replace {player_id} with the id field from the response above.
-DELETE {{baseUrl}}/players/{player_id}
+### DELETE /players/squadnumber/{squad_number} — Delete an existing Player
+DELETE {{baseUrl}}/players/squadnumber/16
