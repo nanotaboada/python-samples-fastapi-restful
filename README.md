@@ -166,7 +166,7 @@ The `main` module acts as the composition root — it creates the FastAPI applic
 
 The codebase is organized into four conceptual layers: Initialization (`main`), HTTP (`routes`), Business (`services`), and Data (`schemas`, `databases`).
 
-Third-party dependencies are co-resident within the layer that consumes them: `FastAPI` and `aiocache` inside HTTP, and `SQLAlchemy` inside Data. `SQLAlchemy` holds a soft dependency on `routes` — `AsyncSession` is referenced only as a type annotation in `Depends()`, without any direct SQLAlchemy method calls at the route level.
+Third-party dependencies are co-resident within the layer that consumes them: `FastAPI` and `aiocache` inside HTTP, and `SQLAlchemy` inside Data. `routes` holds a soft dependency on `SQLAlchemy` — `AsyncSession` is referenced only as a type annotation in `Depends()`, without any direct SQLAlchemy method calls at the route level.
 
 The `models` package is a **cross-cutting type concern** — it defines Pydantic request and response models consumed across multiple layers, without containing logic or behavior of its own. Dependencies always flow from consumers toward their lower-level types: each layer depends on (consumes) the layers below it, and no layer invokes behavior in a layer above it.
 
