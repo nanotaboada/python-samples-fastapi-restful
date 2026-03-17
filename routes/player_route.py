@@ -19,7 +19,7 @@ Endpoints:
 - DELETE /players/squadnumber/{squad_number} : Delete an existing Player.
 """
 
-from typing import List
+from typing import Annotated, List
 from uuid import UUID
 from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Response
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -34,6 +34,7 @@ simple_memory_cache = SimpleMemoryCache()
 
 CACHE_KEY = "players"
 CACHE_TTL = 600  # 10 minutes
+SQUAD_NUMBER_TITLE = "The Squad Number of the Player"
 
 # POST -------------------------------------------------------------------------
 
@@ -46,8 +47,8 @@ CACHE_TTL = 600  # 10 minutes
     tags=["Players"],
 )
 async def post_async(
-    player_model: PlayerRequestModel = Body(...),
-    async_session: AsyncSession = Depends(generate_async_session),
+    player_model: Annotated[PlayerRequestModel, Body(...)],
+    async_session: Annotated[AsyncSession, Depends(generate_async_session)],
 ):
     """
     Endpoint to create a new player.
@@ -89,7 +90,8 @@ async def post_async(
     tags=["Players"],
 )
 async def get_all_async(
-    response: Response, async_session: AsyncSession = Depends(generate_async_session)
+    response: Response,
+    async_session: Annotated[AsyncSession, Depends(generate_async_session)],
 ):
     """
     Endpoint to retrieve all players.
@@ -117,8 +119,8 @@ async def get_all_async(
     tags=["Players"],
 )
 async def get_by_id_async(
-    player_id: UUID = Path(..., title="The UUID of the Player"),
-    async_session: AsyncSession = Depends(generate_async_session),
+    player_id: Annotated[UUID, Path(..., title="The UUID of the Player")],
+    async_session: Annotated[AsyncSession, Depends(generate_async_session)],
 ):
     """
     Endpoint to retrieve a Player by its UUID.
@@ -148,8 +150,8 @@ async def get_by_id_async(
     tags=["Players"],
 )
 async def get_by_squad_number_async(
-    squad_number: int = Path(..., title="The Squad Number of the Player"),
-    async_session: AsyncSession = Depends(generate_async_session),
+    squad_number: Annotated[int, Path(..., title=SQUAD_NUMBER_TITLE)],
+    async_session: Annotated[AsyncSession, Depends(generate_async_session)],
 ):
     """
     Endpoint to retrieve a Player by its Squad Number.
@@ -183,9 +185,9 @@ async def get_by_squad_number_async(
     tags=["Players"],
 )
 async def put_async(
-    squad_number: int = Path(..., title="The Squad Number of the Player"),
-    player_model: PlayerRequestModel = Body(...),
-    async_session: AsyncSession = Depends(generate_async_session),
+    squad_number: Annotated[int, Path(..., title=SQUAD_NUMBER_TITLE)],
+    player_model: Annotated[PlayerRequestModel, Body(...)],
+    async_session: Annotated[AsyncSession, Depends(generate_async_session)],
 ):
     """
     Endpoint to entirely update an existing Player.
@@ -226,8 +228,8 @@ async def put_async(
     tags=["Players"],
 )
 async def delete_async(
-    squad_number: int = Path(..., title="The Squad Number of the Player"),
-    async_session: AsyncSession = Depends(generate_async_session),
+    squad_number: Annotated[int, Path(..., title=SQUAD_NUMBER_TITLE)],
+    async_session: Annotated[AsyncSession, Depends(generate_async_session)],
 ):
     """
     Endpoint to delete an existing Player.

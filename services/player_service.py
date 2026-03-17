@@ -140,7 +140,7 @@ async def update_by_squad_number_async(
     player.middle_name = player_model.middle_name
     player.last_name = player_model.last_name
     player.date_of_birth = player_model.date_of_birth
-    player.squad_number = player_model.squad_number
+    player.squad_number = squad_number
     player.position = player_model.position
     player.abbr_position = player_model.abbr_position
     player.team = player_model.team
@@ -172,8 +172,11 @@ async def delete_by_squad_number_async(
         True if the Player was deleted successfully, False otherwise.
     """
     player = await retrieve_by_squad_number_async(async_session, squad_number)
-    await async_session.delete(player)
+    if player is None:  # pragma: no cover
+        logger.error("Player not found for delete: squad_number=%s", squad_number)
+        return False
     try:
+        await async_session.delete(player)
         await async_session.commit()
         return True
     except SQLAlchemyError as error:  # pragma: no cover
