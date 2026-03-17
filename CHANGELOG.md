@@ -48,6 +48,12 @@ This project uses famous football coaches as release codenames, following an A-Z
 - **BREAKING**: `DELETE /players/{player_id}` replaced by `DELETE /players/squadnumber/{squad_number}` — same rationale as above (#521)
 - `update_async` and `delete_async` (UUID-based) replaced by `update_by_squad_number_async` and `delete_by_squad_number_async` in `services/player_service.py` (#521)
 
+### Fixed
+
+- Removed stale `assets/` folder references from `Dockerfile`,
+  `codecov.yml`, and `.coderabbit.yaml` after the folder was deleted
+  when the README was migrated to Mermaid diagrams
+
 ---
 
 ## [1.1.0 - Bielsa] - 2026-03-02
