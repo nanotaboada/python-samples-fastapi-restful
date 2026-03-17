@@ -128,7 +128,6 @@ reviews:
     - "!**/*.db"
     - "!**/*.db-shm"
     - "!**/*.db-wal"
-    - "!**/assets/**"
     - "!**/postman_collections/**"
     - "!**/uv.lock"
 

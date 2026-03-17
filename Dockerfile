@@ -41,7 +41,6 @@ LABEL org.opencontainers.image.source="https://github.com/nanotaboada/python-sam
 
 # Copy metadata docs for container registries (e.g.: GitHub Container Registry)
 COPY README.md          ./
-COPY assets/            ./assets/
 
 # Copy pre-built wheels from builder
 COPY --from=builder     /app/wheelhouse/            /app/wheelhouse/
