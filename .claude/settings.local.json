@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh issue:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(uv run:*)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(python -m pytest --tb=short)",
+      "Bash(python -m flake8 .)",
+      "Bash(python -m black --check .)",
+      "Bash(python -m pytest --tb=short -q)"
+    ]
+  }
+}
