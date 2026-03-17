@@ -42,6 +42,12 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING**: `PUT /players/{player_id}` replaced by `PUT /players/squadnumber/{squad_number}` — mutation endpoints now use Squad Number (natural key) instead of UUID (surrogate key), consistent with `GET /players/squadnumber/{squad_number}` (#521)
+- **BREAKING**: `DELETE /players/{player_id}` replaced by `DELETE /players/squadnumber/{squad_number}` — same rationale as above (#521)
+- `update_async` and `delete_async` (UUID-based) replaced by `update_by_squad_number_async` and `delete_by_squad_number_async` in `services/player_service.py` (#521)
+
 ---
 
 ## [1.1.0 - Bielsa] - 2026-03-02

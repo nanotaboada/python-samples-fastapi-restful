@@ -1,3 +1,13 @@
 {
-  "model": "claude-sonnet-4-6"
+  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "allow": [
+      "Bash(gh issue:*)",
+      "Bash(gh auth:*)",
+      "Bash(uv run:*)",
+      "Bash(source .venv/bin/activate)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)"
+    ]
+  }
 }

@@ -2,14 +2,14 @@
 Async CRUD operations for Player entities using SQLAlchemy ORM.
 
 Functions:
-- create_async                   : Add a new Player to the database.
-- retrieve_all_async             : Fetch all Player records.
-- retrieve_by_id_async           : Fetch a Player by its UUID
-                                   (surrogate key, internal).
-- retrieve_by_squad_number_async : Fetch a Player by its Squad Number
-                                   (natural key, domain).
-- update_async                   : Fully update an existing Player.
-- delete_async                   : Remove a Player from the database.
+- create_async                        : Add a new Player to the database.
+- retrieve_all_async                  : Fetch all Player records.
+- retrieve_by_id_async                : Fetch a Player by its UUID
+                                        (surrogate key, internal).
+- retrieve_by_squad_number_async      : Fetch a Player by its Squad Number
+                                        (natural key, domain).
+- update_by_squad_number_async        : Fully update a Player by Squad Number.
+- delete_by_squad_number_async        : Remove a Player by Squad Number.
 
 Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 """
@@ -117,30 +117,30 @@ async def retrieve_by_squad_number_async(
 # Update -----------------------------------------------------------------------
 
 
-async def update_async(
-    async_session: AsyncSession, player_id: UUID, player_model: PlayerRequestModel
+async def update_by_squad_number_async(
+    async_session: AsyncSession, squad_number: int, player_model: PlayerRequestModel
 ) -> bool:
     """
-    Updates (entirely) an existing Player in the database.
+    Updates (entirely) an existing Player identified by Squad Number.
 
     Args:
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
-        player_id (UUID): The UUID of the Player to update.
+        squad_number (int): The Squad Number of the Player to update.
         player_model (PlayerRequestModel): The Pydantic model representing the Player
         to update.
 
     Returns:
         True if the Player was updated successfully, False otherwise.
     """
-    player = await async_session.get(Player, player_id)
+    player = await retrieve_by_squad_number_async(async_session, squad_number)
     if player is None:  # pragma: no cover
-        logger.error("Player not found for update: %s", player_id)
+        logger.error("Player not found for update: squad_number=%s", squad_number)
         return False
     player.first_name = player_model.first_name
     player.middle_name = player_model.middle_name
     player.last_name = player_model.last_name
     player.date_of_birth = player_model.date_of_birth
-    player.squad_number = player_model.squad_number
+    player.squad_number = squad_number
     player.position = player_model.position
     player.abbr_position = player_model.abbr_position
     player.team = player_model.team
@@ -158,20 +158,25 @@ async def update_async(
 # Delete -----------------------------------------------------------------------
 
 
-async def delete_async(async_session: AsyncSession, player_id: UUID) -> bool:
+async def delete_by_squad_number_async(
+    async_session: AsyncSession, squad_number: int
+) -> bool:
     """
-    Deletes an existing Player from the database.
+    Deletes an existing Player identified by Squad Number from the database.
 
     Args:
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
-        player_id (UUID): The UUID of the Player to delete.
+        squad_number (int): The Squad Number of the Player to delete.
 
     Returns:
         True if the Player was deleted successfully, False otherwise.
     """
-    player = await async_session.get(Player, player_id)
-    await async_session.delete(player)
+    player = await retrieve_by_squad_number_async(async_session, squad_number)
+    if player is None:  # pragma: no cover
+        logger.error("Player not found for delete: squad_number=%s", squad_number)
+        return False
     try:
+        await async_session.delete(player)
         await async_session.commit()
         return True
     except SQLAlchemyError as error:  # pragma: no cover

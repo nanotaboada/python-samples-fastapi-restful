@@ -40,7 +40,7 @@ tests/          — pytest integration tests
 - **Async**: All routes and service functions must be `async def`; use `AsyncSession` (never `Session`); use `aiosqlite` (never `sqlite3`); use SQLAlchemy 2.0 `select()` (never `session.query()`)
 - **API contract**: camelCase JSON via Pydantic `alias_generator=to_camel`; Python internals stay snake_case
 - **Models**: `PlayerRequestModel` (no `id`, used for POST/PUT) and `PlayerResponseModel` (includes `id: UUID`, used for GET/POST responses); never use the removed `PlayerModel`
-- **Primary key**: UUID surrogate key (`id`) — opaque, internal, used for all CRUD operations. UUID v4 for API-created records; UUID v5 (deterministic) for migration-seeded records. `squad_number` is the natural key — human-readable, domain-meaningful, preferred lookup for external consumers
+- **Primary key**: UUID surrogate key (`id`) — opaque, internal, used for GET by id only. UUID v4 for API-created records; UUID v5 (deterministic) for migration-seeded records. `squad_number` is the natural key — human-readable, domain-meaningful, used for all mutation endpoints (PUT, DELETE) and preferred for all external consumers
 - **Caching**: cache key `"players"` (hardcoded); clear on POST/PUT/DELETE; `X-Cache` header (HIT/MISS)
 - **Errors**: Catch specific exceptions with rollback in services; Pydantic validation returns 422 (not 400)
 - **Logging**: `logging` module only; never `print()`
