@@ -5,6 +5,15 @@ Pydantic models defining the data schema for football players.
 - `PlayerRequestModel`: Represents player data for Create and Update operations.
 - `PlayerResponseModel`: Represents player data including UUID for Retrieve operations.
 
+Design decision — single request model vs split models:
+    A single `PlayerRequestModel` is intentionally shared by both POST (Create)
+    and PUT (Update). Per-operation differences are handled at the route layer
+    rather than by duplicating the model:
+    - POST checks that `squad_number` does not already exist (→ 409 Conflict).
+    - PUT checks that `squad_number` in the body matches the path parameter
+      (→ 400 Bad Request), ensuring the request is unambiguous. The path
+      parameter is always the authoritative source of identity on PUT.
+
 These models are used for data validation and serialization in the API.
 """
 
