@@ -10,9 +10,17 @@ Date: YYYY-MM-DD
 
 <!--
 State facts, not conclusions. Describe the problem or situation that
-required a decision. List the alternatives that were evaluated.
-Include language- or framework-specific constraints that shaped the
-decision. Do not argue for the chosen option here.
+required a decision. Include language- or framework-specific
+constraints that shaped the decision. Do not argue for the chosen
+option here.
+-->
+
+## Alternatives Considered
+
+<!--
+List each option that was evaluated. One or two sentences per option
+is enough — enough to show it was genuinely considered and why it was
+set aside.
 -->
 
 ## Decision

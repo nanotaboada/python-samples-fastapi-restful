@@ -28,14 +28,17 @@ across environments so that tests can reference them by ID.
 UUID v4 (random) cannot satisfy this: regenerating the seed would
 produce different IDs each time. UUID v5 (deterministic, derived from
 a namespace and a name) produces the same UUID for the same input,
-making seeded records reproducible.
+making seeded records reproducible. The project stores pre-computed
+UUID v5 constants directly in the seed scripts rather than deriving
+them at runtime from the squad number.
 
 ## Decision
 
 We will use a UUID surrogate primary key stored as a hyphenated string
 (`HyphenatedUUID` custom SQLAlchemy type). API-created records receive
 a UUID v4 (random); migration-seeded records receive a UUID v5
-(deterministic, derived from the player's squad number).
+(deterministic, pre-computed and stored as constants in the seed
+scripts).
 
 The v4/v5 split preserves the benefits of each approach in its context:
 randomness for API-created records (opaque, non-predictable), and

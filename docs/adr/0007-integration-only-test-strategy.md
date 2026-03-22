@@ -28,10 +28,9 @@ synchronous integration tests that exercise the full stack — routing,
 dependency injection, service logic, ORM queries, and the database —
 without a running server process.
 
-All tests live in `tests/test_main.py`, use stubs from
-`tests/player_stub.py` for consistent test data, and rely on a
-`function`-scoped `client` fixture from `conftest.py` for per-test
-isolation.
+All tests live in a single test module under `tests/`, use a stubs
+module for consistent test data, and rely on a `function`-scoped
+`client` fixture in `conftest.py` for per-test isolation.
 
 ## Decision
 

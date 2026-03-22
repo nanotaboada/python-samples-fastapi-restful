@@ -23,10 +23,12 @@ design (all fields required vs optional), the service layer logic
 (overwrite all vs merge), and the client contract (must send all fields
 vs only changed fields).
 
-The current implementation uses a single `PlayerRequestModel` where all
-domain fields are required. The service's
-`update_by_squad_number_async` overwrites every field on the existing
-record using the request body values.
+The current implementation uses a single `PlayerRequestModel` shared by
+both POST and PUT. Four fields are required (`first_name`, `last_name`,
+`squad_number`, `position`); the remaining six are optional (`middle_name`,
+`date_of_birth`, `abbr_position`, `team`, `league`, `starting11`). The
+service's `update_by_squad_number_async` overwrites every field on the
+existing record using the request body values.
 
 ## Decision
 
