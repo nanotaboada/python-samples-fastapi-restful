@@ -234,6 +234,20 @@ def test_request_put_player_squadnumber_existing_response_status_no_content(clie
     assert response.status_code == 204
 
 
+def test_request_put_player_squadnumber_mismatch_response_status_bad_request(client):
+    """PUT /players/squadnumber/{squad_number} with mismatched squad number in body returns 400 Bad Request"""
+    # Arrange
+    squad_number = existing_player().squad_number
+    player = existing_player()
+    player.squad_number = unknown_player().squad_number
+    # Act
+    response = client.put(
+        PATH + "squadnumber/" + str(squad_number), json=player.__dict__
+    )
+    # Assert
+    assert response.status_code == 400
+
+
 # DELETE /players/squadnumber/{squad_number} -----------------------------------
 
 

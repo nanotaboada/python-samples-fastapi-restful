@@ -199,9 +199,14 @@ async def put_async(
         async_session (AsyncSession): The async version of a SQLAlchemy ORM session.
 
     Raises:
+        HTTPException: HTTP 400 Bad Request if squad_number in the request body does
+        not match the path parameter. The path parameter is the authoritative source
+        of identity on PUT; a mismatch makes the request ambiguous.
         HTTPException: HTTP 404 Not Found error if the Player with the specified Squad
         Number does not exist.
     """
+    if player_model.squad_number != squad_number:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     player = await player_service.retrieve_by_squad_number_async(
         async_session, squad_number
     )
