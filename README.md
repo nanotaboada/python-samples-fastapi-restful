@@ -29,6 +29,7 @@ Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/
 - [Releases](#releases)
 - [Environment Variables](#environment-variables)
 - [Command Summary](#command-summary)
+- [Architecture Decisions](#architecture-decisions)
 - [Contributing](#contributing)
 - [Legal](#legal)
 
@@ -403,6 +404,11 @@ PYTHONUNBUFFERED=1
 | `docker compose up` | Start Docker container |
 | `docker compose down` | Stop Docker container |
 | `docker compose down -v` | Stop and remove Docker volume |
+
+## Architecture Decisions
+
+Key architectural decisions are documented as ADRs in
+[`docs/adr/`](docs/adr/README.md).
 
 ## Contributing
 

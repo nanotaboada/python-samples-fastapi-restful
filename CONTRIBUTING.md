@@ -37,7 +37,27 @@ We value **incremental, detail‑first contributions** over big rewrites or abst
   - Run `pytest` before pushing.
   - Ensure coverage isn’t regressing.
 
-## 3. Pull Request Workflow
+## 3. Architecture Decision Records
+
+Significant architectural decisions are documented as ADRs in
+`docs/adr/`. Before changing or replacing a decision captured in an
+ADR, write a new ADR that supersedes it — do not edit the original.
+
+**When to write an ADR:** apply the three-part test:
+1. A real fork existed — a genuine alternative was considered and
+   rejected.
+2. The code doesn't explain the why — a new contributor reading the
+   source cannot infer the reasoning.
+3. Revisiting it would be costly — changing it requires significant
+   rework.
+
+All three must be true. Process conventions (commit format, branch
+naming) and project principles (audience, tone) do not belong in ADRs.
+
+ADRs are append-only. To change a decision: write a new ADR with
+status `SUPERSEDED by ADR-NNNN` on the old one.
+
+## 4. Pull Request Workflow
 
 - **One logical change per PR.**
 - **Rebase or squash** before opening to keep history clean.
@@ -45,13 +65,13 @@ We value **incremental, detail‑first contributions** over big rewrites or abst
   - Use Conventional Commit format.
   - Explain _what_ and _why_ concisely in the PR body.
 
-## 4. Issue Reporting
+## 5. Issue Reporting
 
 - Search open issues before creating a new one.
 - Include clear steps to reproduce and environment details.
 - Prefer **focused** issues—don’t bundle multiple topics.
 
-## 5. Automation & Checks
+## 6. Automation & Checks
 
 All PRs and pushes go through CI:
 
@@ -62,7 +82,7 @@ All PRs and pushes go through CI:
 
 PRs must pass all checks to be reviewed.
 
-## 6. Code of Conduct & Support
+## 7. Code of Conduct & Support
 
 - See `CODE_OF_CONDUCT.md` for guidelines and reporting.
 - For questions or planning, open an issue and use the `discussion` label, or mention a maintainer.

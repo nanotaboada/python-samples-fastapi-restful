@@ -42,6 +42,13 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ## [Unreleased]
 
+### Added
+
+- Architecture Decision Records (ADRs) in `docs/adr/` documenting key
+  decisions: SQLite, no Alembic, UUID primary key, squad number as
+  mutation key, full replace PUT, in-memory caching, integration-only
+  tests (#482)
+
 ---
 
 ## [2.0.0 - Capello] - 2026-03-17
