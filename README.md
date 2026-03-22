@@ -38,7 +38,7 @@ Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/
 - 📚 **Interactive API exploration** - Auto-generated OpenAPI docs with FastAPI's built-in Swagger UI and `.rest` file for REST Client integration
 - ⚡ **Performance optimizations** - Async SQLAlchemy, in-memory caching with aiocache (10-minute TTL), and efficient database operations
 - 🧪 **High test coverage** - Pytest suite with 80% minimum coverage and automated reporting to Codecov and SonarCloud
-- 📖 **Token-efficient documentation** - Copilot instructions with coding guidelines, architecture rules, and agent workflows for AI-assisted development
+- 📖 **Agent-optimized documentation** - Claude Code and GitHub Copilot instructions with coding guidelines, architecture rules, and agent workflows for AI-assisted development
 - 🐳 **Full containerization** - Production-ready Docker setup with Docker Compose orchestration
 - 🔄 **Complete CI/CD pipeline** - Automated linting (Black/Flake8), testing, Docker publishing, and GitHub releases
 - ♟️ **Coach-themed semantic versioning** - Memorable, alphabetical release names honoring legendary football coaches
