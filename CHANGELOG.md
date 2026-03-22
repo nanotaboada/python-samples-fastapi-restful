@@ -167,6 +167,7 @@ The CD workflow automatically:
 
 ---
 
-[unreleased]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.1.0-bielsa...HEAD
+[unreleased]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v2.0.0-capello...HEAD
+[2.0.0 - Capello]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.1.0-bielsa...v2.0.0-capello
 [1.1.0 - Bielsa]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.0.0-ancelotti...v1.1.0-bielsa
 [1.0.0 - Ancelotti]: https://github.com/nanotaboada/python-samples-fastapi-restful/releases/tag/v1.0.0-ancelotti

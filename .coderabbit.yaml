@@ -72,7 +72,7 @@ reviews:
     - path: "models/**/*.py"
       instructions: |
         - Pydantic models should use Field for validation
-        - Verify camelCase aliasing with Config.alias_generator = to_camel
+        - Verify camelCase aliasing with model_config = ConfigDict(alias_generator=to_camel)
         - Check that validation constraints match business rules
         - Ensure models are separate from database schemas
 
@@ -82,7 +82,6 @@ reviews:
         - Verify test naming follows test_request_{method}_{resource}_{param_or_context}_response_{outcome} pattern
         - Check that TestClient is used for endpoint testing
         - Ensure test data uses stubs (e.g., player_stub.py)
-        - Tests should use async test functions where appropriate
         - Validate coverage targets (80% minimum)
 
     - path: "main.py"
@@ -211,7 +210,7 @@ reviews:
     title:
       mode: warning
       requirements: |
-        - Use Conventional Commits format (feat:, fix:, chore:, docs:, test:, refactor:)
+        - Use Conventional Commits format (feat:, fix:, chore:, docs:, test:, refactor:, ci:, perf:)
         - Keep under 80 characters
         - Be descriptive and specific
     description:

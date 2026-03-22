@@ -14,6 +14,11 @@ We value **incremental, detail‑first contributions** over big rewrites or abst
   - `feat: ` for new features
   - `fix: ` for bug fixes
   - `chore: ` for maintenance or tooling
+  - `docs: ` for documentation changes
+  - `test: ` for test additions or corrections
+  - `refactor: ` for code changes that neither fix a bug nor add a feature
+  - `ci: ` for CI/CD pipeline changes
+  - `perf: ` for performance improvements
 
 - **Logical Commits**
   Group changes by purpose. Multiple commits are fine, but avoid noise. Squash when appropriate.
@@ -25,7 +30,7 @@ We value **incremental, detail‑first contributions** over big rewrites or abst
   - Use **[flake8](https://flake8.pycqa.org/en/latest/)** for static checks.
     - Line length also set to 88.
     - Some flake8 warnings are disabled (e.g. `E203`, `W503`) to avoid conflicts with Black.
-  - Run `black .` and `flake8` before submitting.
+  - Run `uv run black .` and `uv run flake8 .` before submitting.
   - Use Python **3.13.x** for local testing and formatting.
 
 - **Testing**
