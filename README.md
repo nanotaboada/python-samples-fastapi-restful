@@ -21,15 +21,15 @@ Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Architecture](#architecture)
+- [Architecture Decisions](#architecture-decisions)
 - [API Reference](#api-reference)
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
 - [Testing](#testing)
-- [Docker](#docker)
+- [Containers](#containers)
 - [Releases](#releases)
 - [Environment Variables](#environment-variables)
 - [Command Summary](#command-summary)
-- [Architecture Decisions](#architecture-decisions)
 - [Contributing](#contributing)
 - [Legal](#legal)
 
@@ -157,23 +157,27 @@ graph RL
 
 ### Arrow Semantics
 
-Arrows point from a dependency toward its consumer. Solid arrows (`-->`) denote **strong (functional) dependencies**: the consumer actively invokes behavior — registering route handlers, dispatching requests, executing async queries, or managing the database session. Dotted arrows (`-.->`) denote **soft (structural) dependencies**: the consumer only references types without invoking runtime behavior. This distinction follows UML's `«use»` dependency notation and classical coupling theory (Myers, 1978): strong arrows approximate *control or stamp coupling*, while soft arrows approximate *data coupling*, where only shared data structures cross the boundary.
+Arrows follow the injection direction: `A --> B` means A is injected into B. Solid arrows (`-->`) represent active dependencies — components wired via FastAPI's `Depends()` mechanism and invoked at runtime. Dotted arrows (`-.->`) represent structural dependencies — the consumer references types without invoking runtime behavior.
 
 ### Composition Root Pattern
 
-The `main` module acts as the composition root — it creates the FastAPI application instance, configures the lifespan handler, and registers all route modules via `app.include_router()`. Rather than explicit object construction, dependency injection is provided by FastAPI's built-in `Depends()` mechanism: `routes` declare their dependencies (e.g. `AsyncSession`) as function parameters and FastAPI resolves them at request time. This pattern enables dependency injection, improves testability, and ensures no other module bears responsibility for wiring or lifecycle management.
+`main` is the composition root: it creates the FastAPI application instance, configures the lifespan handler, and registers all route modules via `app.include_router()`. Dependencies are resolved at request time via FastAPI's `Depends()` mechanism.
 
 ### Layered Architecture
 
-The codebase is organized into four conceptual layers: Initialization (`main`), HTTP (`routes`), Business (`services`), and Data (`schemas`, `databases`).
+Four layers: Initialization (`main`), HTTP (`routes`), Business (`services`), and Data (`schemas`, `databases`).
 
-Third-party dependencies are co-resident within the layer that consumes them: `FastAPI` and `aiocache` inside HTTP, and `SQLAlchemy` inside Data. `routes` holds a soft dependency on `SQLAlchemy` — `AsyncSession` is referenced only as a type annotation in `Depends()`, without any direct SQLAlchemy method calls at the route level.
+Third-party packages are placed inside the subgraph of the layer that uses them — `FastAPI` and `aiocache` in HTTP, `SQLAlchemy` in Data. The soft dependency from `routes` to `SQLAlchemy` reflects `AsyncSession` appearing only as a type annotation in `Depends()`, with no direct SQLAlchemy calls at the route level.
 
-The `models` package is a **cross-cutting type concern** — it defines Pydantic request and response models consumed across multiple layers, without containing logic or behavior of its own. Dependencies always flow from consumers toward their lower-level types: each layer depends on (consumes) the layers below it, and no layer invokes behavior in a layer above it.
+`models` is a cross-cutting type concern — Pydantic request/response models consumed across all layers, with no logic of its own.
 
 ### Color Coding
 
-Core packages (blue) implement the application logic, third-party dependencies (red) are community packages, and tests (green) ensure code quality.
+Blue = core application packages, red = third-party libraries, green = tests.
+
+## Architecture Decisions
+
+Key architectural decisions are documented as ADRs in [`docs/adr/`](docs/adr/README.md).
 
 ## API Reference
 
@@ -271,7 +275,7 @@ Tests are located in the `tests/` directory and use `httpx` for async integratio
 
 **Coverage target:** 80% minimum.
 
-## Docker
+## Containers
 
 This project includes full Docker support with Docker Compose for easy deployment.
 
@@ -405,11 +409,6 @@ PYTHONUNBUFFERED=1
 | `docker compose down` | Stop Docker container |
 | `docker compose down -v` | Stop and remove Docker volume |
 
-## Architecture Decisions
-
-Key architectural decisions are documented as ADRs in
-[`docs/adr/`](docs/adr/README.md).
-
 ## Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and the process for submitting pull requests.
@@ -423,4 +422,4 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for de
 
 ## Legal
 
-This project is provided for educational and demonstration purposes and may be used in production environments at your discretion. All referenced trademarks, service marks, product names, company names, and logos are the property of their respective owners and are used solely for identification or illustrative purposes.
+This project is provided for educational and demonstration purposes and may be used in production at your own discretion. All trademarks, service marks, product names, company names, and logos referenced herein are the property of their respective owners and are used solely for identification or illustrative purposes.
