@@ -4,7 +4,7 @@
     "ms-python.python",                  // Python language support
 
     // AI Assistance
-    "github.copilot-chat",               // GitHub Copilot Chat - AI-powered coding assistant
+    "anthropic.claude-code",             // Claude Code - AI-powered coding assistant
     "coderabbit.coderabbit-vscode",      // CodeRabbit - AI-powered code review
 
     // Code Quality
