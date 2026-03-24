@@ -46,6 +46,6 @@
   "unwantedRecommendations": [
     "ms-azuretools.vscode-docker",       // Docker (legacy) - Use vscode-containers instead
     "docker.docker",                     // Docker DX - Use ms-azuretools.vscode-containers
-    "github.copilot"                     // Copilot (base) - Unified into copilot-chat
+    "github.copilot"                     // GitHub Copilot - legacy base extension
   ]
 }
