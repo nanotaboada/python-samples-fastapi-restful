@@ -4,7 +4,7 @@
     "ms-python.python",                  // Python language support
 
     // AI Assistance
-    "github.copilot-chat",               // GitHub Copilot Chat - AI-powered coding assistant
+    "anthropic.claude-code",             // Claude Code - AI-powered coding assistant
     "coderabbit.coderabbit-vscode",      // CodeRabbit - AI-powered code review
 
     // Code Quality
@@ -46,6 +46,6 @@
   "unwantedRecommendations": [
     "ms-azuretools.vscode-docker",       // Docker (legacy) - Use vscode-containers instead
     "docker.docker",                     // Docker DX - Use ms-azuretools.vscode-containers
-    "github.copilot"                     // Copilot (base) - Unified into copilot-chat
+    "github.copilot"                     // GitHub Copilot - legacy base extension
   ]
 }
