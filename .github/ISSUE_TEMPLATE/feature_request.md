@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Propose a new feature or enhancement
-title: "[FEATURE]"
+title: ''
 labels: enhancement, python
 assignees: ''
 
@@ -15,17 +15,17 @@ What problem are you trying to solve? What's the pain point?
 
 Describe the expected behavior and functionality this feature will provide.
 
-## Suggested Approach
+## Suggested Approach _(optional)_
 
-Describe the technical implementation plan. Include architecture, key files/modules to modify, APIs, and any code patterns to follow.
+If known, describe the technical implementation plan. Include architecture, key files/modules to modify, APIs, and any code patterns to follow.
 
 ## Acceptance Criteria
 
 How will we know this feature is complete and working correctly?
 
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+- [ ] Feature behaves as described in the proposed solution
+- [ ] Tests are added or updated to cover the new functionality
+- [ ] No regressions in existing tests
 
 ## References
 
