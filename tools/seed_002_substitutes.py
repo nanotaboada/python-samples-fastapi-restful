@@ -1,7 +1,7 @@
 """
 Seed 002 – Substitutes
 
-Seeds the 14 substitute players from the 2022 FIFA World Cup squad of the
+Seeds the 15 substitute players from the 2022 FIFA World Cup squad of the
 Argentina national football team into an already-seeded `players` table
 (UUID primary key, created by Seed 001).
 
@@ -13,7 +13,7 @@ Flags:
                 Defaults to ./storage/players-sqlite3.db
 
 Idempotency:
-    If all 14 substitute UUIDs are already present the script exits without
+    If all 15 substitute UUIDs are already present the script exits without
     making any changes.
 
 Prerequisite:
@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 SUBSTITUTES = [
     {
-        "id": "52524d6e-10dc-5261-aa36-8b2efcbaa5f0",
+        "id": "5a9cd988-95e6-54c1-bc34-9aa08acca8d0",
         "firstName": "Franco",
         "middleName": "Daniel",
         "lastName": "Armani",
@@ -53,7 +53,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "91c274f2-9a0d-5ce6-ac3d-7529f452df21",
+        "id": "c62f2ac1-41e8-5d34-b073-2ba0913d0e31",
         "firstName": "Gerónimo",
         "middleName": None,
         "lastName": "Rulli",
@@ -66,7 +66,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "0ff1e264-520d-543a-87dd-181a491e667e",
+        "id": "5fdb10e8-38c0-5084-9a3f-b369a960b9c2",
         "firstName": "Juan",
         "middleName": "Marcos",
         "lastName": "Foyth",
@@ -79,7 +79,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "23986425-d3a5-5e13-8bab-299745777a8d",
+        "id": "bbd441f7-fcfb-5834-8468-2a9004b64c8c",
         "firstName": "Gonzalo",
         "middleName": "Ariel",
         "lastName": "Montiel",
@@ -92,7 +92,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "c15b38c9-9a3e-543c-a703-dd742f25b4d5",
+        "id": "d8bfea25-f189-5d5e-b3a5-ed89329b9f7c",
         "firstName": "Germán",
         "middleName": "Alejo",
         "lastName": "Pezzella",
@@ -105,7 +105,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "db680066-c83d-5ed7-89a4-1d79466ea62d",
+        "id": "dca343a8-12e5-53d6-89a8-916b120a5ee4",
         "firstName": "Marcos",
         "middleName": "Javier",
         "lastName": "Acuña",
@@ -118,7 +118,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "cadb7952-2bba-5609-88d4-8e47ec4e7920",
+        "id": "98306555-a466-5d18-804e-dc82175e697b",
         "firstName": "Lisandro",
         "middleName": None,
         "lastName": "Martínez",
@@ -131,7 +131,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "35140057-a2a4-5adb-a500-46f8ed8b66a9",
+        "id": "9d140400-196f-55d8-86e1-e0b96a375c83",
         "firstName": "Leandro",
         "middleName": "Daniel",
         "lastName": "Paredes",
@@ -144,7 +144,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "66e549b7-01e2-5d07-98d5-430f74d8d3b2",
+        "id": "d3b0e8e8-2c34-531a-b608-b24fed0ef986",
         "firstName": "Exequiel",
         "middleName": "Alejandro",
         "lastName": "Palacios",
@@ -157,7 +157,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "292c8e99-2378-55aa-83d8-350e0ac3f1cc",
+        "id": "7cc8d527-56a2-58bd-9528-2618fc139d30",
         "firstName": "Alejandro",
         "middleName": "Darío",
         "lastName": "Gómez",
@@ -170,7 +170,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "0e3b230a-0509-55d8-96a0-9875f387a2be",
+        "id": "191c82af-0c51-526a-b903-c3600b61b506",
         "firstName": "Guido",
         "middleName": None,
         "lastName": "Rodríguez",
@@ -183,7 +183,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "4c507660-a83b-55c0-9b2b-83eccb07723d",
+        "id": "b1306b7b-a3a4-5f7c-90fd-dd5bdbed57ba",
         "firstName": "Ángel",
         "middleName": "Martín",
         "lastName": "Correa",
@@ -196,7 +196,20 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "c2708a8b-120a-56f5-a30d-990048af87cc",
+        "id": "ecec27e8-487b-5622-b116-0855020477ed",
+        "firstName": "Thiago",
+        "middleName": "Ezequiel",
+        "lastName": "Almada",
+        "dateOfBirth": "2001-04-26T00:00:00.000Z",
+        "squadNumber": 16,
+        "position": "Attacking Midfield",
+        "abbrPosition": "AM",
+        "team": "Atlanta United FC",
+        "league": "Major League Soccer",
+        "starting11": 0,
+    },
+    {
+        "id": "7941cd7c-4df1-5952-97e8-1e7f5d08e8aa",
         "firstName": "Paulo",
         "middleName": "Exequiel",
         "lastName": "Dybala",
@@ -209,7 +222,7 @@ SUBSTITUTES = [
         "starting11": 0,
     },
     {
-        "id": "e7263999-68b6-5a23-b530-af25b7efd632",
+        "id": "79c96f29-c59f-5f98-96b8-3a5946246624",
         "firstName": "Lautaro",
         "middleName": "Javier",
         "lastName": "Martínez",
@@ -242,7 +255,7 @@ def _table_exists(conn: sqlite3.Connection) -> bool:
 
 
 def _already_migrated(conn: sqlite3.Connection) -> bool:
-    """Return True when all 14 substitute UUIDs are already in the table."""
+    """Return True when all 15 substitute UUIDs are already in the table."""
     uuids = [p["id"] for p in SUBSTITUTES]
     placeholders = ",".join("?" * len(uuids))
     cursor = conn.execute(

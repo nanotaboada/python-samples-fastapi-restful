@@ -45,9 +45,9 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 STARTING_ELEVEN = [
     {
-        "id": "b04965e6-a9bb-591f-8f8a-1adcb2c8dc39",
-        "firstName": "Emiliano",
-        "middleName": None,
+        "id": "01772c59-43f0-5d85-b913-c78e4e281452",
+        "firstName": "Damián",
+        "middleName": "Emiliano",
         "lastName": "Martínez",
         "dateOfBirth": "1992-09-02T00:00:00.000Z",
         "squadNumber": 23,
@@ -58,7 +58,7 @@ STARTING_ELEVEN = [
         "starting11": 1,
     },
     {
-        "id": "4b166dbe-d99d-5091-abdd-95b83330ed3a",
+        "id": "da31293b-4c7e-5e0f-a168-469ee29ecbc4",
         "firstName": "Nahuel",
         "middleName": None,
         "lastName": "Molina",
@@ -71,7 +71,7 @@ STARTING_ELEVEN = [
         "starting11": 1,
     },
     {
-        "id": "98123fde-012f-5ff3-8b50-881449dac91a",
+        "id": "c096c69e-762b-5281-9290-bb9c167a24a0",
         "firstName": "Cristian",
         "middleName": "Gabriel",
         "lastName": "Romero",
@@ -84,7 +84,7 @@ STARTING_ELEVEN = [
         "starting11": 1,
     },
     {
-        "id": "6ed955c6-506a-5343-9be4-2c0afae02eef",
+        "id": "d5f7dd7a-1dcb-5960-ba27-e34865b63358",
         "firstName": "Nicolás",
         "middleName": "Hernán Gonzalo",
         "lastName": "Otamendi",
@@ -97,7 +97,7 @@ STARTING_ELEVEN = [
         "starting11": 1,
     },
     {
-        "id": "c8691da2-158a-5ed6-8537-0e6f140801f2",
+        "id": "2f6f90a0-9b9d-5023-96d2-a2aaf03143a6",
         "firstName": "Nicolás",
         "middleName": "Alejandro",
         "lastName": "Tagliafico",
@@ -110,7 +110,7 @@ STARTING_ELEVEN = [
         "starting11": 1,
     },
     {
-        "id": "a6c4fc8f-6950-51de-a9ae-2c519c465071",
+        "id": "b5b46e79-929e-5ed2-949d-0d167109c022",
         "firstName": "Ángel",
         "middleName": "Fabián",
         "lastName": "Di María",
@@ -123,7 +123,7 @@ STARTING_ELEVEN = [
         "starting11": 1,
     },
     {
-        "id": "a9f96b98-dd44-5216-ab0d-dbfc6b262edf",
+        "id": "0293b282-1da8-562e-998e-83849b417a42",
         "firstName": "Rodrigo",
         "middleName": "Javier",
         "lastName": "de Paul",
@@ -136,7 +136,7 @@ STARTING_ELEVEN = [
         "starting11": 1,
     },
     {
-        "id": "e99caacd-6c45-5906-bd9f-b79e62f25963",
+        "id": "d3ba552a-dac3-588a-b961-1ea7224017fd",
         "firstName": "Enzo",
         "middleName": "Jeremías",
         "lastName": "Fernández",
@@ -144,12 +144,12 @@ STARTING_ELEVEN = [
         "squadNumber": 24,
         "position": "Central Midfield",
         "abbrPosition": "CM",
-        "team": "Chelsea FC",
-        "league": "Premier League",
+        "team": "SL Benfica",
+        "league": "Liga Portugal",
         "starting11": 1,
     },
     {
-        "id": "e4d80b30-151e-51b5-9f4f-18a3b82718e6",
+        "id": "9613cae9-16ab-5b54-937e-3135123b9e0d",
         "firstName": "Alexis",
         "middleName": None,
         "lastName": "Mac Allister",
@@ -157,12 +157,12 @@ STARTING_ELEVEN = [
         "squadNumber": 20,
         "position": "Central Midfield",
         "abbrPosition": "CM",
-        "team": "Liverpool FC",
+        "team": "Brighton & Hove Albion",
         "league": "Premier League",
         "starting11": 1,
     },
     {
-        "id": "0159d6c7-973f-5e7a-a9a0-d195d0ea6fe2",
+        "id": "acc433bf-d505-51fe-831e-45eb44c4d43c",
         "firstName": "Lionel",
         "middleName": "Andrés",
         "lastName": "Messi",
@@ -170,12 +170,12 @@ STARTING_ELEVEN = [
         "squadNumber": 10,
         "position": "Right Winger",
         "abbrPosition": "RW",
-        "team": "Inter Miami CF",
-        "league": "Major League Soccer",
+        "team": "Paris Saint-Germain",
+        "league": "Ligue 1",
         "starting11": 1,
     },
     {
-        "id": "7fef88f7-411d-5669-b42d-bf5fc7f9b58b",
+        "id": "38bae91d-8519-55a2-b30a-b9fe38849bfb",
         "firstName": "Julián",
         "middleName": None,
         "lastName": "Álvarez",

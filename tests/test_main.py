@@ -225,13 +225,29 @@ def test_request_put_player_squadnumber_existing_response_status_no_content(clie
     squad_number = existing_player().squad_number
     player = existing_player()
     player.first_name = "Emiliano"
-    player.middle_name = ""
+    player.middle_name = None
     # Act
     response = client.put(
         PATH + "squadnumber/" + str(squad_number), json=player.__dict__
     )
     # Assert
     assert response.status_code == 204
+    # Teardown — restore Damián Martínez to its seeded state
+    client.put(
+        PATH + "squadnumber/23",
+        json={
+            "firstName": "Damián",
+            "middleName": "Emiliano",
+            "lastName": "Martínez",
+            "dateOfBirth": "1992-09-02T00:00:00.000Z",
+            "squadNumber": 23,
+            "position": "Goalkeeper",
+            "abbrPosition": "GK",
+            "team": "Aston Villa FC",
+            "league": "Premier League",
+            "starting11": True,
+        },
+    )
 
 
 def test_request_put_player_squadnumber_mismatch_response_status_bad_request(client):
