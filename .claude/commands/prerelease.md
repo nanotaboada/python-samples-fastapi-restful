@@ -23,7 +23,10 @@ Run the pre-release checklist for this project:
    `docs(changelog): release vX.Y.Z Codename`
    Do not commit until I confirm.
 
-6. **After confirmation**: commit, push the branch, open a PR into `master`.
+6. **After confirmation**: commit the changelog update. Then run `/precommit`
+   to execute the full pre-commit checklist (linting, formatting, tests,
+   coverage). Only push the branch and open a PR into `master` once all
+   checks pass.
 
 7. **Stop and wait for my explicit confirmation** that:
    - All CI checks have passed
