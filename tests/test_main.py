@@ -178,6 +178,18 @@ def test_request_post_player_body_existing_response_status_conflict(client):
     assert response.status_code == 409
 
 
+def test_request_post_player_body_existing_response_body_detail(client):
+    """POST /players/ with existing player returns 409 with detail message"""
+    # Arrange
+    player = existing_player()
+    # Act
+    response = client.post(PATH, json=player.__dict__)
+    # Assert
+    assert (
+        response.json()["detail"] == "A Player with this squad number already exists."
+    )
+
+
 def test_request_post_player_body_nonexistent_response_status_created(client):
     """POST /players/ with nonexistent player returns 201 Created with a valid UUID"""
     # Arrange
@@ -275,3 +287,21 @@ def test_request_delete_player_squadnumber_existing_response_status_no_content(c
     response = client.delete(PATH + "squadnumber/" + str(player.squad_number))
     # Assert
     assert response.status_code == 204
+
+
+def test_request_post_player_body_nonexistent_response_header_location(client):
+    """POST /players/ with nonexistent player returns 201 with Location header"""
+    # Arrange
+    player = nonexistent_player()
+    try:
+        # Act
+        response = client.post(PATH, json=player.__dict__)
+        # Assert
+        assert response.status_code == 201
+        assert "Location" in response.headers
+        assert (
+            response.headers["Location"]
+            == f"/players/squadnumber/{player.squad_number}"
+        )
+    finally:
+        client.delete(PATH + "squadnumber/" + str(player.squad_number))

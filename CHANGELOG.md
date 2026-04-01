@@ -42,6 +42,24 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+- `GET /players/` cache check changed from `if not players` to
+  `if players is None` so that an empty collection is cached correctly
+  instead of triggering a DB fetch on every request (#530)
+- `POST /players/` 409 response now includes a human-readable `detail`
+  message: "A Player with this squad number already exists." (#530)
+
+### Fixed
+
+- `POST /players/` 201 response now includes a `Location` header
+  pointing to the created resource at
+  `/players/squadnumber/{squad_number}` per RFC 7231 §7.1.2 (#530)
+
+### Removed
+
 ---
 
 ## [2.1.0 - Del Bosque] - 2026-03-31
