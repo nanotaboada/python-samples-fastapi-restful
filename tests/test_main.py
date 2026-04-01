@@ -297,6 +297,7 @@ def test_request_post_player_body_nonexistent_response_header_location(client):
         # Act
         response = client.post(PATH, json=player.__dict__)
         # Assert
+        assert response.status_code == 201
         assert "Location" in response.headers
         assert (
             response.headers["Location"]

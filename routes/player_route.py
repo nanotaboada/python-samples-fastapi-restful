@@ -50,7 +50,7 @@ async def post_async(
     player_model: Annotated[PlayerRequestModel, Body(...)],
     async_session: Annotated[AsyncSession, Depends(generate_async_session)],
     response: Response,
-):
+) -> PlayerResponseModel:
     """
     Endpoint to create a new player.
 
@@ -97,7 +97,7 @@ async def post_async(
 async def get_all_async(
     response: Response,
     async_session: Annotated[AsyncSession, Depends(generate_async_session)],
-):
+) -> List[PlayerResponseModel]:
     """
     Endpoint to retrieve all players.
 
