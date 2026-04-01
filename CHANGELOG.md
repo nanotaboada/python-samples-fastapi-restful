@@ -42,6 +42,10 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ## [Unreleased]
 
+---
+
+## [2.1.0 - Del Bosque] - 2026-03-31
+
 ### Added
 
 - Architecture Decision Records (ADRs) in `docs/adr/` documenting key
