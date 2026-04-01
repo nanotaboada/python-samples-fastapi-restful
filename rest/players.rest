@@ -20,7 +20,7 @@ Accept: application/json
 
 # ------------------------------------------------------------------------------
 # POST /players/ — Create
-# Thiago Almada (squad 16): not seeded in the database, used as the creation
+# Giovani Lo Celso (squad 27): not seeded in the database, used as the creation
 # fixture. No id in the body; the server generates a UUID v4 on creation.
 # ------------------------------------------------------------------------------
 
@@ -29,15 +29,14 @@ POST {{baseUrl}}/players/
 Content-Type: application/json
 
 {
-  "firstName": "Thiago",
-  "middleName": "Ezequiel",
-  "lastName": "Almada",
-  "dateOfBirth": "2001-04-26T00:00:00.000Z",
-  "squadNumber": 16,
-  "position": "Attacking Midfield",
-  "abbrPosition": "AM",
-  "team": "Atlanta United FC",
-  "league": "Major League Soccer",
+  "firstName": "Giovani",
+  "lastName": "Lo Celso",
+  "dateOfBirth": "1996-07-09T00:00:00.000Z",
+  "squadNumber": 27,
+  "position": "Central Midfield",
+  "abbrPosition": "CM",
+  "team": "Real Betis Balompié",
+  "league": "La Liga",
   "starting11": false
 }
 
@@ -51,11 +50,11 @@ Accept: application/json
 
 # ------------------------------------------------------------------------------
 # GET /players/{player_id} — Retrieve by UUID (surrogate key, internal)
-# Emiliano Martínez (squad 23): UUID v5, seeded by seed_001.
+# Lionel Messi (squad 10): UUID v5, seeded by seed_001.
 # ------------------------------------------------------------------------------
 
 ### GET /players/{player_id} — Retrieve a Player by UUID
-GET {{baseUrl}}/players/b04965e6-a9bb-591f-8f8a-1adcb2c8dc39
+GET {{baseUrl}}/players/acc433bf-d505-51fe-831e-45eb44c4d43c
 Accept: application/json
 
 # ------------------------------------------------------------------------------
@@ -69,7 +68,8 @@ Accept: application/json
 
 # ------------------------------------------------------------------------------
 # PUT /players/squadnumber/{squad_number} — Update
-# Emiliano Martínez (squad 23): seeded by seed_001.
+# Damián Martínez (squad 23): seeded by seed_001. Updates firstName Damián →
+# Emiliano and clears middleName.
 # ------------------------------------------------------------------------------
 
 ### PUT /players/squadnumber/{squad_number} — Update an existing Player
@@ -91,8 +91,8 @@ Content-Type: application/json
 
 # ------------------------------------------------------------------------------
 # DELETE /players/squadnumber/{squad_number} — Delete
-# Thiago Almada (squad 16): created by POST above.
+# Giovani Lo Celso (squad 27): created by POST above.
 # ------------------------------------------------------------------------------
 
 ### DELETE /players/squadnumber/{squad_number} — Delete an existing Player
-DELETE {{baseUrl}}/players/squadnumber/16
+DELETE {{baseUrl}}/players/squadnumber/27

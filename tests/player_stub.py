@@ -35,9 +35,9 @@ def existing_player():
     Creates a test stub for an existing Player.
     """
     return Player(
-        id="b04965e6-a9bb-591f-8f8a-1adcb2c8dc39",
-        first_name="Emiliano",
-        middle_name="",
+        id="01772c59-43f0-5d85-b913-c78e4e281452",
+        first_name="Damián",
+        middle_name="Emiliano",
         last_name="Martínez",
         date_of_birth="1992-09-02T00:00:00.000Z",
         squad_number=23,
@@ -55,16 +55,15 @@ def nonexistent_player():
     No id is provided; the server generates a UUID on creation.
     """
     return Player(
-        first_name="Thiago",
-        middle_name="Ezequiel",
-        last_name="Almada",
-        date_of_birth="2001-04-26T00:00:00.000Z",
-        squad_number=16,
-        position="Attacking Midfield",
-        abbr_position="AM",
-        team="Atlanta United FC",
-        league="Major League Soccer",
-        starting11=0,
+        first_name="Giovani",
+        last_name="Lo Celso",
+        date_of_birth="1996-07-09T00:00:00.000Z",
+        squad_number=27,
+        position="Central Midfield",
+        abbr_position="CM",
+        team="Real Betis Balompié",
+        league="La Liga",
+        starting11=False,
     )
 
 

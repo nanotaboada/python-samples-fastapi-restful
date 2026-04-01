@@ -225,13 +225,18 @@ def test_request_put_player_squadnumber_existing_response_status_no_content(clie
     squad_number = existing_player().squad_number
     player = existing_player()
     player.first_name = "Emiliano"
-    player.middle_name = ""
-    # Act
-    response = client.put(
-        PATH + "squadnumber/" + str(squad_number), json=player.__dict__
-    )
-    # Assert
-    assert response.status_code == 204
+    player.middle_name = None
+    try:
+        # Act
+        response = client.put(
+            PATH + "squadnumber/" + str(squad_number), json=player.__dict__
+        )
+        # Assert
+        assert response.status_code == 204
+    finally:
+        # Teardown — restore Damián Martínez to its seeded state
+        seed = existing_player()
+        client.put(PATH + "squadnumber/" + str(seed.squad_number), json=seed.__dict__)
 
 
 def test_request_put_player_squadnumber_mismatch_response_status_bad_request(client):

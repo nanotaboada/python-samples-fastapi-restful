@@ -49,6 +49,21 @@ This project uses famous football coaches as release codenames, following an A-Z
   mutation key, full replace PUT, in-memory caching, integration-only
   tests (#482)
 
+### Changed
+
+- Normalize player dataset: add Lo Celso (squad 27) as test fixture,
+  add Almada (squad 16) as seeded substitute, correct
+  Martínez/Fernández/Mac Allister/Messi field values, replace
+  pre-computed UUIDs with canonical UUID v5 values (namespace
+  `FIFA_WORLD_CUP_QATAR_2022_ARGENTINA_SQUAD`); bundled
+  `storage/players-sqlite3.db` rebuilt from seed scripts — Docker
+  deployments with a persisted volume will continue to use the old
+  database until the volume is recreated (`docker compose down -v &&
+  docker compose up --build`) (#543)
+- Align CRUD test fixtures: Lo Celso (squad 27) for Create and Delete,
+  Messi (squad 10) for Retrieve, Damián Martínez (squad 23) for Update
+  (#543)
+
 ---
 
 ## [2.0.0 - Capello] - 2026-03-17
