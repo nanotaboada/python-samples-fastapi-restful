@@ -1,3 +1,5 @@
+# Pre-commit checklist
+
 Run the pre-commit checklist for this project:
 
 1. Update `CHANGELOG.md` `[Unreleased]` section — add an entry under the

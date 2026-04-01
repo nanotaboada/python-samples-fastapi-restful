@@ -1,3 +1,5 @@
+# Pre-release checklist
+
 Run the pre-release checklist for this project.
 
 **Working style**: propose before acting at every step — do not commit, push,
@@ -5,10 +7,11 @@ open PRs, or create tags until I explicitly confirm.
 
 ---
 
-### Phase 1 — Determine next release
+## Phase 1 — Determine next release
 
 1. **Verify working tree**: Confirm we are on `master` with a clean working
-   tree. Pull latest if behind remote.
+   tree. If behind the remote, propose `git pull` and wait for confirmation
+   before pulling.
 
 2. **Detect current release and propose next**: Read `CHANGELOG.md` for the
    coach naming convention (A–Z table) and the most recent release heading.
@@ -28,7 +31,8 @@ open PRs, or create tags until I explicitly confirm.
    - If `[Unreleased]` has no entries, stop and warn — there is nothing to release.
 
    Present a summary before proceeding:
-   ```
+
+   ```text
    Current:  v2.1.0-delbosque
    Proposed: v2.2.0-eriksson  (MINOR — new features in Added)
    Branch:   release/v2.2.0-eriksson
@@ -37,7 +41,7 @@ open PRs, or create tags until I explicitly confirm.
 
 ---
 
-### Phase 2 — Prepare release branch
+## Phase 2 — Prepare release branch
 
 3. **Create release branch**: `release/vX.Y.Z-{codename}`.
 
@@ -65,7 +69,7 @@ open PRs, or create tags until I explicitly confirm.
 
 ---
 
-### Phase 3 — Tag and release
+## Phase 3 — Tag and release
 
 7. **Stop and wait** for confirmation that:
    - All CI checks have passed
