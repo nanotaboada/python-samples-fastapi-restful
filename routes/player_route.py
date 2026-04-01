@@ -49,6 +49,7 @@ SQUAD_NUMBER_TITLE = "The Squad Number of the Player"
 async def post_async(
     player_model: Annotated[PlayerRequestModel, Body(...)],
     async_session: Annotated[AsyncSession, Depends(generate_async_session)],
+    response: Response,
 ):
     """
     Endpoint to create a new player.
@@ -68,7 +69,10 @@ async def post_async(
         async_session, player_model.squad_number
     )
     if existing:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A Player with this squad number already exists.",
+        )
     player = await player_service.create_async(async_session, player_model)
     if player is None:  # pragma: no cover
         raise HTTPException(
@@ -76,6 +80,7 @@ async def post_async(
             detail="Failed to create the Player due to a database error.",
         )
     await simple_memory_cache.clear(CACHE_KEY)
+    response.headers["Location"] = f"/players/squadnumber/{player.squad_number}"
     return player
 
 
@@ -104,7 +109,7 @@ async def get_all_async(
     """
     players = await simple_memory_cache.get(CACHE_KEY)
     response.headers["X-Cache"] = "HIT"
-    if not players:
+    if players is None:
         players = await player_service.retrieve_all_async(async_session)
         await simple_memory_cache.set(CACHE_KEY, players, ttl=CACHE_TTL)
         response.headers["X-Cache"] = "MISS"
