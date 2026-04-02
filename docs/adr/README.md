@@ -19,3 +19,5 @@ one and the three-part test.
 | [0005](0005-full-replace-put-no-patch.md) | Full Replace PUT, No PATCH | Accepted | 2026-03-21 |
 | [0006](0006-in-memory-caching-with-aiocache.md) | In-Memory Caching with aiocache | Accepted | 2026-03-21 |
 | [0007](0007-integration-only-test-strategy.md) | Integration-Only Test Strategy | Accepted | 2026-03-21 |
+| [0008](0008-layered-architecture.md) | Layered Architecture with FastAPI Dependency Injection | Accepted | 2026-04-02 |
+| [0009](0009-docker-and-compose-strategy.md) | Docker and Compose Strategy | Accepted | 2026-04-02 |
