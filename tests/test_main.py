@@ -194,13 +194,17 @@ def test_request_post_player_body_nonexistent_response_status_created(client):
     """POST /players/ with nonexistent player returns 201 Created with a valid UUID"""
     # Arrange
     player = nonexistent_player()
-    # Act
-    response = client.post(PATH, json=player.__dict__)
-    # Assert
-    assert response.status_code == 201
-    body = response.json()
-    assert "id" in body
-    assert UUID(body["id"]).version == 4  # UUID v4 (API-created)
+    try:
+        # Act
+        response = client.post(PATH, json=player.__dict__)
+        # Assert
+        assert response.status_code == 201
+        body = response.json()
+        assert "id" in body
+        assert UUID(body["id"]).version == 4  # UUID v4 (API-created)
+    finally:
+        # Teardown — remove the created player
+        client.delete(PATH + "squadnumber/" + str(player.squad_number))
 
 
 # PUT /players/squadnumber/{squad_number} --------------------------------------
@@ -278,11 +282,12 @@ def test_request_delete_player_squadnumber_unknown_response_status_not_found(cli
     assert response.status_code == 404
 
 
-def test_request_delete_player_squadnumber_existing_response_status_no_content(client):
+def test_request_delete_player_squadnumber_existing_response_status_no_content(
+    client, nonexistent_player_in_db
+):
     """DELETE /players/squadnumber/{squad_number} with existing number returns 204 No Content"""
-    # Arrange — create the player to be deleted
-    player = nonexistent_player()
-    client.post(PATH, json=player.__dict__)
+    # Arrange
+    player = nonexistent_player_in_db
     # Act
     response = client.delete(PATH + "squadnumber/" + str(player.squad_number))
     # Assert
