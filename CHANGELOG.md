@@ -44,6 +44,10 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- `.sonarcloud.properties`: SonarCloud Automatic Analysis configuration —
+  sources, tests, coverage exclusions aligned with `codecov.yml` (#554)
+- `.dockerignore`: added `.claude/`, `CLAUDE.md`, `.coderabbit.yaml`,
+  `.sonarcloud.properties`, `CHANGELOG.md`, `README.md` (#554)
 - CD workflow now verifies tag commit is reachable from `master` before
   proceeding with build and publish steps (#549)
 

@@ -20,11 +20,16 @@ open PRs, or create tags until I explicitly confirm.
    - **Next codename**: next letter in the A–Z sequence after the current one.
      Use lowercase with no spaces for the tag (e.g. `eriksson`);
      Title Case for the CHANGELOG heading (e.g. `Eriksson`).
+     If no tags exist yet, start at `A` (first coach in the table).
+     If letters were skipped, pick the next after the highest existing
+     codename — do not backfill gaps.
+     If the last codename is `Z` (Zeman), the list is finite — stop and
+     flag that the naming convention needs to be revisited.
    - **Version bump** — infer from `[Unreleased]`:
 
      | Condition | Bump |
      |---|---|
-     | Any entry marked BREAKING | MAJOR |
+     | Any entry marked BREAKING (case-insensitive), `BREAKING CHANGE:` token in a commit footer, or `!` suffix after type/scope (e.g. `feat!:`) | MAJOR |
      | Entries under Added | MINOR |
      | Only Changed / Fixed / Removed | PATCH |
 
@@ -63,9 +68,9 @@ open PRs, or create tags until I explicitly confirm.
 
 5. **Propose commit**: `docs(changelog): release vX.Y.Z Codename`
 
-6. **After confirmation**: commit. Then run steps 2–4 of `/precommit` (linting,
-   formatting, tests — the CHANGELOG step is already handled). Push the branch
-   and open a PR into `master` only once all checks pass.
+6. **After confirmation**: commit. Then run steps 2–5 of `/pre-commit` (linting,
+   formatting, tests, CodeRabbit review — the CHANGELOG step is already handled).
+   Push the branch and open a PR into `master` only once all checks pass.
 
 ---
 
@@ -73,7 +78,6 @@ open PRs, or create tags until I explicitly confirm.
 
 7. **Stop and wait** for confirmation that:
    - All CI checks have passed
-   - CodeRabbit review comments have been addressed
    - The PR has been merged into `master`
 
 8. **Pull `master`**, then propose the annotated tag:

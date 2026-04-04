@@ -4,4 +4,4 @@
 
 ## Claude Code
 
-- Run `/precommit` to execute the full pre-commit checklist for this project.
+- Run `/pre-commit` to execute the full pre-commit checklist for this project.
