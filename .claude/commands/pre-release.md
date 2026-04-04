@@ -63,9 +63,9 @@ open PRs, or create tags until I explicitly confirm.
 
 5. **Propose commit**: `docs(changelog): release vX.Y.Z Codename`
 
-6. **After confirmation**: commit. Then run steps 2–4 of `/pre-commit` (linting,
-   formatting, tests — the CHANGELOG step is already handled). Push the branch
-   and open a PR into `master` only once all checks pass.
+6. **After confirmation**: commit. Then run steps 2–5 of `/pre-commit` (linting,
+   formatting, tests, CodeRabbit review — the CHANGELOG step is already handled).
+   Push the branch and open a PR into `master` only once all checks pass.
 
 ---
 

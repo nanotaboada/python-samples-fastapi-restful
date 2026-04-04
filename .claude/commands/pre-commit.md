@@ -7,7 +7,7 @@ Run the pre-commit checklist for this project:
    changes made, referencing the issue number.
 2. Run `uv run flake8 .` — must pass.
 3. Run `uv run black --check .` — must pass (run `uv run black .` to auto-fix).
-4. Run `uv run pytest --cov=./ --cov-report=term` — all tests must pass, coverage must be ≥80%.
+4. Run `uv run pytest --cov=./ --cov-report=term --cov-fail-under=80` — all tests must pass, coverage must be ≥80%.
 5. If `coderabbit` CLI is installed, run `coderabbit review --type uncommitted --prompt-only`:
    - If actionable/serious findings are reported, stop and address them before proposing the commit.
    - If only nitpick-level findings, report them and continue to the commit proposal.
