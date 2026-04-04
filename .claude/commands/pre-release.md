@@ -63,7 +63,7 @@ open PRs, or create tags until I explicitly confirm.
 
 5. **Propose commit**: `docs(changelog): release vX.Y.Z Codename`
 
-6. **After confirmation**: commit. Then run steps 2–4 of `/precommit` (linting,
+6. **After confirmation**: commit. Then run steps 2–4 of `/pre-commit` (linting,
    formatting, tests — the CHANGELOG step is already handled). Push the branch
    and open a PR into `master` only once all checks pass.
 
@@ -73,7 +73,6 @@ open PRs, or create tags until I explicitly confirm.
 
 7. **Stop and wait** for confirmation that:
    - All CI checks have passed
-   - CodeRabbit review comments have been addressed
    - The PR has been merged into `master`
 
 8. **Pull `master`**, then propose the annotated tag:
