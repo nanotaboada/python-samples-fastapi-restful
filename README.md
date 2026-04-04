@@ -9,9 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-3DA639.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![Dependabot](https://img.shields.io/badge/Dependabot-contributing-025E8C?logo=dependabot&logoColor=white&labelColor=181818)
-![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-contributing-8662C5?logo=githubcopilot&logoColor=white&labelColor=181818)
-![Claude](https://img.shields.io/badge/Claude-Sonnet_4.6-D97757?logo=claude&logoColor=white&labelColor=181818)
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/nanotaboada/python-samples-fastapi-restful?utm_source=oss&utm_medium=github&utm_campaign=nanotaboada%2Fpython-samples-fastapi-restful&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews&labelColor=181818)
+![Copilot](https://img.shields.io/badge/Copilot-contributing-8662C5?logo=githubcopilot&logoColor=white&labelColor=181818)
+![Claude](https://img.shields.io/badge/Claude-contributing-D97757?logo=claude&logoColor=white&labelColor=181818)
+![CodeRabbit](https://img.shields.io/badge/CodeRabbit-reviewing-FF570A?logo=coderabbit&logoColor=white&labelColor=181818)
 
 Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/). Manage football player data with SQLite, SQLAlchemy 2.0 (async), Pydantic validation, and in-memory caching.
 
