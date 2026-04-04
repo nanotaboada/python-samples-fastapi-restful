@@ -24,6 +24,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Verify tag commit is reachable from master
+        run: |
+          if ! git merge-base --is-ancestor ${{ github.sha }} origin/master; then
+            echo "Error: Tag commit ${{ github.sha }} is not reachable from master."
+            echo "Tags must only be created from master after the release PR is merged."
+            exit 1
+          fi
+          echo "Verified: tag commit ${{ github.sha }} is reachable from master."
+
       - name: Extract version from tag
         id: version
         run: |

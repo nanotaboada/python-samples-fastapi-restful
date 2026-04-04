@@ -1,7 +1,10 @@
 import warnings
+from typing import Any, Generator
+
 import pytest
 from fastapi.testclient import TestClient
 from main import app
+from tests.player_stub import Player, nonexistent_player
 
 # Suppress the DeprecationWarning from httpx
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -20,3 +23,17 @@ def client():
     """
     with TestClient(app) as test_client:
         yield test_client
+
+
+@pytest.fixture(scope="function")
+def nonexistent_player_in_db(client: Any) -> Generator[Player, None, None]:
+    """
+    Creates the nonexistent player in the database and removes it on teardown.
+
+    Yields:
+        Player: The player stub created in the database.
+    """
+    player: Player = nonexistent_player()
+    client.post("/players/", json=player.__dict__)
+    yield player
+    client.delete(f"/players/squadnumber/{player.squad_number}")

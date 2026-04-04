@@ -44,6 +44,9 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- CD workflow now verifies tag commit is reachable from `master` before
+  proceeding with build and publish steps (#549)
+
 ### Changed
 
 - `GET /players/` cache check changed from `if not players` to
