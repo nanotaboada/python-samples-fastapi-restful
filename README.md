@@ -13,36 +13,16 @@
 ![Claude](https://img.shields.io/badge/Claude-contributing-D97757?logo=claude&logoColor=white&labelColor=181818)
 ![CodeRabbit](https://img.shields.io/badge/CodeRabbit-reviewing-FF570A?logo=coderabbit&logoColor=white&labelColor=181818)
 
-Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/). Manage football player data with SQLite, SQLAlchemy 2.0 (async), Pydantic validation, and in-memory caching.
-
-## Table of Contents
-
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Architecture](#architecture)
-- [Architecture Decisions](#architecture-decisions)
-- [API Reference](#api-reference)
-- [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
-- [Testing](#testing)
-- [Containers](#containers)
-- [Releases](#releases)
-- [Environment Variables](#environment-variables)
-- [Command Summary](#command-summary)
-- [Contributing](#contributing)
-- [Legal](#legal)
+Proof of Concept for a RESTful Web Service built with **FastAPI** and **Python 3.13**. This project demonstrates best practices for building a layered, testable, and maintainable API implementing CRUD operations for a Players resource (Argentina 2022 FIFA World Cup squad).
 
 ## Features
 
-- 🏗️ **Modern async architecture** - Async/await throughout, Pydantic validation, and SQLAlchemy 2.0 patterns
-- 📚 **Interactive API exploration** - Auto-generated OpenAPI docs with FastAPI's built-in Swagger UI and `.rest` file for REST Client integration
-- ⚡ **Performance optimizations** - Async SQLAlchemy, in-memory caching with aiocache (10-minute TTL), and efficient database operations
-- 🧪 **High test coverage** - Pytest suite with 80% minimum coverage and automated reporting to Codecov and SonarCloud
-- 📖 **Agent-optimized documentation** - Claude Code and GitHub Copilot instructions with coding guidelines, architecture rules, and agent workflows for AI-assisted development
-- 🐳 **Full containerization** - Production-ready Docker setup with Docker Compose orchestration
-- 🔄 **Complete CI/CD pipeline** - Automated linting (Black/Flake8), testing, Docker publishing, and GitHub releases
-- ♟️ **Coach-themed semantic versioning** - Memorable, alphabetical release names honoring legendary football coaches
+- 🏗️ **Async Architecture** - Async/await throughout with SQLAlchemy 2.0 and dependency injection via FastAPI's `Depends()`
+- 📚 **Interactive Documentation** - Auto-generated Swagger UI with VS Code and JetBrains REST Client support
+- ⚡ **Performance Caching** - In-memory caching with aiocache and async SQLite operations
+- ✅ **Input Validation** - Pydantic models enforce request/response schemas with automatic error responses
+- 🐳 **Containerized Deployment** - Production-ready Docker setup with pre-seeded database
+- 🔄 **Automated Pipeline** - Continuous integration with Black, Flake8, and automated testing
 
 ## Tech Stack
 
@@ -57,33 +37,6 @@ Proof of Concept for a RESTful API built with [Python 3](https://www.python.org/
 | **Testing** | [pytest](https://pytest.org/) + [pytest-cov](https://github.com/pytest-dev/pytest-cov) + [httpx](https://www.python-httpx.org/) |
 | **Linting / Formatting** | [Flake8](https://flake8.pycqa.org/) + [Black](https://black.readthedocs.io/) |
 | **Containerization** | [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) |
-
-## Project Structure
-
-```text
-/
-├── main.py                 # Entry point: FastAPI setup, router registration
-├── routes/                 # HTTP route definitions, dependency injection + caching
-│   ├── player_route.py
-│   └── health_route.py
-├── services/               # Async business logic
-│   └── player_service.py
-├── schemas/                # SQLAlchemy ORM models (database schema)
-│   └── player_schema.py
-├── databases/              # Async SQLAlchemy session setup
-│   └── player_database.py
-├── models/                 # Pydantic models for request/response validation
-│   └── player_model.py
-├── tests/                  # pytest integration tests
-│   ├── conftest.py
-│   ├── player_stub.py
-│   └── test_main.py
-├── rest/                   # HTTP request files
-│   └── players.rest        # CRUD requests (REST Client / JetBrains HTTP Client)
-├── storage/                # SQLite database file (pre-seeded)
-├── scripts/                # Container entrypoint & healthcheck
-└── .github/workflows/      # CI/CD pipelines
-```
 
 ## Architecture
 
@@ -153,54 +106,29 @@ graph RL
     class tests test
 ```
 
-*Simplified, conceptual view — not all components or dependencies are shown.*
+> *Arrows follow the injection direction (A → B means A is injected into B). Solid = runtime dependency, dotted = structural. Blue = core domain, red = third-party, green = tests.*
 
-### Arrow Semantics
-
-Arrows follow the injection direction: `A --> B` means A is injected into B. Solid arrows (`-->`) represent active dependencies — components wired via FastAPI's `Depends()` mechanism and invoked at runtime. Dotted arrows (`-.->`) represent structural dependencies — the consumer references types without invoking runtime behavior.
-
-### Composition Root Pattern
-
-`main` is the composition root: it creates the FastAPI application instance, configures the lifespan handler, and registers all route modules via `app.include_router()`. Dependencies are resolved at request time via FastAPI's `Depends()` mechanism.
-
-### Layered Architecture
-
-Four layers: Initialization (`main`), HTTP (`routes`), Business (`services`), and Data (`schemas`, `databases`).
-
-Third-party packages are placed inside the subgraph of the layer that uses them — `FastAPI` and `aiocache` in HTTP, `SQLAlchemy` in Data. The soft dependency from `routes` to `SQLAlchemy` reflects `AsyncSession` appearing only as a type annotation in `Depends()`, with no direct SQLAlchemy calls at the route level.
-
-`models` is a cross-cutting type concern — Pydantic request/response models consumed across all layers, with no logic of its own.
-
-### Color Coding
-
-Blue = core application packages, red = third-party libraries, green = tests.
-
-## Architecture Decisions
-
-Key architectural decisions are documented as ADRs in [`docs/adr/`](docs/adr/README.md).
+Significant architectural decisions are documented in [`docs/adr/`](docs/adr/).
 
 ## API Reference
 
 Interactive API documentation is available via Swagger UI at `http://localhost:9000/docs` when the server is running.
 
-**Quick Reference:**
+| Method | Endpoint | Description | Status |
+| ------ | -------- | ----------- | ------ |
+| `GET` | `/players/` | List all players | `200 OK` |
+| `GET` | `/players/{player_id}` | Get player by ID | `200 OK` |
+| `GET` | `/players/squadnumber/{squad_number}` | Get player by squad number | `200 OK` |
+| `POST` | `/players/` | Create new player | `201 Created` |
+| `PUT` | `/players/squadnumber/{squad_number}` | Update player by squad number | `204 No Content` |
+| `DELETE` | `/players/squadnumber/{squad_number}` | Remove player by squad number | `204 No Content` |
+| `GET` | `/health` | Health check | `200 OK` |
 
-- `GET /players/` — List all players
-- `GET /players/{player_id}` — Get player by UUID (surrogate key)
-- `GET /players/squadnumber/{squad_number}` — Get player by squad number (natural key)
-- `POST /players/` — Create a new player
-- `PUT /players/squadnumber/{squad_number}` — Update an existing player
-- `DELETE /players/squadnumber/{squad_number}` — Remove a player
-- `GET /health` — Health check
+Error codes: `400 Bad Request` (squad number mismatch on `PUT`) · `404 Not Found` (player not found) · `409 Conflict` (duplicate squad number on `POST`) · `422 Unprocessable Entity` (schema validation failed)
 
-### HTTP Requests
+For complete endpoint documentation with request/response schemas, explore the [interactive Swagger UI](http://localhost:9000/docs).
 
-A ready-to-use HTTP request file is available at [`rest/players.rest`](rest/players.rest). It covers all CRUD operations and can be run directly from your editor without leaving the development environment:
-
-- **VS Code** — install the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension (`humao.rest-client`), open `rest/players.rest`, and click **Send Request** above any entry.
-- **JetBrains IDEs** (IntelliJ IDEA, PyCharm, WebStorm) — the built-in HTTP Client supports `.rest` files natively; no plugin required.
-
-The file targets `http://localhost:9000` by default.
+Alternatively, use [`rest/players.rest`](rest/players.rest) with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension for VS Code, or the built-in HTTP Client in JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm).
 
 ## Prerequisites
 
@@ -212,14 +140,14 @@ Before you begin, ensure you have the following installed:
 
 ## Quick Start
 
-### Clone the repository
+### Clone
 
 ```bash
 git clone https://github.com/nanotaboada/python-samples-fastapi-restful.git
 cd python-samples-fastapi-restful
 ```
 
-### Install dependencies
+### Install
 
 Dependencies are defined in `pyproject.toml` using [PEP 735](https://peps.python.org/pep-0735/) dependency groups.
 
@@ -233,8 +161,6 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 uv pip install --group dev
 ```
 
-Or with specific groups:
-
 | Command | Description |
 | ------- | ----------- |
 | `uv pip install` | Production dependencies only |
@@ -242,125 +168,43 @@ Or with specific groups:
 | `uv pip install --group lint` | Linting dependencies |
 | `uv pip install --group dev` | All (test + lint + production) |
 
-### Start the development server
+### Run
 
 ```bash
 uv run uvicorn main:app --reload --port 9000
 ```
 
-The server will start on `http://localhost:9000`.
+### Access
 
-### Access the application
+Once the application is running, you can access:
 
-- **API:** `http://localhost:9000`
-- **Swagger Documentation:** `http://localhost:9000/docs`
-- **Health Check:** `http://localhost:9000/health`
-
-## Testing
-
-Run the test suite with coverage:
-
-```bash
-# Run all tests
-uv run pytest
-
-# Run tests with verbose output
-uv run pytest -v
-
-# Run tests with coverage report
-uv run pytest --cov=./ --cov-report=term
-```
-
-Tests are located in the `tests/` directory and use `httpx` for async integration testing. Coverage reports are generated for routes, services, and databases.
-
-**Coverage target:** 80% minimum.
+- **API Server**: `http://localhost:9000`
+- **Swagger UI**: `http://localhost:9000/docs`
+- **Health Check**: `http://localhost:9000/health`
 
 ## Containers
 
-This project includes full Docker support with Docker Compose for easy deployment.
-
-### Build the Docker image
-
-```bash
-docker compose build
-```
-
-### Start the application
+### Build and Start
 
 ```bash
 docker compose up
 ```
 
-> 💡 On first run, the container copies a pre-seeded SQLite database into a persistent volume. On subsequent runs, that volume is reused and the data is preserved.
+> 💡 **Note:** On first run, the container copies a pre-seeded SQLite database into a persistent volume. On subsequent runs, that volume is reused and the data is preserved.
 
-### Stop the application
+### Stop
 
 ```bash
 docker compose down
 ```
 
-### Reset the database
+### Reset Database
 
 To remove the volume and reinitialize the database from the built-in seed file:
 
 ```bash
 docker compose down -v
 ```
-
-The containerized application runs on port 9000 and includes health checks that monitor the `/health` endpoint.
-
-## Releases
-
-This project uses famous football coaches as release codenames ♟️, following an A-Z naming pattern.
-
-### Release Naming Convention
-
-Releases follow the pattern: `v{SEMVER}-{COACH}` (e.g., `v1.0.0-ancelotti`)
-
-- **Semantic Version**: Standard versioning (MAJOR.MINOR.PATCH)
-- **Coach Name**: Alphabetically ordered codename from the [famous coach list](CHANGELOG.md)
-
-### Create a Release
-
-To create a new release, follow this workflow:
-
-#### 1. Create a Release Branch
-
-```bash
-git checkout -b release/v1.0.0-ancelotti
-```
-
-#### 2. Update CHANGELOG.md
-
-Document your changes in [CHANGELOG.md](CHANGELOG.md):
-
-```bash
-# Move items from [Unreleased] to new release section
-# Example: [1.0.0 - Ancelotti] - 2026-02-15
-git add CHANGELOG.md
-git commit -m "docs(changelog): release v1.0.0 Ancelotti"
-git push origin release/v1.0.0-ancelotti
-```
-
-#### 3. Create and Push Tag
-
-Then create and push the version tag:
-
-```bash
-git tag -a v1.0.0-ancelotti -m "Release 1.0.0 - Ancelotti"
-git push origin v1.0.0-ancelotti
-```
-
-#### 4. Automated CD Workflow
-
-This triggers the CD workflow which automatically:
-
-1. Validates the coach name
-2. Builds and tests the project with coverage
-3. Publishes Docker images to GitHub Container Registry with three tags
-4. Creates a GitHub Release with auto-generated changelog from commits
-
-> 💡 Always update CHANGELOG.md before creating the tag. See [CHANGELOG.md](CHANGELOG.md) for detailed release instructions.
 
 ### Pull Docker Images
 
@@ -377,19 +221,43 @@ docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:ancelotti
 docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:latest
 ```
 
-> 💡 See [CHANGELOG.md](CHANGELOG.md) for the complete coach list (A-Z) and release history.
-
 ## Environment Variables
-
-The application can be configured using the following environment variables (declared in [`compose.yaml`](compose.yaml)):
 
 ```bash
 # Database storage path (default: ./storage/players-sqlite3.db)
-# In Docker: /storage/players-sqlite3.db
 STORAGE_PATH=./storage/players-sqlite3.db
 
 # Python output buffering: set to 1 for real-time logs in Docker
 PYTHONUNBUFFERED=1
+```
+
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on:
+
+- Code of Conduct
+- Development workflow and best practices
+- Commit message conventions (Conventional Commits)
+- Pull request process and requirements
+
+**Key guidelines:**
+
+- Follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
+- Ensure all tests pass (`uv run pytest`)
+- Run `uv run black .` before committing
+- Keep changes small and focused
+- Review `.github/copilot-instructions.md` for architectural patterns
+
+**Testing:**
+
+Run the test suite with pytest:
+
+```bash
+# Run all tests
+uv run pytest
+
+# Run tests with coverage report
+uv run pytest --cov=./ --cov-report=term
 ```
 
 ## Command Summary
@@ -399,7 +267,6 @@ PYTHONUNBUFFERED=1
 | `uv run uvicorn main:app --reload --port 9000` | Start development server |
 | `uv pip install --group dev` | Install all dependencies |
 | `uv run pytest` | Run all tests |
-| `uv run pytest -v` | Run tests with verbose output |
 | `uv run pytest --cov=./ --cov-report=term` | Run tests with coverage |
 | `uv run flake8 .` | Lint code |
 | `uv run black --check .` | Check formatting |
@@ -408,17 +275,9 @@ PYTHONUNBUFFERED=1
 | `docker compose up` | Start Docker container |
 | `docker compose down` | Stop Docker container |
 | `docker compose down -v` | Stop and remove Docker volume |
-
-## Contributing
-
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and the process for submitting pull requests.
-
-**Key guidelines:**
-
-- Follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
-- Ensure all tests pass (`uv run pytest`)
-- Run `uv run black .` before committing
-- Keep changes small and focused
+| **AI Commands** | |
+| `/pre-commit` | Runs linting, tests, and quality checks before committing |
+| `/pre-release` | Runs pre-release validation workflow |
 
 ## Legal
 
