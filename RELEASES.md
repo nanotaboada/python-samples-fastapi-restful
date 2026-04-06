@@ -36,7 +36,7 @@ Before creating the tag, verify all of the following:
 - [ ] `CHANGELOG.md` `[Unreleased]` section is moved to a new versioned release entry
 - [ ] Release PR is merged into `master`
 - [ ] `uv run pytest` passes
-- [ ] Coach name is valid and follows alphabetical order (see [famous coach list](CHANGELOG.md))
+- [ ] Coach name is valid and follows alphabetical order (see "Release Naming Convention" in [CHANGELOG.md](CHANGELOG.md))
 - [ ] All CI checks on `master` are green
 
 ### 4. Create and Push Tag

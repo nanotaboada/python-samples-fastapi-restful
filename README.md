@@ -124,7 +124,7 @@ Interactive API documentation is available via Swagger UI at `http://localhost:9
 | `DELETE` | `/players/squadnumber/{squad_number}` | Remove player by squad number | `204 No Content` |
 | `GET` | `/health` | Health check | `200 OK` |
 
-Error codes: `400 Bad Request` (validation failed) · `404 Not Found` (player not found) · `409 Conflict` (duplicate squad number on `POST`)
+Error codes: `400 Bad Request` (squad number mismatch on `PUT`) · `404 Not Found` (player not found) · `409 Conflict` (duplicate squad number on `POST`) · `422 Unprocessable Entity` (schema validation failed)
 
 For complete endpoint documentation with request/response schemas, explore the [interactive Swagger UI](http://localhost:9000/docs).
 
