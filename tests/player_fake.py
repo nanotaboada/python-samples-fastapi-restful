@@ -1,6 +1,16 @@
+"""
+Test fakes for Player data-state scenarios.
+
+Three-term vocabulary:
+    existing     — player is present in the database
+    nonexistent  — player is absent, valid shape for creation (POST scenarios)
+    unknown      — valid ID format, absent from database (404-by-lookup scenarios)
+"""
+
+
 class Player:
     """
-    Test stub representing a Player.
+    Test fake representing a Player.
     """
 
     def __init__(
@@ -30,9 +40,9 @@ class Player:
         self.starting11 = starting11
 
 
-def existing_player():
+def existing_player() -> Player:
     """
-    Creates a test stub for an existing Player.
+    Creates a test fake for an existing Player.
     """
     return Player(
         id="01772c59-43f0-5d85-b913-c78e4e281452",
@@ -49,9 +59,9 @@ def existing_player():
     )
 
 
-def nonexistent_player():
+def nonexistent_player() -> Player:
     """
-    Creates a test stub for a nonexistent (new) Player.
+    Creates a test fake for a nonexistent (new) Player.
     No id is provided; the server generates a UUID on creation.
     """
     return Player(
@@ -67,9 +77,9 @@ def nonexistent_player():
     )
 
 
-def unknown_player():
+def unknown_player() -> Player:
     """
-    Creates a test stub for an unknown Player (valid UUID format, not in database).
+    Creates a test fake for an unknown Player (valid UUID format, not in database).
     """
     return Player(
         id="00000000-0000-0000-0000-000000000000",

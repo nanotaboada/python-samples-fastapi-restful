@@ -18,7 +18,7 @@ Validates:
 
 from uuid import UUID
 
-from tests.player_stub import (
+from tests.player_fake import (
     existing_player,
     nonexistent_player,
     unknown_player,
@@ -92,8 +92,8 @@ def test_request_get_players_response_body_each_player_has_uuid(client):
 # GET /players/{player_id} -----------------------------------------------------
 
 
-def test_request_get_player_id_nonexistent_response_status_not_found(client):
-    """GET /players/{player_id} with nonexistent UUID returns 404 Not Found"""
+def test_request_get_player_id_unknown_response_status_not_found(client):
+    """GET /players/{player_id} with unknown UUID returns 404 Not Found"""
     # Arrange
     player_id = unknown_player().id
     # Act

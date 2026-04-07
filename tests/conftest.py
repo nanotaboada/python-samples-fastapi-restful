@@ -4,7 +4,7 @@ from typing import Any, Generator
 import pytest
 from fastapi.testclient import TestClient
 from main import app
-from tests.player_stub import Player, nonexistent_player
+from tests.player_fake import Player, nonexistent_player
 
 # Suppress the DeprecationWarning from httpx
 warnings.filterwarnings("ignore", category=DeprecationWarning)
