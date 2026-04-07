@@ -53,6 +53,12 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Changed
 
+- `tests/player_stub.py` renamed to `tests/player_fake.py`; class docstring
+  updated to reflect fake (not stub) role; module-level docstring added
+  documenting the three-term data-state vocabulary (`existing`, `nonexistent`,
+  `unknown`); imports in `conftest.py` and `test_main.py` updated accordingly;
+  `test_request_get_player_id_nonexistent_response_status_not_found` renamed to
+  `test_request_get_player_id_unknown_response_status_not_found` (#559)
 - `GET /players/` cache check changed from `if not players` to
   `if players is None` so that an empty collection is cached correctly
   instead of triggering a DB fetch on every request (#530)
