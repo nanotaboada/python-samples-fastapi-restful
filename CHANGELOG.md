@@ -51,6 +51,10 @@ This project uses famous football coaches as release codenames, following an A-Z
   deterministic UUID v5 values); `alembic upgrade head` runs automatically on
   app startup via the lifespan handler (#2)
 - `alembic==1.18.4`, `asyncpg==0.31.0` added to dependencies (#2)
+- `tests/test_migrations.py`: integration tests for migration downgrade paths —
+  verifies each step removes only its seeded rows and restores correctly (#2)
+- `codecov.yaml`: excludes `alembic/env.py` from coverage (offline mode is
+  tooling infrastructure, not application logic) (#2)
 - `.sonarcloud.properties`: SonarCloud Automatic Analysis configuration —
   sources, tests, coverage exclusions aligned with `codecov.yml` (#554)
 - `.dockerignore`: added `.claude/`, `CLAUDE.md`, `.coderabbit.yaml`,
