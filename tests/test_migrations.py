@@ -9,14 +9,23 @@ Tests run after test_main.py (alphabetical order). Each test downgrades one
 or more steps, asserts the expected state, then restores to head before the
 next test, ensuring the shared SQLite database remains consistent for any
 subsequent test runs.
+
+These tests are SQLite-only: they open the database file directly via
+sqlite3.connect() to inspect raw state, which is not possible with PostgreSQL.
 """
 
 import sqlite3
 
+import pytest
 from alembic import command
 
 from databases.player_database import DATABASE_URL
 from tests.conftest import ALEMBIC_CONFIG
+
+pytestmark = pytest.mark.skipif(
+    not DATABASE_URL.startswith("sqlite"),
+    reason="Migration downgrade tests require SQLite",
+)
 
 DB_PATH = DATABASE_URL.replace("sqlite+aiosqlite:///", "")
 
@@ -30,10 +39,10 @@ def test_migration_downgrade_003_removes_substitutes_only():
     subs = conn.execute("SELECT COUNT(*) FROM players WHERE starting11=0").fetchone()[0]
     conn.close()
 
-    command.upgrade(ALEMBIC_CONFIG, "head")
-
     assert total == 11
     assert subs == 0
+
+    command.upgrade(ALEMBIC_CONFIG, "head")
 
 
 def test_migration_downgrade_002_removes_starting11_only():
@@ -44,9 +53,9 @@ def test_migration_downgrade_002_removes_starting11_only():
     total = conn.execute("SELECT COUNT(*) FROM players").fetchone()[0]
     conn.close()
 
-    command.upgrade(ALEMBIC_CONFIG, "head")
-
     assert total == 0
+
+    command.upgrade(ALEMBIC_CONFIG, "head")
 
 
 def test_migration_downgrade_001_drops_players_table():
@@ -59,6 +68,6 @@ def test_migration_downgrade_001_drops_players_table():
     ).fetchone()
     conn.close()
 
-    command.upgrade(ALEMBIC_CONFIG, "head")
-
     assert table is None
+
+    command.upgrade(ALEMBIC_CONFIG, "head")

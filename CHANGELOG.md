@@ -57,7 +57,9 @@ This project uses famous football coaches as release codenames, following an A-Z
   before any workers are forked, replacing the entrypoint-driven migration
   pattern (#2)
 - `tests/test_migrations.py`: integration tests for migration downgrade paths —
-  verifies each step removes only its seeded rows and restores correctly (#2)
+  verifies each step removes only its seeded rows and restores correctly; guarded
+  with `pytestmark` skip for non-SQLite databases; assertions moved before
+  `upgrade head` restore step for clarity (#2)
 - `tests/conftest.py`: session-scoped `apply_migrations` fixture runs
   `alembic upgrade head` once before the test session, ensuring the database
   exists and is at head in CI and local environments (#2)
