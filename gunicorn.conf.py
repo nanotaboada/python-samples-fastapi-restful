@@ -9,6 +9,7 @@ ensuring a single, race-free initialization step.
 import multiprocessing
 import os
 from pathlib import Path
+from typing import Any
 
 from alembic import command
 from alembic.config import Config
@@ -18,7 +19,7 @@ workers: int = int(os.getenv("WEB_CONCURRENCY", multiprocessing.cpu_count() * 2 
 worker_class: str = "uvicorn.workers.UvicornWorker"
 
 
-def on_starting(server) -> None:
+def on_starting(_server: Any) -> None:
     """Apply Alembic migrations once before workers are spawned."""
-    alembic_cfg = Config(str(Path(__file__).resolve().parent / "alembic.ini"))
-    command.upgrade(alembic_cfg, "head")
+    alembic_config = Config(str(Path(__file__).resolve().parent / "alembic.ini"))
+    command.upgrade(alembic_config, "head")
