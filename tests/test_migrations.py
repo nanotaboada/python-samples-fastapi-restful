@@ -11,14 +11,14 @@ next test, ensuring the shared SQLite database remains consistent for any
 subsequent test runs.
 """
 
-import os
 import sqlite3
 
 from alembic import command
 
+from databases.player_database import DATABASE_URL
 from tests.conftest import ALEMBIC_CONFIG
 
-DB_PATH = os.getenv("STORAGE_PATH", "./players-sqlite3.db")
+DB_PATH = DATABASE_URL.replace("sqlite+aiosqlite:///", "")
 
 
 def test_migration_downgrade_003_removes_substitutes_only():
