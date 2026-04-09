@@ -77,8 +77,9 @@ This project uses famous football coaches as release codenames, following an A-Z
   only (#2)
 - `Dockerfile`: removed `COPY storage/ ./hold/` and its associated comment;
   added `COPY alembic.ini` and `COPY alembic/` (#2)
-- `scripts/entrypoint.sh`: runs `alembic upgrade head` before launching the
-  app; replaces hold→volume copy and manual seed script pattern (#2)
+- `scripts/entrypoint.sh`: checks for an existing database file in the Docker
+  volume; runs `alembic upgrade head` only on first start; adds structured
+  `log()` helper with timestamps, emojis, and API/Swagger UI addresses (#2)
 - `compose.yaml`: replaced `STORAGE_PATH` with `DATABASE_URL` pointing to the
   SQLite volume path (#2)
 - `.gitignore`: added `*.db`; `storage/players-sqlite3.db` removed from git
