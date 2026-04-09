@@ -15,9 +15,7 @@ mkdir -p "$(dirname "$STORAGE_PATH")"
 
 if [ ! -f "$STORAGE_PATH" ]; then
     log "⚠️ No existing database file found in volume."
-    log "🗄️ Applying Alembic migrations to initialize the database..."
-    alembic upgrade head
-    log "✔ Migrations applied."
+    log "🗄️ Gunicorn will apply Alembic migrations on first start."
 else
     log "✔ Existing database file found at $STORAGE_PATH."
 fi

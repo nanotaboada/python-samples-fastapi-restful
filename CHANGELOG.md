@@ -50,7 +50,12 @@ This project uses famous football coaches as release codenames, following an A-Z
   11 Starting XI players, `003` seeds 15 Substitute players (all with
   deterministic UUID v5 values); `alembic upgrade head` applied by
   `entrypoint.sh` (Docker) or manually for local development (#2)
-- `alembic==1.18.4`, `asyncpg==0.31.0` added to dependencies (#2)
+- `alembic==1.18.4`, `asyncpg==0.31.0`, `gunicorn==25.3.0` added to dependencies (#2)
+- `gunicorn.conf.py`: Gunicorn configuration — binds to `0.0.0.0:9000`, uses
+  `UvicornWorker`, derives worker count from `WEB_CONCURRENCY` env var; the
+  `on_starting` hook runs `alembic upgrade head` once in the master process
+  before any workers are forked, replacing the entrypoint-driven migration
+  pattern (#2)
 - `tests/test_migrations.py`: integration tests for migration downgrade paths —
   verifies each step removes only its seeded rows and restores correctly (#2)
 - `tests/conftest.py`: session-scoped `apply_migrations` fixture runs
@@ -78,8 +83,10 @@ This project uses famous football coaches as release codenames, following an A-Z
 - `Dockerfile`: removed `COPY storage/ ./hold/` and its associated comment;
   added `COPY alembic.ini` and `COPY alembic/` (#2)
 - `scripts/entrypoint.sh`: checks for an existing database file in the Docker
-  volume; runs `alembic upgrade head` only on first start; adds structured
-  `log()` helper with timestamps, emojis, and API/Swagger UI addresses (#2)
+  volume (informational logging only); adds structured `log()` helper with
+  timestamps and API/Swagger UI addresses; migrations delegated to Gunicorn
+  `on_starting` hook (#2)
+- `Dockerfile`: replaced `CMD uvicorn` with `CMD gunicorn -c gunicorn.conf.py` (#2)
 - `compose.yaml`: replaced `STORAGE_PATH` with `DATABASE_URL` pointing to the
   SQLite volume path (#2)
 - `.gitignore`: added `*.db`; `storage/players-sqlite3.db` removed from git

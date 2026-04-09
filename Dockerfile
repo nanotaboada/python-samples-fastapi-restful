@@ -51,6 +51,7 @@ RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse /app/whee
 
 # Copy application source code
 COPY main.py            ./
+COPY gunicorn.conf.py   ./
 COPY alembic.ini        ./
 COPY alembic/           ./alembic/
 COPY databases/         ./databases/
@@ -80,4 +81,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
     CMD ["./healthcheck.sh"]
 
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9000"]
+CMD ["gunicorn", "-c", "gunicorn.conf.py", "main:app"]
