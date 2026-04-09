@@ -1,12 +1,16 @@
 """
-Database setup and session management for async SQLAlchemy with SQLite.
+Database setup and session management for async SQLAlchemy.
 
-- Configures the async database engine using `aiosqlite` driver.
+- Configures the async database engine from the DATABASE_URL environment
+  variable (SQLite default, PostgreSQL compatible).
 - Creates an async sessionmaker for ORM operations.
 - Defines the declarative base class for model definitions.
 - Provides an async generator dependency to yield database sessions.
 
-The `STORAGE_PATH` environment variable controls the SQLite file location.
+Environment variables:
+    DATABASE_URL: Full async database URL. Defaults to SQLite:
+        sqlite+aiosqlite:///./storage/players-sqlite3.db
+    STORAGE_PATH: (legacy) SQLite file path. Ignored when DATABASE_URL is set.
 """
 
 import logging
@@ -15,15 +19,21 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-storage_path = os.getenv("STORAGE_PATH", "./storage/players-sqlite3.db")
-DATABASE_URL = f"sqlite+aiosqlite:///{storage_path}"
+_database_url = os.getenv("DATABASE_URL")
+if not _database_url:
+    _storage_path = os.getenv("STORAGE_PATH", "./players-sqlite3.db")
+    _database_url = f"sqlite+aiosqlite:///{_storage_path}"
+
+DATABASE_URL: str = _database_url
+
+_connect_args = (
+    {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+)
 
 logger = logging.getLogger("uvicorn")
 logging.getLogger("sqlalchemy.engine.Engine").handlers = logger.handlers
 
-async_engine = create_async_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}, echo=True
-)
+async_engine = create_async_engine(DATABASE_URL, connect_args=_connect_args, echo=True)
 
 async_sessionmaker = sessionmaker(
     bind=async_engine, class_=AsyncSession, autocommit=False, autoflush=False

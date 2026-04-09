@@ -10,6 +10,8 @@ dependencies = [
     "SQLAlchemy==2.0.49",
     "aiosqlite==0.22.1",
     "aiocache==0.12.3",
+    "alembic==1.18.4",
+    "asyncpg==0.31.0",
 ]
 
 [dependency-groups]

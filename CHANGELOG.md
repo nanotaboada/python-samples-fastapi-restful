@@ -44,6 +44,13 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- `alembic/`: Alembic migration support for async SQLAlchemy — `env.py`
+  configured for async execution with `render_as_batch=True` (SQLite/PostgreSQL
+  compatible); three migrations: `001` creates the `players` table, `002` seeds
+  11 Starting XI players, `003` seeds 15 Substitute players (all with
+  deterministic UUID v5 values); `alembic upgrade head` runs automatically on
+  app startup via the lifespan handler (#2)
+- `alembic==1.18.4`, `asyncpg==0.31.0` added to dependencies (#2)
 - `.sonarcloud.properties`: SonarCloud Automatic Analysis configuration —
   sources, tests, coverage exclusions aligned with `codecov.yml` (#554)
 - `.dockerignore`: added `.claude/`, `CLAUDE.md`, `.coderabbit.yaml`,
@@ -53,6 +60,19 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Changed
 
+- `databases/player_database.py`: engine URL now reads `DATABASE_URL`
+  environment variable (SQLite default, PostgreSQL compatible); `connect_args`
+  made conditional on SQLite dialect (#2)
+- `main.py`: lifespan handler now applies Alembic migrations on startup via
+  thread executor (#2)
+- `Dockerfile`: removed `COPY storage/ ./hold/` and its associated comment;
+  added `COPY alembic.ini` and `COPY alembic/` (#2)
+- `scripts/entrypoint.sh`: removed hold→volume copy and seed script logic,
+  now replaced by Alembic migrations applied at app startup (#2)
+- `compose.yaml`: replaced `STORAGE_PATH` with `DATABASE_URL` pointing to the
+  SQLite volume path (#2)
+- `.gitignore`: added `*.db`; `storage/players-sqlite3.db` removed from git
+  tracking; `storage/` directory deleted (#2)
 - `tests/player_stub.py` renamed to `tests/player_fake.py`; class docstring
   updated to reflect fake (not stub) role; module-level docstring added
   documenting the three-term data-state vocabulary (`existing`, `nonexistent`,
