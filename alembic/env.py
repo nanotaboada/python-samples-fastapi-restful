@@ -7,7 +7,6 @@ TABLE compatibility (harmless on PostgreSQL).
 """
 
 import asyncio
-import os
 from logging.config import fileConfig
 
 from sqlalchemy import pool
@@ -16,15 +15,13 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-from databases.player_database import Base
+from databases.player_database import Base, get_database_url
 from schemas.player_schema import Player  # noqa: F401 — registers ORM model with Base
 
 # Supports both SQLite (local) and PostgreSQL (Docker, see #542):
-#   sqlite+aiosqlite:///./storage/players-sqlite3.db
+#   sqlite+aiosqlite:///./players-sqlite3.db
 #   postgresql+asyncpg://postgres:password@postgres:5432/playersdb
-_storage_path = os.getenv("STORAGE_PATH", "./players-sqlite3.db")
-_default_url = f"sqlite+aiosqlite:///{_storage_path}"
-database_url = os.getenv("DATABASE_URL", _default_url)
+database_url = get_database_url()
 
 config = context.config
 config.set_main_option("sqlalchemy.url", database_url)

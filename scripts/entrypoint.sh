@@ -2,6 +2,8 @@
 set -e
 
 echo "Starting container..."
-echo "Database migrations will be applied by the application on startup."
+echo "Applying database migrations..."
+alembic upgrade head
+echo "Database migrations applied."
 echo "Launching app..."
 exec "$@"

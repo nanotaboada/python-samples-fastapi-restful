@@ -48,8 +48,8 @@ This project uses famous football coaches as release codenames, following an A-Z
   configured for async execution with `render_as_batch=True` (SQLite/PostgreSQL
   compatible); three migrations: `001` creates the `players` table, `002` seeds
   11 Starting XI players, `003` seeds 15 Substitute players (all with
-  deterministic UUID v5 values); `alembic upgrade head` runs automatically on
-  app startup via the lifespan handler (#2)
+  deterministic UUID v5 values); `alembic upgrade head` applied by
+  `entrypoint.sh` (Docker) or manually for local development (#2)
 - `alembic==1.18.4`, `asyncpg==0.31.0` added to dependencies (#2)
 - `tests/test_migrations.py`: integration tests for migration downgrade paths —
   verifies each step removes only its seeded rows and restores correctly (#2)
@@ -64,15 +64,18 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Changed
 
-- `databases/player_database.py`: engine URL now reads `DATABASE_URL`
-  environment variable (SQLite default, PostgreSQL compatible); `connect_args`
-  made conditional on SQLite dialect (#2)
-- `main.py`: lifespan handler now applies Alembic migrations on startup via
-  thread executor (#2)
+- `databases/player_database.py`: extracted `get_database_url()` helper
+  (reads `DATABASE_URL`, falls back to `STORAGE_PATH`, SQLite default);
+  `connect_args` made conditional on SQLite dialect (#2)
+- `alembic/env.py`: removed duplicated DATABASE_URL construction; now calls
+  `get_database_url()` from `databases.player_database` (#2)
+- `main.py`: removed `_apply_migrations` from lifespan — migrations are a
+  one-shot step, not a per-process startup concern; lifespan now logs startup
+  only (#2)
 - `Dockerfile`: removed `COPY storage/ ./hold/` and its associated comment;
   added `COPY alembic.ini` and `COPY alembic/` (#2)
-- `scripts/entrypoint.sh`: removed hold→volume copy and seed script logic,
-  now replaced by Alembic migrations applied at app startup (#2)
+- `scripts/entrypoint.sh`: runs `alembic upgrade head` before launching the
+  app; replaces hold→volume copy and manual seed script pattern (#2)
 - `compose.yaml`: replaced `STORAGE_PATH` with `DATABASE_URL` pointing to the
   SQLite volume path (#2)
 - `.gitignore`: added `*.db`; `storage/players-sqlite3.db` removed from git
