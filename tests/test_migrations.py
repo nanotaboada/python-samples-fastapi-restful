@@ -13,13 +13,12 @@ subsequent test runs.
 
 import os
 import sqlite3
-from pathlib import Path
 
 from alembic import command
-from alembic.config import Config
+
+from tests.conftest import ALEMBIC_CONFIG
 
 DB_PATH = os.getenv("STORAGE_PATH", "./players-sqlite3.db")
-ALEMBIC_CONFIG = Config(str(Path(__file__).resolve().parent.parent / "alembic.ini"))
 
 
 def test_migration_downgrade_003_removes_substitutes_only():

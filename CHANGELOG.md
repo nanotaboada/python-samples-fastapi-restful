@@ -53,6 +53,9 @@ This project uses famous football coaches as release codenames, following an A-Z
 - `alembic==1.18.4`, `asyncpg==0.31.0` added to dependencies (#2)
 - `tests/test_migrations.py`: integration tests for migration downgrade paths —
   verifies each step removes only its seeded rows and restores correctly (#2)
+- `tests/conftest.py`: session-scoped `apply_migrations` fixture runs
+  `alembic upgrade head` once before the test session, ensuring the database
+  exists and is at head in CI and local environments (#2)
 - `codecov.yaml`: excludes `alembic/env.py` from coverage (offline mode is
   tooling infrastructure, not application logic) (#2)
 - `.sonarcloud.properties`: SonarCloud Automatic Analysis configuration —
