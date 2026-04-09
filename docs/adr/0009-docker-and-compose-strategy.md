@@ -49,14 +49,13 @@ locally.
   (for the health check); copies the pre-built wheels from the builder;
   installs them with `--no-index --find-links` (no network access, no
   build tools required); removes the wheelhouse after installation.
-- **Entrypoint script**: on first start, copies the pre-seeded database
-  from the image's read-only `hold/` directory to the writable named
-  volume at `/storage/`, then runs both seed scripts to ensure the schema
-  and data are up to date. On subsequent starts, the volume file is
-  preserved and seed scripts run again (they are idempotent).
+- **Entrypoint script**: runs `alembic upgrade head` before launching
+  Uvicorn. Alembic creates the database and seeds all 26 players on first
+  start; on subsequent starts it is a no-op (already at head). No
+  pre-seeded file is bundled in the image.
 - **Compose (`compose.yaml`)**: defines a single service with port
   mapping (`9000`), a named volume (`storage`), and environment variables
-  (`STORAGE_PATH`, `PYTHONUNBUFFERED=1`). Health checks are declared in
+  (`DATABASE_URL`, `PYTHONUNBUFFERED=1`). Health checks are declared in
   the Dockerfile (`GET /health`); Compose relies on that declaration.
 - A non-root `fastapi` user is created in the runtime stage following the
   principle of least privilege.
@@ -81,10 +80,11 @@ locally.
 - The wheelhouse is an intermediate artifact: if a wheel cannot be
   pre-built (e.g. binary-only distributions without a source distribution),
   the builder stage will fail.
-- The seed scripts run on every container start. They are idempotent but
-  add latency to startup and must remain so as the project evolves.
-- The SQLite database file is versioned and bundled, meaning schema changes
-  require a Docker image rebuild.
+- `alembic upgrade head` runs on every container start. It is a no-op
+  when no migrations are pending but adds a small DB round-trip to startup
+  time.
+- Schema changes now require an Alembic migration rather than a Docker
+  image rebuild; see ADR-0010.
 
 **When to revisit:**
 

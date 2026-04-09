@@ -21,7 +21,7 @@ Proof of Concept for a RESTful Web Service built with **FastAPI** and **Python 3
 - 📚 **Interactive Documentation** - Auto-generated Swagger UI with VS Code and JetBrains REST Client support
 - ⚡ **Performance Caching** - In-memory caching with aiocache and async SQLite operations
 - ✅ **Input Validation** - Pydantic models enforce request/response schemas with automatic error responses
-- 🐳 **Containerized Deployment** - Production-ready Docker setup with pre-seeded database
+- 🐳 **Containerized Deployment** - Production-ready Docker setup with migration-based database initialization
 - 🔄 **Automated Pipeline** - Continuous integration with Black, Flake8, and automated testing
 
 ## Tech Stack
@@ -171,6 +171,10 @@ uv pip install --group dev
 ### Run
 
 ```bash
+# Apply database migrations (required once before the first run, and after
+# docker compose down -v)
+uv run alembic upgrade head
+
 uv run uvicorn main:app --reload --port 9000
 ```
 
@@ -190,7 +194,7 @@ Once the application is running, you can access:
 docker compose up
 ```
 
-> 💡 **Note:** On first run, the container copies a pre-seeded SQLite database into a persistent volume. On subsequent runs, that volume is reused and the data is preserved.
+> 💡 **Note:** On first run, the entrypoint applies Alembic migrations (`alembic upgrade head`), which creates the database and seeds all 26 players. On subsequent runs, migrations are a no-op and the volume data is preserved.
 
 ### Stop
 
@@ -200,7 +204,7 @@ docker compose down
 
 ### Reset Database
 
-To remove the volume and reinitialize the database from the built-in seed file:
+To remove the volume and re-apply migrations from scratch on next start:
 
 ```bash
 docker compose down -v
@@ -224,8 +228,14 @@ docker pull ghcr.io/nanotaboada/python-samples-fastapi-restful:latest
 ## Environment Variables
 
 ```bash
-# Database storage path (default: ./storage/players-sqlite3.db)
-STORAGE_PATH=./storage/players-sqlite3.db
+# Full async database URL (SQLite default, PostgreSQL compatible)
+# SQLite (local/test):
+DATABASE_URL=sqlite+aiosqlite:///./players-sqlite3.db
+# PostgreSQL (Docker/production):
+DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/playersdb
+
+# Legacy: SQLite file path — used only when DATABASE_URL is not set
+STORAGE_PATH=./players-sqlite3.db
 
 # Python output buffering: set to 1 for real-time logs in Docker
 PYTHONUNBUFFERED=1
