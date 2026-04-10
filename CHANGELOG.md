@@ -44,6 +44,27 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- `alembic/`: Alembic migration support for async SQLAlchemy — `env.py`
+  configured for async execution with `render_as_batch=True` (SQLite/PostgreSQL
+  compatible); three migrations: `001` creates the `players` table, `002` seeds
+  11 Starting XI players, `003` seeds 15 Substitute players (all with
+  deterministic UUID v5 values); `alembic upgrade head` applied by
+  `entrypoint.sh` (Docker) or manually for local development (#2)
+- `alembic==1.18.4`, `asyncpg==0.31.0`, `gunicorn==25.3.0` added to dependencies (#2)
+- `gunicorn.conf.py`: Gunicorn configuration — binds to `0.0.0.0:9000`, uses
+  `UvicornWorker`, derives worker count from `WEB_CONCURRENCY` env var; the
+  `on_starting` hook runs `alembic upgrade head` once in the master process
+  before any workers are forked, replacing the entrypoint-driven migration
+  pattern (#2)
+- `tests/test_migrations.py`: integration tests for migration downgrade paths —
+  verifies each step removes only its seeded rows and restores correctly; guarded
+  with `pytestmark` skip for non-SQLite databases; assertions moved before
+  `upgrade head` restore step for clarity (#2)
+- `tests/conftest.py`: session-scoped `apply_migrations` fixture runs
+  `alembic upgrade head` once before the test session, ensuring the database
+  exists and is at head in CI and local environments (#2)
+- `codecov.yaml`: excludes `alembic/env.py` from coverage (offline mode is
+  tooling infrastructure, not application logic) (#2)
 - `.sonarcloud.properties`: SonarCloud Automatic Analysis configuration —
   sources, tests, coverage exclusions aligned with `codecov.yml` (#554)
 - `.dockerignore`: added `.claude/`, `CLAUDE.md`, `.coderabbit.yaml`,
@@ -53,6 +74,25 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Changed
 
+- `databases/player_database.py`: extracted `get_database_url()` helper
+  (reads `DATABASE_URL`, falls back to `STORAGE_PATH`, SQLite default);
+  `connect_args` made conditional on SQLite dialect (#2)
+- `alembic/env.py`: removed duplicated DATABASE_URL construction; now calls
+  `get_database_url()` from `databases.player_database` (#2)
+- `main.py`: removed `_apply_migrations` from lifespan — migrations are a
+  one-shot step, not a per-process startup concern; lifespan now logs startup
+  only (#2)
+- `Dockerfile`: removed `COPY storage/ ./hold/` and its associated comment;
+  added `COPY alembic.ini` and `COPY alembic/` (#2)
+- `scripts/entrypoint.sh`: checks for an existing database file in the Docker
+  volume (informational logging only); adds structured `log()` helper with
+  timestamps and API/Swagger UI addresses; migrations delegated to Gunicorn
+  `on_starting` hook (#2)
+- `Dockerfile`: replaced `CMD uvicorn` with `CMD gunicorn -c gunicorn.conf.py` (#2)
+- `compose.yaml`: replaced `STORAGE_PATH` with `DATABASE_URL` pointing to the
+  SQLite volume path (#2)
+- `.gitignore`: added `*.db`; `storage/players-sqlite3.db` removed from git
+  tracking; `storage/` directory deleted (#2)
 - `tests/player_stub.py` renamed to `tests/player_fake.py`; class docstring
   updated to reflect fake (not stub) role; module-level docstring added
   documenting the three-term data-state vocabulary (`existing`, `nonexistent`,

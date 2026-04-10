@@ -5,6 +5,10 @@ Main application module for the FastAPI RESTful API.
 - Defines the lifespan event handler for app startup/shutdown logging.
 - Includes API routers for player and health endpoints.
 
+Database migrations are applied by entrypoint.sh before the process starts
+(Docker). For local development, run `alembic upgrade head` once before
+starting the server.
+
 This serves as the entry point for running the API server.
 """
 
@@ -24,7 +28,7 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     """
     Lifespan event handler for FastAPI.
     """
-    logger.info("Lifespan event handler execution complete.")
+    logger.info("Application startup complete.")
     yield
 
 

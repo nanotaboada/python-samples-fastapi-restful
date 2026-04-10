@@ -1,13 +1,24 @@
 import warnings
+from pathlib import Path
 from typing import Any, Generator
 
 import pytest
+from alembic import command
+from alembic.config import Config
 from fastapi.testclient import TestClient
 from main import app
 from tests.player_fake import Player, nonexistent_player
 
 # Suppress the DeprecationWarning from httpx
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+ALEMBIC_CONFIG = Config(str(Path(__file__).resolve().parent.parent / "alembic.ini"))
+
+
+@pytest.fixture(scope="session", autouse=True)
+def apply_migrations():
+    """Apply Alembic migrations once before the test session starts."""
+    command.upgrade(ALEMBIC_CONFIG, "head")
 
 
 @pytest.fixture(scope="function")

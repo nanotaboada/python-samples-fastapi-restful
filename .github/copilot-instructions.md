@@ -11,7 +11,8 @@ and in-memory caching.
 - **Language**: Python 3.13
 - **Framework**: FastAPI + Uvicorn
 - **ORM**: SQLAlchemy 2.0 (async) + aiosqlite
-- **Database**: SQLite
+- **Database**: SQLite (local/test), PostgreSQL-compatible
+- **Migrations**: Alembic (async, `render_as_batch=True`)
 - **Validation**: Pydantic
 - **Caching**: aiocache (in-memory, 10-minute TTL)
 - **Testing**: pytest + pytest-cov + httpx
@@ -22,14 +23,15 @@ and in-memory caching.
 
 ```text
 main.py         — application entry point: FastAPI setup, router registration
+alembic.ini     — Alembic configuration (sqlalchemy.url set dynamically)
+alembic/        — Alembic migration environment and version scripts
 routes/         — HTTP route definitions + dependency injection     [HTTP layer]
 services/       — async business logic + cache management           [business layer]
 schemas/        — SQLAlchemy ORM models (database schema)           [data layer]
-databases/      — async SQLAlchemy session setup
+databases/      — async SQLAlchemy session setup + get_database_url()
 models/         — Pydantic models for request/response validation
-storage/        — SQLite database file (players-sqlite3.db, pre-seeded)
 scripts/        — shell scripts for Docker (entrypoint.sh, healthcheck.sh)
-tools/          — standalone seed scripts (run manually, not via Alembic)
+tools/          — legacy standalone seed scripts (superseded by Alembic migrations)
 tests/          — pytest integration tests
 ```
 
@@ -65,12 +67,13 @@ concerns only; business logic belongs in services. Never skip a layer.
 - **Logging**: `logging` module only; never `print()`
 - **Line length**: 88; complexity ≤ 10
 - **Import order**: stdlib → third-party → local
-- **Tests**: integration tests against the real pre-seeded SQLite DB via
-  `TestClient` — no mocking. Naming pattern
+- **Tests**: integration tests against the real SQLite DB (seeded via
+  Alembic migrations) via `TestClient` — no mocking. Naming pattern
   `test_request_{method}_{resource}_{context}_response_{outcome}`;
-  docstrings single-line, concise; `tests/player_stub.py` for test data;
+  docstrings single-line, concise; `tests/player_fake.py` for test data;
   `tests/conftest.py` provides a `function`-scoped `client` fixture for
-  isolation; `tests/test_main.py` excluded from Black
+  isolation; `tests/test_main.py` excluded from Black;
+  `tests/test_migrations.py` covers Alembic downgrade paths
 - **Decisions**: justify every decision on its own technical merits; never use
   "another project does it this way" as a reason — that explains nothing and
   may mean replicating a mistake
@@ -87,6 +90,9 @@ uv venv
 source .venv/bin/activate  # Linux/macOS; use .venv\Scripts\activate on Windows
 uv pip install --group dev
 
+# Apply migrations (required once before first run, and after down -v)
+uv run alembic upgrade head
+
 # Run application
 uv run uvicorn main:app --reload --port 9000       # http://localhost:9000/docs
 
@@ -97,6 +103,11 @@ uv run pytest --cov=./ --cov-report=term           # with coverage (target >=80%
 # Linting and formatting
 uv run flake8 .
 uv run black --check .
+
+# Migration workflow
+uv run alembic upgrade head                        # apply all pending migrations
+uv run alembic downgrade -1                        # roll back last migration
+uv run alembic revision --autogenerate -m "desc"   # generate migration from schema
 
 # Docker
 docker compose up
@@ -149,9 +160,10 @@ Never suggest a release tag with a coach name not on this list.
 
 ### Ask before changing
 
-- Database schema (`schemas/player_schema.py` — no Alembic; changes require
-  manually updating `storage/players-sqlite3.db` and the seed scripts in
-  `tools/`)
+- Database schema (`schemas/player_schema.py`) and Alembic migrations
+  (`alembic/versions/`) — schema changes require a new migration file;
+  seed data changes require updating the relevant migration and any test
+  fixtures that reference specific UUIDs
 - `models/player_model.py` design decisions — especially splitting or merging
   request/response models; discuss the rationale before restructuring
 - Dependencies (`pyproject.toml` with PEP 735 dependency groups)
@@ -164,8 +176,8 @@ Never suggest a release tag with a coach name not on this list.
 ### Never modify
 
 - `.env` files (secrets)
-- `storage/players-sqlite3.db` directly — schema changes go through
-  `schemas/player_schema.py` and `tools/` seed scripts
+- `alembic/versions/` migration files once merged to `master` — migrations
+  are append-only; fix forward with a new migration, never edit history
 - Production configurations
 
 ### Creating Issues
@@ -194,10 +206,11 @@ shape is new → add async service method in `services/` with error handling and
 rollback → add route in `routes/` with `Depends(generate_async_session)` →
 add tests following the naming pattern → run pre-commit checks.
 
-**Modify schema**: Update `schemas/player_schema.py` → manually update
-`storage/players-sqlite3.db` (preserve all 26 seeded players) → update
-`models/player_model.py` if the API shape changes → update services and tests
-→ run `pytest`.
+**Modify schema**: Update `schemas/player_schema.py` → run
+`uv run alembic revision --autogenerate -m "description"` to generate a
+migration → review and adjust the generated file in `alembic/versions/` →
+run `uv run alembic upgrade head` → update `models/player_model.py` if the
+API shape changes → update services and tests → run `pytest`.
 
 **After completing work**: Propose a branch name and commit message for user
 approval. Do not create a branch, commit, or push until the user explicitly

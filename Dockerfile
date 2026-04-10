@@ -51,6 +51,9 @@ RUN pip install --no-cache-dir --no-index --find-links /app/wheelhouse /app/whee
 
 # Copy application source code
 COPY main.py            ./
+COPY gunicorn.conf.py   ./
+COPY alembic.ini        ./
+COPY alembic/           ./alembic/
 COPY databases/         ./databases/
 COPY models/            ./models/
 COPY routes/            ./routes/
@@ -61,10 +64,6 @@ COPY tools/             ./tools/
 # Copy entrypoint and healthcheck scripts
 COPY --chmod=755        scripts/entrypoint.sh       ./entrypoint.sh
 COPY --chmod=755        scripts/healthcheck.sh      ./healthcheck.sh
-# The 'hold' is our storage compartment within the image. Here, we copy a
-# pre-seeded SQLite database file, which Compose will mount as a persistent
-# 'storage' volume when the container starts up.
-COPY --chmod=755        storage/                    ./hold/
 
 # Add non-root user and make volume mount point writable
 # Avoids running the container as root (see: https://rules.sonarsource.com/docker/RSPEC-6504/)
@@ -82,4 +81,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
     CMD ["./healthcheck.sh"]
 
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9000"]
+CMD ["gunicorn", "-c", "gunicorn.conf.py", "main:app"]

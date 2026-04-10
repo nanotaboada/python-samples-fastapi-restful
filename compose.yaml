@@ -12,6 +12,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - STORAGE_PATH=/storage/players-sqlite3.db
+      - DATABASE_URL=sqlite+aiosqlite:////storage/players-sqlite3.db
     restart: unless-stopped
 
 volumes:

@@ -4,8 +4,8 @@ Date: 2026-03-21
 
 ## Status
 
-Accepted. Migration to Alembic is under consideration — tracked in
-issue #2.
+Superseded by [ADR-0010](0010-alembic-migration-based-schema-management.md).
+Alembic was adopted in issue #2.
 
 ## Context
 

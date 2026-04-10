@@ -1,29 +1,27 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-IMAGE_STORAGE_PATH="/app/hold/players-sqlite3.db"
-VOLUME_STORAGE_PATH="/storage/players-sqlite3.db"
+# Helper function for formatted logging
+log() {
+    echo "[ENTRYPOINT] $(date '+%Y/%m/%d - %H:%M:%S') | $1"
+    return 0
+}
 
-echo "✔ Starting container..."
+STORAGE_PATH="${STORAGE_PATH:-/storage/players-sqlite3.db}"
 
-if [[ ! -f "$VOLUME_STORAGE_PATH" ]]; then
-    echo "⚠️ No existing database file found in volume."
-    if [[ -f "$IMAGE_STORAGE_PATH" ]]; then
-        echo "Copying database file to writable volume..."
-        cp "$IMAGE_STORAGE_PATH" "$VOLUME_STORAGE_PATH"
-        echo "✔ Database initialized at $VOLUME_STORAGE_PATH"
-    else
-        echo "⚠️ Database file missing at $IMAGE_STORAGE_PATH"
-        exit 1
-    fi
+log "✔ Starting container..."
+
+mkdir -p "$(dirname "$STORAGE_PATH")"
+
+if [ ! -f "$STORAGE_PATH" ]; then
+    log "⚠️ No existing database file found in volume."
+    log "🗄️ Gunicorn will apply Alembic migrations on first start."
 else
-    echo "✔ Existing database file found. Skipping seed copy."
+    log "✔ Existing database file found at $STORAGE_PATH."
 fi
 
-echo "🔄 Running seed scripts to ensure schema is up to date..."
-python /app/tools/seed_001_starting_eleven.py --db-path "$VOLUME_STORAGE_PATH"
-python /app/tools/seed_002_substitutes.py --db-path "$VOLUME_STORAGE_PATH"
-
-echo "✔ Ready!"
-echo "🚀 Launching app..."
+log "✔ Ready!"
+log "🚀 Launching app..."
+log "🔌 API endpoints | http://localhost:9000"
+log "📚 Swagger UI    | http://localhost:9000/docs"
 exec "$@"
