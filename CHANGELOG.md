@@ -44,6 +44,15 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- Extract `test` job from `release` in CD pipeline so tests run in isolation
+  before any publish step; add `enable-cache: true` to `astral-sh/setup-uv`
+  for faster dependency installs; add `id-token: write` and
+  `attestations: write` permissions to `release`; set `provenance: mode=max`
+  and attest the image digest with `actions/attest-build-provenance@v4.1.0`
+  (`push-to-registry: true`); add `--no-merges` to the changelog `git log`
+  command; normalize first-release message to
+  `"No changes (first release)"` (#564)
+
 - `alembic/`: Alembic migration support for async SQLAlchemy — `env.py`
   configured for async execution with `render_as_batch=True` (SQLite/PostgreSQL
   compatible); three migrations: `001` creates the `players` table, `002` seeds
