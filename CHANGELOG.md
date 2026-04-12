@@ -44,6 +44,18 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Removed
+
+---
+
+## [2.1.1 - Eriksson] - 2026-04-11
+
+### Added
+
 - Extract `test` job from `release` in CD pipeline so tests run in isolation
   before any publish step; run `pytest -v` only (no coverage — CI owns that);
   add `enable-cache: true` to `astral-sh/setup-uv` for faster dependency
@@ -273,7 +285,9 @@ The CD workflow automatically:
 
 ---
 
-[unreleased]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v2.0.0-capello...HEAD
+[unreleased]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v2.1.1-eriksson...HEAD
+[2.1.1 - Eriksson]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v2.1.0-delbosque...v2.1.1-eriksson
+[2.1.0 - Del Bosque]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v2.0.0-capello...v2.1.0-delbosque
 [2.0.0 - Capello]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.1.0-bielsa...v2.0.0-capello
 [1.1.0 - Bielsa]: https://github.com/nanotaboada/python-samples-fastapi-restful/compare/v1.0.0-ancelotti...v1.1.0-bielsa
 [1.0.0 - Ancelotti]: https://github.com/nanotaboada/python-samples-fastapi-restful/releases/tag/v1.0.0-ancelotti
