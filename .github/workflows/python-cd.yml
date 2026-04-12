@@ -13,11 +13,42 @@ env:
   PACKAGE_NAME: nanotaboada/python-samples-fastapi-restful
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version-file: ${{ env.PYTHON_VERSION_FILE }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v8.0.0
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Install test dependencies
+        run: |
+          uv venv
+          uv pip install --group dev
+
+      - name: Run tests with pytest
+        run: |
+          uv run pytest -v
+
   release:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
+      id-token: write
+      attestations: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -74,25 +105,6 @@ jobs:
           echo "📦 Release version: $SEMVER"
           echo "♟️ Coach name: $COACH"
 
-      - name: Set up Python
-        uses: actions/setup-python@v6.2.0
-        with:
-          python-version-file: ${{ env.PYTHON_VERSION_FILE }}
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v8.0.0
-        with:
-          version: "latest"
-
-      - name: Install test dependencies
-        run: |
-          uv venv
-          uv pip install --group dev
-
-      - name: Run tests with pytest
-        run: |
-          uv run pytest --cov=./ --cov-report=xml --cov-report=term -v
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v4.1.0
         with:
@@ -104,18 +116,26 @@ jobs:
         uses: docker/setup-buildx-action@v4.0.0
 
       - name: Build and push Docker image to GitHub Container Registry
+        id: push
         uses: docker/build-push-action@v7.0.0
         with:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          provenance: false
+          provenance: mode=max
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
             ghcr.io/${{ env.PACKAGE_NAME }}:${{ steps.version.outputs.semver }}
             ghcr.io/${{ env.PACKAGE_NAME }}:${{ steps.version.outputs.coach }}
             ghcr.io/${{ env.PACKAGE_NAME }}:latest
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4.1.0
+        with:
+          subject-name: ghcr.io/${{ env.PACKAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
 
       - name: Generate changelog
         id: changelog
@@ -125,20 +145,16 @@ jobs:
 
           if [ -z "$PREVIOUS_TAG" ]; then
             echo "📝 First release - no previous tag found"
-            CHANGELOG="Initial release"
+            CHANGELOG="No changes (first release)"
           else
             echo "📝 Generating changelog from $PREVIOUS_TAG to ${{ steps.version.outputs.tag_name }}"
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${{ steps.version.outputs.tag_name }})
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges ${PREVIOUS_TAG}..${{ steps.version.outputs.tag_name }})
 
             # Guard against empty changelog (e.g., re-tagging same commit)
             if [ -z "$CHANGELOG" ]; then
               CHANGELOG="No new changes since $PREVIOUS_TAG"
             fi
           fi
-
-          # Write changelog to file
-          echo "$CHANGELOG" > changelog.txt
-          cat changelog.txt
 
           # Set output for use in release body
           {
