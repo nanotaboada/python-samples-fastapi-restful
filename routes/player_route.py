@@ -45,6 +45,9 @@ SQUAD_NUMBER_TITLE = "The Squad Number of the Player"
     status_code=status.HTTP_201_CREATED,
     summary="Creates a new Player",
     tags=["Players"],
+    responses={
+        422: {"description": "Unprocessable Entity - request body validation failed"}
+    },
 )
 async def post_async(
     player_model: Annotated[PlayerRequestModel, Body(...)],
@@ -64,6 +67,8 @@ async def post_async(
 
     Raises:
         HTTPException: HTTP 409 Conflict error if the Player already exists.
+        HTTPException: HTTP 422 Unprocessable Entity if request body fails Pydantic
+        validation (missing or invalid required fields).
     """
     existing = await player_service.retrieve_by_squad_number_async(
         async_session, player_model.squad_number
@@ -188,6 +193,9 @@ async def get_by_squad_number_async(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Updates an existing Player",
     tags=["Players"],
+    responses={
+        422: {"description": "Unprocessable Entity - request body validation failed"}
+    },
 )
 async def put_async(
     squad_number: Annotated[int, Path(..., title=SQUAD_NUMBER_TITLE)],
@@ -206,9 +214,12 @@ async def put_async(
     Raises:
         HTTPException: HTTP 400 Bad Request if squad_number in the request body does
         not match the path parameter. The path parameter is the authoritative source
-        of identity on PUT; a mismatch makes the request ambiguous.
+        of identity on PUT; a mismatch makes the request semantically ambiguous (not
+        a validation failure).
         HTTPException: HTTP 404 Not Found error if the Player with the specified Squad
         Number does not exist.
+        HTTPException: HTTP 422 Unprocessable Entity if request body fails Pydantic
+        validation (missing or invalid required fields).
     """
     if player_model.squad_number != squad_number:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
