@@ -46,6 +46,12 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Changed
 
+- `routes/player_route.py`: explicitly document `422 Unprocessable Entity` for
+  payload validation errors on POST and PUT endpoints — added `responses={422:
+  ...}` to route decorators (OpenAPI schema) and `Raises:` entries to
+  docstrings; clarifies the 422 (Pydantic validation failure) vs 400 (semantic
+  ambiguity) distinction (#568)
+
 ### Fixed
 
 ### Removed
