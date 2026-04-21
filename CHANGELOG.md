@@ -222,49 +222,6 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 Initial release. See [README.md](README.md) for complete feature list and documentation.
 
----
-
-## How to Release
-
-To create a new release, follow these steps in order:
-
-### 1. Update CHANGELOG.md
-
-Move items from the `[Unreleased]` section to a new release section using the template format provided at the bottom of this file (see the commented template).
-
-**Important:** Commit and push this change before creating the tag.
-
-### 2. Create and Push Version Tag
-
-```bash
-git tag -a vX.Y.Z-coach -m "Release X.Y.Z - Coach"
-git push origin vX.Y.Z-coach
-```
-
-Example:
-
-```bash
-git tag -a v1.0.0-ancelotti -m "Release 1.0.0 - Ancelotti"
-git push origin v1.0.0-ancelotti
-```
-
-### 3. Automated CD Workflow
-
-The CD workflow automatically:
-
-- ✅ Validates the coach name against the A-Z list
-- ✅ Builds and tests the project with coverage
-- ✅ Publishes Docker images to GHCR with three tags (`:X.Y.Z`, `:coach`, `:latest`)
-- ✅ Creates a GitHub Release with auto-generated notes from commits
-
-### Pre-Release Checklist
-
-- [ ] CHANGELOG.md updated with release notes
-- [ ] CHANGELOG.md changes committed and pushed
-- [ ] Tag created with correct format: `vX.Y.Z-coach`
-- [ ] Coach name is valid (A-Z from table above)
-- [ ] Tag pushed to trigger CD workflow
-
 <!-- Template for new releases:
 
 ## [X.Y.Z - COACH_NAME] - YYYY-MM-DD
