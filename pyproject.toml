@@ -20,11 +20,11 @@ test = [
     "pytest==9.0.3",
     "pytest-cov==7.1.0",
     "pytest-sugar==1.1.1",
-    "gevent==26.4.0",
+    "gevent==26.5.0",
 ]
 lint = [
     "flake8==7.3.0",
-    "black==26.3.1",
+    "black==26.5.1",
 ]
 dev = [
     { include-group = "test" },
