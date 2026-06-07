@@ -51,10 +51,26 @@ This project uses famous football coaches as release codenames, following an A-Z
   ...}` to route decorators (OpenAPI schema) and `Raises:` entries to
   docstrings; clarifies the 422 (Pydantic validation failure) vs 400 (semantic
   ambiguity) distinction (#568)
+- `CLAUDE.md`: consolidated from `.github/copilot-instructions.md` as the
+  single source of truth for AI coding assistants; added Invariants section and
+  Architecture Decision Records section; added pre-commit step 7 for ADR
+  updates; corrected cache layer description (caching is in routes, not
+  services) (#590)
+- `.coderabbit.yaml`: updated `enforce http error handling` finishing touch with
+  precise 422/400/404/409 status code guidance; updated `sync documentation`
+  finishing touch and `knowledge_base.code_guidelines` to reference `CLAUDE.md`;
+  added `alembic/versions/**/*.py` path instruction enforcing append-only
+  migration policy (#590)
 
 ### Fixed
 
+- `docs/adr/README.md`: corrected ADR-0002 status from `Accepted` to
+  `Superseded`; added missing ADR-0010 row (#590)
+
 ### Removed
+
+- `.github/copilot-instructions.md`: content consolidated into `CLAUDE.md`;
+  GitHub Copilot is no longer in use (#590)
 
 ---
 
