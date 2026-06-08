@@ -46,6 +46,10 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Changed
 
+- `CLAUDE.md`: fix stale `docker-compose.yml` reference to `compose.yaml`; add
+  `rest/` and `gunicorn.conf.py` to Structure section; condense "Creating
+  Issues" templates from 18 lines to 4 lines; remove redundant commit format
+  block from "After completing work"
 - `routes/player_route.py`: explicitly document `422 Unprocessable Entity` for
   payload validation errors on POST and PUT endpoints — added `responses={422:
   ...}` to route decorators (OpenAPI schema) and `Raises:` entries to

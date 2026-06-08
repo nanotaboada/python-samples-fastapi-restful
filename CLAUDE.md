@@ -36,6 +36,8 @@ databases/      — async SQLAlchemy session setup + get_database_url()
 models/         — Pydantic models for request/response validation
 scripts/        — shell scripts for Docker (entrypoint.sh, healthcheck.sh)
 tools/          — legacy standalone seed scripts (superseded by Alembic migrations)
+rest/           — HTTP request file (players.rest) for manual API testing
+gunicorn.conf.py — production WSGI worker config (used by Docker entrypoint)
 tests/          — pytest integration tests
 ```
 
@@ -174,7 +176,7 @@ Never suggest a release tag with a coach name not on this list.
   request/response models; discuss the rationale before restructuring
 - Dependencies (`pyproject.toml` with PEP 735 dependency groups)
 - CI/CD configuration (`.github/workflows/`)
-- Docker setup (`Dockerfile`, `docker-compose.yml`, `scripts/`)
+- Docker setup (`Dockerfile`, `compose.yaml`, `scripts/`)
 - Breaking API contract changes (field renames, type changes, removing fields)
 - Global error handling middleware
 - HTTP status codes assigned to existing error conditions
@@ -188,22 +190,10 @@ Never suggest a release tag with a coach name not on this list.
 
 ### Creating Issues
 
-This project uses Spec-Driven Development (SDD): discuss in Plan mode first, create a GitHub Issue as the spec artifact, then implement. Always offer to draft an issue before writing code.
+Spec-Driven Development (SDD): discuss in Plan mode first, create a GitHub Issue as the spec artifact, then implement. Always offer to draft an issue before writing code.
 
-**Feature request** (`enhancement` label):
-- **Problem**: the pain point being solved
-- **Proposed Solution**: expected behavior and functionality
-- **Suggested Approach** *(optional)*: implementation plan if known
-- **Acceptance Criteria**: at minimum — behaves as proposed, tests added/updated, no regressions
-- **References**: related issues, docs, or examples
-
-**Bug report** (`bug` label):
-- **Description**: clear summary of the bug
-- **Steps to Reproduce**: numbered, minimal steps
-- **Expected / Actual Behavior**: one section each
-- **Environment**: runtime versions + OS
-- **Additional Context**: logs, screenshots, stack traces
-- **Possible Solution** *(optional)*: suggested fix or workaround
+- Feature (`enhancement`): Problem → Proposed Solution → Acceptance Criteria → References
+- Bug (`bug`): Description → Steps to Reproduce → Expected/Actual Behavior → Environment
 
 ### Key workflows
 
@@ -218,15 +208,7 @@ migration → review and adjust the generated file in `alembic/versions/` →
 run `uv run alembic upgrade head` → update `models/player_model.py` if the
 API shape changes → update services and tests → run `pytest`.
 
-**After completing work**: Propose a branch name and commit message for user
-approval. Do not create a branch, commit, or push until the user explicitly
-confirms. Commit message format:
-
-```text
-feat(scope): description (#issue)
-
-Co-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>
-```
+**After completing work**: Propose a branch name and commit message for user approval. Do not create a branch, commit, or push until the user explicitly confirms.
 
 ## Invariants (never change without explicit discussion)
 
