@@ -22,3 +22,6 @@ one and the three-part test.
 | [0008](0008-layered-architecture.md) | Layered Architecture with FastAPI Dependency Injection | Accepted | 2026-04-02 |
 | [0009](0009-docker-and-compose-strategy.md) | Docker and Compose Strategy | Accepted | 2026-04-02 |
 | [0010](0010-alembic-migration-based-schema-management.md) | Alembic Migration-Based Schema Management | Accepted | 2026-04-09 |
+| [0011](0011-coach-themed-versioning.md) | Use Coach-Themed Semantic Versioning | Accepted | 2026-06-10 |
+| [0012](0012-ai-assisted-development-workflow.md) | Adopt AI-Assisted Development Workflow | Accepted | 2026-06-10 |
+| [0013](0013-spec-driven-development.md) | Adopt Spec-Driven Development (SDD) | Accepted | 2026-06-10 |
