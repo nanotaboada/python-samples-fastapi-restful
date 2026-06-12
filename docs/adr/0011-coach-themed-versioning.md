@@ -12,7 +12,7 @@ The project uses Semantic Versioning (MAJOR.MINOR.PATCH). Purely numeric tags
 are accurate but forgettable. The project is football-themed and part of a
 cross-language comparison set where each repo adopts a different
 football-domain naming convention. Several well-known projects use alphabetical
-codename conventions (Ubuntu, macOS).
+codename conventions (Ubuntu, Android).
 
 This repo uses famous football managers/coaches as codenames. Release tags
 follow the format `v{MAJOR}.{MINOR}.{PATCH}-{coach}`, where the coach name is
