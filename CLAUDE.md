@@ -221,6 +221,6 @@ API shape changes → update services and tests → run `pytest`.
 
 ## Architecture Decision Records
 
-Significant architectural decisions are documented in `docs/adr/` (ADR-0001–0010).
+Significant architectural decisions are documented in `docs/adr/` (ADR-0001–0013).
 Load these before proposing structural changes. When a proposal would change an
 accepted decision, create a new ADR rather than editing the existing one.

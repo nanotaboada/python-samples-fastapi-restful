@@ -44,6 +44,10 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 ### Added
 
+- ADR-0011: Use Coach-Themed Semantic Versioning
+- ADR-0012: Adopt AI-Assisted Development Workflow
+- ADR-0013: Adopt Spec-Driven Development (SDD)
+
 ### Changed
 
 - `CLAUDE.md`: fix stale `docker-compose.yml` reference to `compose.yaml`; add
