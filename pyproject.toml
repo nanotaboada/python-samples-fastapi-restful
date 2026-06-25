@@ -6,8 +6,8 @@ readme = "README.md"
 requires-python = ">=3.13.3"
 authors = [{name = "nanotaboada", email = "hello@example.com"}]
 dependencies = [
-    "fastapi[standard]==0.136.3",
-    "SQLAlchemy==2.0.50",
+    "fastapi[standard]==0.137.0",
+    "SQLAlchemy==2.0.51",
     "aiosqlite==0.22.1",
     "aiocache==0.12.3",
     "alembic==1.18.4",
@@ -17,7 +17,7 @@ dependencies = [
 
 [dependency-groups]
 test = [
-    "pytest==9.0.3",
+    "pytest==9.1.0",
     "pytest-cov==7.1.0",
     "pytest-sugar==1.1.1",
     "gevent==26.5.0",
