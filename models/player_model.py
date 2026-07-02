@@ -5,7 +5,7 @@ Pydantic models defining the data schema for football players.
 - `PlayerRequestModel`: Represents player data for Create and Update operations.
 - `PlayerResponseModel`: Represents player data including UUID for Retrieve operations.
 
-Design decision — single request model vs split models:
+Design decision - single request model vs split models:
     A single `PlayerRequestModel` is intentionally shared by both POST (Create)
     and PUT (Update). Per-operation differences are handled at the route layer
     rather than by duplicating the model:
@@ -19,7 +19,7 @@ These models are used for data validation and serialization in the API.
 
 from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
 
@@ -53,7 +53,8 @@ class PlayerRequestModel(MainModel):
         middle_name (Optional[str]): The middle name of the Player, if any.
         last_name (str): The last name of the Player.
         date_of_birth (Optional[str]): The date of birth of the Player, if provided.
-        squad_number (int): The unique squad number assigned to the Player.
+        squad_number (int): The unique, positive squad number assigned to the
+        Player.
         position (str): The playing position of the Player.
         abbr_position (Optional[str]): The abbreviated form of the Player's position,
         if any.
@@ -67,7 +68,7 @@ class PlayerRequestModel(MainModel):
     middle_name: Optional[str] = None
     last_name: str
     date_of_birth: Optional[str] = None
-    squad_number: int
+    squad_number: int = Field(gt=0)
     position: str
     abbr_position: Optional[str] = None
     team: Optional[str] = None
