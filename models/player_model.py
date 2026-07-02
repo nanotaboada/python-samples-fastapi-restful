@@ -53,7 +53,8 @@ class PlayerRequestModel(MainModel):
         middle_name (Optional[str]): The middle name of the Player, if any.
         last_name (str): The last name of the Player.
         date_of_birth (Optional[str]): The date of birth of the Player, if provided.
-        squad_number (int): The unique squad number assigned to the Player.
+        squad_number (int): The unique, positive squad number assigned to the
+        Player.
         position (str): The playing position of the Player.
         abbr_position (Optional[str]): The abbreviated form of the Player's position,
         if any.
