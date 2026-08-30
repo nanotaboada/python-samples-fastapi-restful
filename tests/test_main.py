@@ -190,6 +190,19 @@ def test_request_post_player_body_existing_response_body_detail(client):
     )
 
 
+def test_request_post_player_body_zero_squad_number_response_status_unprocessable(
+    client,
+):
+    """POST /players/ with squad number zero returns 422 Unprocessable Entity"""
+    # Arrange
+    player = nonexistent_player()
+    payload = player.__dict__ | {"squad_number": 0}
+    # Act
+    response = client.post(PATH, json=payload)
+    # Assert
+    assert response.status_code == 422
+
+
 def test_request_post_player_body_nonexistent_response_status_created(client):
     """POST /players/ with nonexistent player returns 201 Created with a valid UUID"""
     # Arrange
@@ -203,7 +216,7 @@ def test_request_post_player_body_nonexistent_response_status_created(client):
         assert "id" in body
         assert UUID(body["id"]).version == 4  # UUID v4 (API-created)
     finally:
-        # Teardown — remove the created player
+        # Teardown - remove the created player
         client.delete(PATH + "squadnumber/" + str(player.squad_number))
 
 
@@ -250,7 +263,7 @@ def test_request_put_player_squadnumber_existing_response_status_no_content(clie
         # Assert
         assert response.status_code == 204
     finally:
-        # Teardown — restore Damián Martínez to its seeded state
+        # Teardown - restore Damián Martínez to its seeded state
         seed = existing_player()
         client.put(PATH + "squadnumber/" + str(seed.squad_number), json=seed.__dict__)
 
