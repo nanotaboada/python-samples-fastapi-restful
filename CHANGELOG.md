@@ -74,6 +74,11 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 - `docs/adr/README.md`: corrected ADR-0002 status from `Accepted` to
   `Superseded`; added missing ADR-0010 row (#590)
+- `.github/dependabot.yml`: `package-ecosystem` was `pip`, which bumps the
+  version pins in `pyproject.toml` but never regenerates `uv.lock`; the
+  lockfile drifted behind the manifest and Dependabot could not open
+  lockfile security-update PRs. Switched to the `uv` ecosystem so both
+  files stay in sync
 
 ### Removed
 
