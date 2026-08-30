@@ -47,9 +47,21 @@ This project uses famous football coaches as release codenames, following an A-Z
 - ADR-0011: Use Coach-Themed Semantic Versioning
 - ADR-0012: Adopt AI-Assisted Development Workflow
 - ADR-0013: Adopt Spec-Driven Development (SDD)
+- `.claude/skills/create-issue/SKILL.md` and `.claude/skills/add-endpoint/SKILL.md`:
+  extracted from `CLAUDE.md` as on-demand skills, so the SDD issue templates and
+  the endpoint/schema-change recipes load only when invoked instead of every
+  session; each starts with a top-level heading per `markdownlint` MD041
 
 ### Changed
 
+- `CLAUDE.md`: trimmed the Tech Stack list, plain directory tree, and Overview
+  prose (all reconstructable from `pyproject.toml` and `ls`); moved "Creating
+  Issues" and "Key workflows" to on-demand skills; `Releases` section now
+  points to `CHANGELOG.md`'s coach table as the single source instead of
+  duplicating it; removed the "Pre-commit Checks" section and the Quick Start
+  linting commands, both already covered by `.claude/commands/pre-commit.md`;
+  removed the "Line length" / "Import order" bullets, already enforced by
+  `.flake8` and Black config
 - `CLAUDE.md`: fix stale `docker-compose.yml` reference to `compose.yaml`; add
   `rest/` and `gunicorn.conf.py` to Structure section; condense "Creating
   Issues" templates from 18 lines to 4 lines; remove redundant commit format
