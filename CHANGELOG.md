@@ -74,11 +74,24 @@ This project uses famous football coaches as release codenames, following an A-Z
 
 - `docs/adr/README.md`: corrected ADR-0002 status from `Accepted` to
   `Superseded`; added missing ADR-0010 row (#590)
+- `.github/dependabot.yml`: `package-ecosystem` was `pip`, which bumps the
+  version pins in `pyproject.toml` but never regenerates `uv.lock`; the
+  lockfile drifted behind the manifest and Dependabot could not open
+  lockfile security-update PRs. Switched to the `uv` ecosystem so both
+  files stay in sync
 
 ### Removed
 
 - `.github/copilot-instructions.md`: content consolidated into `CLAUDE.md`;
   GitHub Copilot is no longer in use (#590)
+
+### Security
+
+- `uv.lock`: Mako `1.3.10` → `1.4.1` (CVE-2026-41205, CVE-2026-44307 — path
+  traversal via crafted URI in `TemplateLookup`; high) and Pygments
+  `2.19.2` → `2.21.0` (CVE-2026-4539 — ReDoS in GUID matching; low).
+  Re-synced the `alembic`, `cffi`, `fastapi`, `gevent`, `pytest`, and
+  `sqlalchemy` lock entries that had drifted behind `pyproject.toml`
 
 ---
 
