@@ -3,46 +3,16 @@
 ## Claude Code
 
 - Run `/pre-commit` to execute the full pre-commit checklist for this project.
-
-## Overview
-
-REST API for managing football players built with Python and FastAPI. Implements
-async CRUD operations with SQLAlchemy 2.0 (async), SQLite, Pydantic validation,
-and in-memory caching.
-
-## Tech Stack
-
-- **Language**: Python 3.13
-- **Framework**: FastAPI + Uvicorn
-- **ORM**: SQLAlchemy 2.0 (async) + aiosqlite
-- **Database**: SQLite (local/test), PostgreSQL-compatible
-- **Migrations**: Alembic (async, `render_as_batch=True`)
-- **Validation**: Pydantic
-- **Caching**: aiocache (in-memory, 10-minute TTL)
-- **Testing**: pytest + pytest-cov + httpx
-- **Linting/Formatting**: Flake8 + Black
-- **Containerization**: Docker
+- Run `/pre-release` before tagging a release.
+- See `.claude/skills/create-issue/SKILL.md` for the SDD issue workflow, and
+  `.claude/skills/add-endpoint/SKILL.md` for the endpoint/schema workflows.
 
 ## Structure
 
-```text
-main.py         — application entry point: FastAPI setup, router registration
-alembic.ini     — Alembic configuration (sqlalchemy.url set dynamically)
-alembic/        — Alembic migration environment and version scripts
-routes/         — HTTP route definitions, caching + dependency injection [HTTP layer]
-services/       — async business logic                                   [business layer]
-schemas/        — SQLAlchemy ORM models (database schema)                [data layer]
-databases/      — async SQLAlchemy session setup + get_database_url()
-models/         — Pydantic models for request/response validation
-scripts/        — shell scripts for Docker (entrypoint.sh, healthcheck.sh)
-tools/          — legacy standalone seed scripts (superseded by Alembic migrations)
-rest/           — HTTP request file (players.rest) for manual API testing
-gunicorn.conf.py — production WSGI worker config (used by Docker entrypoint)
-tests/          — pytest integration tests
-```
-
 **Layer rule**: `Routes → Services → SQLAlchemy → SQLite`. Routes handle HTTP
 concerns only; business logic belongs in services. Never skip a layer.
+`tools/` is legacy (superseded by Alembic migrations); `gunicorn.conf.py` is
+used by the Docker entrypoint.
 
 ## Coding Guidelines
 
@@ -71,8 +41,6 @@ concerns only; business logic belongs in services. Never skip a layer.
   validation returns 422 (not 400); squad number mismatch on PUT returns 400
   (not 422 — it is a semantic error, not a validation failure)
 - **Logging**: `logging` module only; never `print()`
-- **Line length**: 88; complexity ≤ 10
-- **Import order**: stdlib → third-party → local
 - **Tests**: integration tests against the real SQLite DB (seeded via
   Alembic migrations) via `TestClient` — no mocking. Naming pattern
   `test_request_{method}_{resource}_{context}_response_{outcome}`;
@@ -106,10 +74,6 @@ uv run uvicorn main:app --reload --port 9000       # http://localhost:9000/docs
 uv run pytest                                      # run tests
 uv run pytest --cov=./ --cov-report=term           # with coverage (target >=80%)
 
-# Linting and formatting
-uv run flake8 .
-uv run black --check .
-
 # Migration workflow
 uv run alembic upgrade head                        # apply all pending migrations
 uv run alembic downgrade -1                        # roll back last migration
@@ -120,18 +84,6 @@ docker compose up
 docker compose down -v
 ```
 
-### Pre-commit Checks
-
-1. Update `CHANGELOG.md` `[Unreleased]` section (Added / Changed / Fixed /
-   Removed)
-2. `uv run flake8 .` — must pass
-3. `uv run black --check .` — must pass
-4. `uv run pytest` — all tests must pass
-5. `uv run pytest --cov=./ --cov-report=term` — coverage must be ≥80%
-6. Commit message follows Conventional Commits format (enforced by commitlint)
-7. If this commit introduces or changes an architectural decision, update
-   `CLAUDE.md` and create or amend the relevant ADR in `docs/adr/`
-
 ### Commits
 
 Format: `type(scope): description (#issue)` — max 80 chars
@@ -141,16 +93,9 @@ Example: `feat(api): add player stats endpoint (#42)`
 ### Releases
 
 Tags follow the format `v{MAJOR}.{MINOR}.{PATCH}-{COACH}` (e.g.
-`v2.0.0-capello`). The CD pipeline validates the coach name against a fixed
-list (A–Z):
-
-```
-ancelotti bielsa capello delbosque eriksson ferguson guardiola heynckes
-inzaghi klopp kovac low mourinho nagelsmann ottmar pochettino queiroz
-ranieri simeone tuchel unai vangaal wenger xavi yozhef zeman
-```
-
-Never suggest a release tag with a coach name not on this list.
+`v2.0.0-capello`). Valid coach names (A–Z) are maintained in `CHANGELOG.md`'s
+naming-convention table — the same table `/pre-release` reads. Never suggest
+a release tag with a coach name not in that table.
 
 ## Agent Mode
 
@@ -190,25 +135,19 @@ Never suggest a release tag with a coach name not on this list.
 
 ### Creating Issues
 
-Spec-Driven Development (SDD): discuss in Plan mode first, create a GitHub Issue as the spec artifact, then implement. Always offer to draft an issue before writing code.
-
-- Feature (`enhancement`): Problem → Proposed Solution → Acceptance Criteria → References
-- Bug (`bug`): Description → Steps to Reproduce → Expected/Actual Behavior → Environment
+Spec-Driven Development (SDD): discuss in Plan mode first, create a GitHub
+Issue as the spec artifact, then implement. Always offer to draft an issue
+before writing code. See `.claude/skills/create-issue/SKILL.md` for the
+feature/bug issue templates.
 
 ### Key workflows
 
-**Add an endpoint**: Add Pydantic model in `models/` if the request/response
-shape is new → add async service method in `services/` with error handling and
-rollback → add route in `routes/` with `Depends(generate_async_session)` →
-add tests following the naming pattern → run pre-commit checks.
+See `.claude/skills/add-endpoint/SKILL.md` for the "add an endpoint" and
+"modify schema" recipes.
 
-**Modify schema**: Update `schemas/player_schema.py` → run
-`uv run alembic revision --autogenerate -m "description"` to generate a
-migration → review and adjust the generated file in `alembic/versions/` →
-run `uv run alembic upgrade head` → update `models/player_model.py` if the
-API shape changes → update services and tests → run `pytest`.
-
-**After completing work**: Propose a branch name and commit message for user approval. Do not create a branch, commit, or push until the user explicitly confirms.
+**After completing work**: Propose a branch name and commit message for user
+approval. Do not create a branch, commit, or push until the user explicitly
+confirms.
 
 ## Invariants (never change without explicit discussion)
 
