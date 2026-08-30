@@ -3,6 +3,8 @@ name: add-endpoint
 description: Step-by-step recipes for adding an endpoint or modifying the schema in this repo
 ---
 
+# Endpoint and schema recipes
+
 **Add an endpoint**: Add Pydantic model in `models/` if the request/response
 shape is new → add async service method in `services/` with error handling and
 rollback → add route in `routes/` with `Depends(generate_async_session)` →

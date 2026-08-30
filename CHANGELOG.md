@@ -50,7 +50,7 @@ This project uses famous football coaches as release codenames, following an A-Z
 - `.claude/skills/create-issue/SKILL.md` and `.claude/skills/add-endpoint/SKILL.md`:
   extracted from `CLAUDE.md` as on-demand skills, so the SDD issue templates and
   the endpoint/schema-change recipes load only when invoked instead of every
-  session
+  session; each starts with a top-level heading per `markdownlint` MD041
 
 ### Changed
 
