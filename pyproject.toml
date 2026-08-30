@@ -7,7 +7,7 @@ requires-python = ">=3.13.3"
 authors = [{name = "nanotaboada", email = "hello@example.com"}]
 dependencies = [
     "fastapi[standard]==0.140.7",
-    "SQLAlchemy==2.0.51",
+    "SQLAlchemy==2.0.52",
     "aiosqlite==0.22.1",
     "aiocache==0.12.3",
     "alembic==1.19.1",
