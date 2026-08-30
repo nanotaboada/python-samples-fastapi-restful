@@ -7,10 +7,10 @@ requires-python = ">=3.13.3"
 authors = [{name = "nanotaboada", email = "hello@example.com"}]
 dependencies = [
     "fastapi[standard]==0.140.7",
-    "SQLAlchemy==2.0.51",
+    "SQLAlchemy==2.0.52",
     "aiosqlite==0.22.1",
     "aiocache==0.12.3",
-    "alembic==1.18.5",
+    "alembic==1.19.1",
     "asyncpg==0.31.0",
     "gunicorn>=25.3.0",
 ]
@@ -20,7 +20,7 @@ test = [
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
     "pytest-sugar==1.1.1",
-    "gevent==26.7.0",
+    "gevent==26.8.0",
 ]
 lint = [
     "flake8==7.3.0",
