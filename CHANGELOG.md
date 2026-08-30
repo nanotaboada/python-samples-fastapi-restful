@@ -85,6 +85,14 @@ This project uses famous football coaches as release codenames, following an A-Z
 - `.github/copilot-instructions.md`: content consolidated into `CLAUDE.md`;
   GitHub Copilot is no longer in use (#590)
 
+### Security
+
+- `uv.lock`: Mako `1.3.10` → `1.4.1` (CVE-2026-41205, CVE-2026-44307 — path
+  traversal via crafted URI in `TemplateLookup`; high) and Pygments
+  `2.19.2` → `2.21.0` (CVE-2026-4539 — ReDoS in GUID matching; low).
+  Re-synced the `alembic`, `cffi`, `fastapi`, `gevent`, `pytest`, and
+  `sqlalchemy` lock entries that had drifted behind `pyproject.toml`
+
 ---
 
 ## [2.1.1 - Eriksson] - 2026-04-11
