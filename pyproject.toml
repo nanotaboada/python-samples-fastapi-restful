@@ -11,7 +11,7 @@ dependencies = [
     "aiosqlite==0.22.1",
     "aiocache==0.12.3",
     "alembic==1.20.0",
-    "asyncpg==0.31.0",
+    "asyncpg==0.32.0",
     "gunicorn>=25.3.0",
 ]
 
