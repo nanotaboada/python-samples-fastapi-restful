@@ -23,7 +23,7 @@ test = [
     "gevent==26.9.0",
 ]
 lint = [
-    "flake8==7.3.0",
+    "flake8==7.4.1",
     "black==26.5.1",
 ]
 dev = [
