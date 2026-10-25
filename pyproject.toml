@@ -6,12 +6,12 @@ readme = "README.md"
 requires-python = ">=3.13.3"
 authors = [{name = "nanotaboada", email = "hello@example.com"}]
 dependencies = [
-    "fastapi[standard]==0.143.0",
+    "fastapi[standard]==0.158.1",
     "SQLAlchemy==2.0.52",
     "aiosqlite==0.22.1",
     "aiocache==0.12.3",
     "alembic==1.20.0",
-    "asyncpg==0.31.0",
+    "asyncpg==0.32.0",
     "gunicorn>=25.3.0",
 ]
 
@@ -23,8 +23,8 @@ test = [
     "gevent==26.9.0",
 ]
 lint = [
-    "flake8==7.3.0",
-    "black==26.5.1",
+    "flake8==7.4.1",
+    "black==26.10.1",
 ]
 dev = [
     { include-group = "test" },
