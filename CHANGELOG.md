@@ -47,6 +47,7 @@ This project uses famous football coaches as release codenames, following an A-Z
 - ADR-0011: Use Coach-Themed Semantic Versioning
 - ADR-0012: Adopt AI-Assisted Development Workflow
 - ADR-0013: Adopt Spec-Driven Development (SDD)
+- ADR-0014: Unit and Integration Test Strategy (supersedes ADR-0007) (#490)
 - `.claude/skills/create-issue/SKILL.md` and `.claude/skills/add-endpoint/SKILL.md`:
   extracted from `CLAUDE.md` as on-demand skills, so the SDD issue templates and
   the endpoint/schema-change recipes load only when invoked instead of every
