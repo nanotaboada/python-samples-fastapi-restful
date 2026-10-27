@@ -42,8 +42,11 @@ used by the Docker entrypoint.
   (not 422 — it is a semantic error, not a validation failure)
 - **Logging**: `logging` module only; never `print()`
 - **Tests**: integration tests against the real SQLite DB (seeded via
-  Alembic migrations) via `TestClient` — no mocking. Naming pattern
-  `test_request_{method}_{resource}_{context}_response_{outcome}`;
+  Alembic migrations) via `TestClient` — no mocking. Unit tests in
+  `tests/unit/` isolate dependencies with mocks and do not require database
+  migrations (see ADR-0014). Naming pattern
+  `test_request_{method}_{resource}_{context}_response_{outcome}` (routes);
+  `test_{function}_{context}_returns_{outcome}` (service unit tests);
   docstrings single-line, concise; `tests/player_fake.py` for test data;
   `tests/conftest.py` provides a `function`-scoped `client` fixture for
   isolation; `tests/test_main.py` excluded from Black;
@@ -107,6 +110,8 @@ a release tag with a coach name not in that table.
   docstring updates that don't change the API contract)
 - Tests in `tests/` — maintain async patterns, naming convention, and
   integration-test approach (no mocking)
+- Tests in `tests/unit/` — maintain async patterns, naming convention, and
+  unit-test isolation (mock dependencies as needed)
 - Documentation and docstring updates
 - Lint/format fixes
 - Refactoring within existing architectural patterns
@@ -160,6 +165,6 @@ confirms.
 
 ## Architecture Decision Records
 
-Significant architectural decisions are documented in `docs/adr/` (ADR-0001–0013).
+Significant architectural decisions are documented in `docs/adr/` (ADR-0001–0014).
 Load these before proposing structural changes. When a proposal would change an
 accepted decision, create a new ADR rather than editing the existing one.
