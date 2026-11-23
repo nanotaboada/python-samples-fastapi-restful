@@ -6,6 +6,6 @@ import pytest
 
 
 @pytest.fixture(scope="session", autouse=True)
-def apply_migrations():
+def apply_migrations() -> None:
     """Disable database migrations for unit tests."""
     pass

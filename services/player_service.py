@@ -19,8 +19,8 @@ from typing import List, Optional
 from uuid import UUID
 
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.player_model import PlayerRequestModel
 from schemas.player_schema import Player
@@ -52,7 +52,7 @@ async def create_async(
         await async_session.commit()
         await async_session.refresh(player)
         return player
-    except SQLAlchemyError as error:  # pragma: no cover
+    except SQLAlchemyError as error:
         logger.exception("Error trying to create the Player: %s", error)
         await async_session.rollback()
         return None
@@ -133,7 +133,7 @@ async def update_by_squad_number_async(
         True if the Player was updated successfully, False otherwise.
     """
     player = await retrieve_by_squad_number_async(async_session, squad_number)
-    if player is None:  # pragma: no cover
+    if player is None:
         logger.error("Player not found for update: squad_number=%s", squad_number)
         return False
     player.first_name = player_model.first_name
@@ -149,7 +149,7 @@ async def update_by_squad_number_async(
     try:
         await async_session.commit()
         return True
-    except SQLAlchemyError as error:  # pragma: no cover
+    except SQLAlchemyError as error:
         logger.exception("Error trying to update the Player: %s", error)
         await async_session.rollback()
         return False
@@ -172,14 +172,14 @@ async def delete_by_squad_number_async(
         True if the Player was deleted successfully, False otherwise.
     """
     player = await retrieve_by_squad_number_async(async_session, squad_number)
-    if player is None:  # pragma: no cover
+    if player is None:
         logger.error("Player not found for delete: squad_number=%s", squad_number)
         return False
     try:
         await async_session.delete(player)
         await async_session.commit()
         return True
-    except SQLAlchemyError as error:  # pragma: no cover
+    except SQLAlchemyError as error:
         logger.exception("Error trying to delete the Player: %s", error)
         await async_session.rollback()
         return False

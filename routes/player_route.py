@@ -21,9 +21,10 @@ Endpoints:
 
 from typing import Annotated, List
 from uuid import UUID
-from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Response
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from aiocache import SimpleMemoryCache
+from fastapi import APIRouter, Body, Depends, HTTPException, Path, Response, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from databases.player_database import generate_async_session
 from models.player_model import PlayerRequestModel, PlayerResponseModel
@@ -79,7 +80,7 @@ async def post_async(
             detail="A Player with this squad number already exists.",
         )
     player = await player_service.create_async(async_session, player_model)
-    if player is None:  # pragma: no cover
+    if player is None:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to create the Player due to a database error.",
@@ -231,7 +232,7 @@ async def put_async(
     updated = await player_service.update_by_squad_number_async(
         async_session, squad_number, player_model
     )
-    if not updated:  # pragma: no cover
+    if not updated:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to update the Player due to a database error.",
@@ -271,7 +272,7 @@ async def delete_async(
     deleted = await player_service.delete_by_squad_number_async(
         async_session, squad_number
     )
-    if not deleted:  # pragma: no cover
+    if not deleted:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to delete the Player due to a database error.",

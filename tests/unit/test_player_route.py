@@ -22,59 +22,66 @@ from routes.player_route import (
     simple_memory_cache,
 )
 from schemas.player_schema import Player
+from tests.player_fake import existing_player, nonexistent_player
 
 
 @pytest.fixture
-def existing_player_schema():
+def existing_player_schema() -> Player:
+    """Create an existing player schema from the shared fake."""
+    fake_player = existing_player()
     return Player(
-        id=UUID("01772c59-43f0-5d85-b913-c78e4e281452"),
-        first_name="Damián",
-        middle_name="Emiliano",
-        last_name="Martínez",
-        date_of_birth="1992-09-02T00:00:00.000Z",
-        squad_number=23,
-        position="Goalkeeper",
-        abbr_position="GK",
-        team="Aston Villa FC",
-        league="Premier League",
-        starting11=True,
+        id=UUID(fake_player.id),
+        first_name=fake_player.first_name,
+        middle_name=fake_player.middle_name,
+        last_name=fake_player.last_name,
+        date_of_birth=fake_player.date_of_birth,
+        squad_number=fake_player.squad_number,
+        position=fake_player.position,
+        abbr_position=fake_player.abbr_position,
+        team=fake_player.team,
+        league=fake_player.league,
+        starting11=bool(fake_player.starting11),
     )
 
 
 @pytest.fixture
-def player_request_model():
+def player_request_model() -> PlayerRequestModel:
+    """Create a player request model from the shared fake."""
+    fake_player = nonexistent_player()
     return PlayerRequestModel(
-        first_name="Giovani",
-        last_name="Lo Celso",
-        date_of_birth="1996-07-09T00:00:00.000Z",
-        squad_number=27,
-        position="Central Midfield",
-        abbr_position="CM",
-        team="Real Betis Balompié",
-        league="La Liga",
-        starting11=False,
+        first_name=fake_player.first_name,
+        last_name=fake_player.last_name,
+        date_of_birth=fake_player.date_of_birth,
+        squad_number=fake_player.squad_number,
+        position=fake_player.position,
+        abbr_position=fake_player.abbr_position,
+        team=fake_player.team,
+        league=fake_player.league,
+        starting11=bool(fake_player.starting11),
     )
 
 
 @pytest.fixture
-def player_schema():
+def player_schema() -> Player:
+    """Create a player schema from the shared fake."""
+    fake_player = nonexistent_player()
     return Player(
-        first_name="Giovani",
-        last_name="Lo Celso",
-        date_of_birth="1996-07-09T00:00:00.000Z",
-        squad_number=27,
-        position="Central Midfield",
-        abbr_position="CM",
-        team="Real Betis Balompié",
-        league="La Liga",
-        starting11=False,
+        first_name=fake_player.first_name,
+        last_name=fake_player.last_name,
+        date_of_birth=fake_player.date_of_birth,
+        squad_number=fake_player.squad_number,
+        position=fake_player.position,
+        abbr_position=fake_player.abbr_position,
+        team=fake_player.team,
+        league=fake_player.league,
+        starting11=bool(fake_player.starting11),
     )
 
 
 @pytest.mark.anyio
 async def test_request_post_player_body_nonexistent_response_created(
     player_request_model, player_schema
-):
+) -> None:
     """Create a player when the squad number does not already exist."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     response = Response()
@@ -116,7 +123,7 @@ async def test_request_post_player_body_nonexistent_response_created(
 @pytest.mark.anyio
 async def test_request_post_player_body_existing_response_conflict(
     player_request_model, player_schema
-):
+) -> None:
     """Reject player creation when the squad number already exists."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     response = Response()
@@ -155,7 +162,7 @@ async def test_request_post_player_body_existing_response_conflict(
 @pytest.mark.anyio
 async def test_request_post_player_body_service_failure_response_server_error(
     player_request_model,
-):
+) -> None:
     """Raise a server error when player creation fails."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     response = Response()
@@ -195,7 +202,9 @@ async def test_request_post_player_body_service_failure_response_server_error(
 
 
 @pytest.mark.anyio
-async def test_request_get_players_cache_hit_response_success(player_schema):
+async def test_request_get_players_cache_hit_response_success(
+    player_schema,
+) -> None:
     """Return cached players without querying the service."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     response = Response()
@@ -222,7 +231,9 @@ async def test_request_get_players_cache_hit_response_success(player_schema):
 
 
 @pytest.mark.anyio
-async def test_request_get_players_cache_miss_response_success(player_schema):
+async def test_request_get_players_cache_miss_response_success(
+    player_schema,
+) -> None:
     """Retrieve and cache players when the cache misses."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     response = Response()
@@ -254,7 +265,9 @@ async def test_request_get_players_cache_miss_response_success(player_schema):
 
 
 @pytest.mark.anyio
-async def test_request_get_player_id_existing_response_success(existing_player_schema):
+async def test_request_get_player_id_existing_response_success(
+    existing_player_schema,
+) -> None:
     """Return a player when the requested ID exists."""
     mock_async_session = AsyncMock(spec=AsyncSession)
 
@@ -276,7 +289,7 @@ async def test_request_get_player_id_existing_response_success(existing_player_s
 
 
 @pytest.mark.anyio
-async def test_request_get_player_id_unknown_response_not_found():
+async def test_request_get_player_id_unknown_response_not_found() -> None:
     """Raise not found when the requested ID does not exist."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     unknown_player_id = UUID("00000000-0000-0000-0000-000000000000")
@@ -300,7 +313,7 @@ async def test_request_get_player_id_unknown_response_not_found():
 @pytest.mark.anyio
 async def test_request_get_player_squadnumber_existing_response_success(
     existing_player_schema,
-):
+) -> None:
     """Return a player when the squad number exists."""
     mock_async_session = AsyncMock(spec=AsyncSession)
 
@@ -322,7 +335,7 @@ async def test_request_get_player_squadnumber_existing_response_success(
 
 
 @pytest.mark.anyio
-async def test_request_get_player_squadnumber_unknown_response_not_found():
+async def test_request_get_player_squadnumber_unknown_response_not_found() -> None:
     """Raise not found when the squad number does not exist."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     unknown_squad_number = 99
@@ -348,7 +361,7 @@ async def test_request_get_player_squadnumber_unknown_response_not_found():
 @pytest.mark.anyio
 async def test_request_put_player_squadnumber_existing_response_no_content(
     existing_player_schema, player_request_model
-):
+) -> None:
     """Update a player when the squad number matches."""
     player_request_model.squad_number = existing_player_schema.squad_number
     mock_async_session = AsyncMock(spec=AsyncSession)
@@ -388,7 +401,7 @@ async def test_request_put_player_squadnumber_existing_response_no_content(
 @pytest.mark.anyio
 async def test_request_put_player_squadnumber_mismatch_response_bad_request(
     existing_player_schema, player_request_model
-):
+) -> None:
     """Reject an update when the URL and body squad numbers differ."""
     player_request_model.squad_number = existing_player_schema.squad_number + 1
     mock_async_session = AsyncMock(spec=AsyncSession)
@@ -406,8 +419,6 @@ async def test_request_put_player_squadnumber_mismatch_response_bad_request(
             simple_memory_cache, "clear", new_callable=AsyncMock
         ) as mock_clear_cache,
     ):
-        mock_retrieve_by_squad_number.return_value = existing_player_schema
-
         with pytest.raises(HTTPException) as exc_info:
             await put_async(
                 squad_number=existing_player_schema.squad_number,
@@ -424,7 +435,7 @@ async def test_request_put_player_squadnumber_mismatch_response_bad_request(
 @pytest.mark.anyio
 async def test_request_put_player_squadnumber_unknown_response_not_found(
     player_request_model,
-):
+) -> None:
     """Raise not found when the player does not exist."""
     mock_async_session = AsyncMock(spec=AsyncSession)
 
@@ -461,7 +472,7 @@ async def test_request_put_player_squadnumber_unknown_response_not_found(
 @pytest.mark.anyio
 async def test_request_put_player_squadnumber_service_failure_response_server_error(
     existing_player_schema, player_request_model
-):
+) -> None:
     """Raise a server error when player update fails."""
     player_request_model.squad_number = existing_player_schema.squad_number
     mock_async_session = AsyncMock(spec=AsyncSession)
@@ -505,7 +516,7 @@ async def test_request_put_player_squadnumber_service_failure_response_server_er
 @pytest.mark.anyio
 async def test_request_delete_player_squadnumber_existing_response_no_content(
     existing_player_schema,
-):
+) -> None:
     """Delete a player when the squad number exists."""
     mock_async_session = AsyncMock(spec=AsyncSession)
 
@@ -541,7 +552,7 @@ async def test_request_delete_player_squadnumber_existing_response_no_content(
 
 
 @pytest.mark.anyio
-async def test_request_delete_player_squadnumber_unknown_response_not_found():
+async def test_request_delete_player_squadnumber_unknown_response_not_found() -> None:
     """Raise not found when the player does not exist."""
     mock_async_session = AsyncMock(spec=AsyncSession)
     unknown_squad_number = 99
@@ -578,7 +589,7 @@ async def test_request_delete_player_squadnumber_unknown_response_not_found():
 @pytest.mark.anyio
 async def test_request_delete_player_squadnumber_service_failure_response_server_error(
     existing_player_schema,
-):
+) -> None:
     """Raise a server error when player deletion fails."""
     mock_async_session = AsyncMock(spec=AsyncSession)
 
