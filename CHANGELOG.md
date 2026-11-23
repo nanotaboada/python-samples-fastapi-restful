@@ -47,10 +47,16 @@ This project uses famous football coaches as release codenames, following an A-Z
 - ADR-0011: Use Coach-Themed Semantic Versioning
 - ADR-0012: Adopt AI-Assisted Development Workflow
 - ADR-0013: Adopt Spec-Driven Development (SDD)
+- ADR-0014: Unit and Integration Test Strategy (supersedes ADR-0007) (#490)
 - `.claude/skills/create-issue/SKILL.md` and `.claude/skills/add-endpoint/SKILL.md`:
   extracted from `CLAUDE.md` as on-demand skills, so the SDD issue templates and
   the endpoint/schema-change recipes load only when invoked instead of every
   session; each starts with a top-level heading per `markdownlint` MD041
+- `tests/unit/`: isolated unit tests for `services/player_service.py` and
+  `routes/player_route.py` (`test_player_service.py`, `test_player_route.py`,
+  `conftest.py`), covering happy paths, error/rollback branches (`SQLAlchemyError`
+  and HTTP 500 responses), and cache hit/miss behavior without database migrations
+  (#490)
 
 ### Changed
 
@@ -81,6 +87,9 @@ This project uses famous football coaches as release codenames, following an A-Z
   finishing touch and `knowledge_base.code_guidelines` to reference `CLAUDE.md`;
   added `alembic/versions/**/*.py` path instruction enforcing append-only
   migration policy (#590)
+- `services/player_service.py` and `routes/player_route.py`: removed
+  `# pragma: no cover` markers from error-handling branches now covered by unit
+  tests (#490)
 
 ### Fixed
 

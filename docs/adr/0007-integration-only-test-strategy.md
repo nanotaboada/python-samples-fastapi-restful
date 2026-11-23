@@ -4,8 +4,7 @@ Date: 2026-03-21
 
 ## Status
 
-Accepted. Unit tests with mocking for the service and route layers are
-under consideration — tracked in issue #490.
+Superseded by [ADR-0014](0014-unit-and-integration-test-strategy.md).
 
 ## Context
 
